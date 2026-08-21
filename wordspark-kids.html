@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#1B1440">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="WordSpark">
 <title>WordSpark Kids ✨ | Adventures with Spark</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Quicksand:wght@500;600;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
@@ -230,7 +236,56 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible{
 .map-row.left{justify-content:flex-start;}
 .map-row.center{justify-content:center;}
 
-.world-wrap{position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;}
+#islandQuickNav{
+  position:fixed;top:0;left:0;right:0;z-index:40;
+  background:rgba(255,255,255,.94);backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+  padding:8px 10px;box-shadow:0 4px 14px rgba(0,0,0,.08);
+  display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;
+}
+#islandQuickNav::-webkit-scrollbar{display:none;}
+.qn-btn{
+  flex-shrink:0;font-family:'Baloo 2';font-weight:700;font-size:11.5px;color:var(--ink-soft);
+  background:#F7F1FF;border:none;border-radius:14px;padding:8px 12px;
+  transition:transform .15s cubic-bezier(.34,1.56,.64,1), background .15s ease, color .15s ease;
+}
+.qn-btn:active{transform:scale(.93);}
+.qn-btn.current{
+  background:linear-gradient(160deg,var(--word-1,#FFC65C),var(--word-2,#F2971F));color:#fff;
+  box-shadow:0 3px 8px rgba(242,151,31,.4);
+}
+#screenMap{padding-top:56px;}
+.section-banner{
+  display:flex;align-items:center;gap:12px;
+  max-width:340px;margin:22px auto 18px;padding:14px 18px;border-radius:18px;
+  box-shadow:0 6px 0 rgba(0,0,0,.1), 0 10px 18px rgba(0,0,0,.12);
+  position:relative;
+}
+.section-banner::before, .section-banner::after{
+  content:"";position:absolute;top:50%;width:22px;height:2px;background:currentColor;opacity:.35;
+}
+.section-banner::before{left:-30px;} .section-banner::after{right:-30px;}
+.section-banner .sb-icon{font-size:26px;line-height:1;flex-shrink:0;}
+.section-banner .sb-text{color:#fff;}
+.section-banner .sb-title{font-family:'Baloo 2';font-weight:800;font-size:15px;}
+.section-banner .sb-sub{font-size:11px;opacity:.9;font-weight:700;}
+.section-banner.sb-islands{background:linear-gradient(120deg,#3FD8C9,#1FA994);color:#1FA994;}
+.section-banner.sb-seasons{background:linear-gradient(120deg,#F2A93C,#E5762A);color:#E5762A;}
+.section-banner.sb-planets{background:linear-gradient(120deg,#4A3E80,#241A45);color:#4A3E80;}
+.ambient-deco{
+  position:absolute;top:50%;font-size:19px;opacity:.55;pointer-events:none;
+  animation-duration:3.4s;animation-timing-function:ease-in-out;animation-iteration-count:infinite;
+}
+.ambient-deco.tilt-a{animation-name:ambientFloatA;}
+.ambient-deco.tilt-b{animation-name:ambientFloatB;}
+@keyframes ambientFloatA{
+  0%,100%{transform:translateY(-50%) rotate(-8deg) translateX(0);}
+  50%{transform:translateY(-60%) rotate(-15deg) translateX(-3px);}
+}
+@keyframes ambientFloatB{
+  0%,100%{transform:translateY(-50%) rotate(8deg) translateX(0);}
+  50%{transform:translateY(-40%) rotate(15deg) translateX(3px);}
+}
+.world-wrap{position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;scroll-margin-top:72px;}
 .world{
   position:relative;width:112px;height:112px;border-radius:50%;padding:0;
   border:5px solid rgba(255,255,255,.97);
@@ -280,6 +335,15 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible{
   10%{opacity:1;}90%{opacity:1;}
   100%{transform:translate(-50%,-50%) rotate(360deg) translateX(26px) rotate(-360deg);opacity:0;}
 }
+.planet-star{position:absolute;width:4px;height:4px;border-radius:50%;background:#fff;box-shadow:0 0 5px 1.5px rgba(255,255,255,.85);top:50%;left:50%;animation:planetOrbit 5.5s linear infinite;z-index:1;}
+.planet-star.s2{animation-delay:-1.8s;animation-duration:4.4s;}
+.planet-star.s3{animation-delay:-3.6s;animation-duration:6.6s;}
+@keyframes planetOrbit{
+  0%{transform:translate(-50%,-50%) rotate(0deg) translateX(64px) rotate(0deg);opacity:0;}
+  8%{opacity:1;}92%{opacity:1;}
+  100%{transform:translate(-50%,-50%) rotate(360deg) translateX(64px) rotate(-360deg);opacity:0;}
+}
+.world.planet-node{border-color:rgba(216,225,235,.9);}
 
 .section-title{display:flex;align-items:center;gap:8px;margin:18px 0 12px;}
 .section-title h2{font-size:19px;color:#fff;text-shadow:0 1px 0 rgba(0,0,0,.2);}
@@ -345,7 +409,18 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible{
 .quiz-q{text-align:center;padding:6px 0 16px;}
 .quiz-q .prompt{font-family:'Baloo 2';font-size:18px;margin-bottom:4px;}
 .quiz-q .qcount{font-size:12px;font-weight:800;color:var(--ink-soft);}
+.count-tap-wrap{grid-column:1/-1;display:flex;flex-direction:column;align-items:center;gap:16px;padding:10px 0;}
+.count-tap-star{font-size:70px;background:none;border:none;line-height:1;filter:drop-shadow(0 4px 0 rgba(0,0,0,.15));transition:transform .2s cubic-bezier(.34,1.56,.64,1);}
+.count-tap-star:active{transform:scale(.85);transition:transform .07s ease;}
+.count-tap-star.pulse{animation:choiceBounce .35s cubic-bezier(.34,1.56,.64,1);}
+.count-tap-display{font-family:'Baloo 2';font-weight:700;font-size:28px;color:var(--ink);}
 .quiz-choices{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.juice-glass{
+  width:64px;height:76px;margin:16px auto 4px;position:relative;
+  border:3px solid #4FA8E8;border-radius:6px 6px 22px 22px;
+  background:#EAF6FF;overflow:hidden;box-shadow:0 4px 0 var(--line);
+}
+.juice-fill{position:absolute;bottom:0;left:0;right:0;height:0%;background:linear-gradient(180deg,#FFE1A0,#F2913A);transition:height .55s cubic-bezier(.34,1.56,.64,1), background .4s ease;}
 .choice{
   border-radius:20px;background:#fff;padding:16px 8px;text-align:center;
   box-shadow:0 5px 0 var(--line),0 8px 12px rgba(0,0,0,.08);font-size:42px;
@@ -360,12 +435,13 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible{
 .progress-track{height:12px;background:rgba(255,255,255,.95);border-radius:8px;overflow:hidden;box-shadow:inset 0 2px 4px rgba(0,0,0,.15);margin-bottom:16px;}
 .progress-fill{height:100%;background:linear-gradient(90deg,var(--word-1),var(--cat-1));border-radius:8px;transition:width .35s;}
 
-.match-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.match-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
 .match-tile{
   aspect-ratio:1;border-radius:16px;background:#fff;display:flex;align-items:center;justify-content:center;
   font-family:'Baloo 2';font-weight:700;font-size:22px;box-shadow:0 4px 0 var(--line);
   transition:transform .24s cubic-bezier(.34,1.56,.64,1), box-shadow .18s ease;
 }
+.match-tile.text-tile{aspect-ratio:auto;min-height:78px;font-size:13px;line-height:1.2;padding:8px;text-align:center;word-break:break-word;}
 .match-tile:active{transform:translateY(3px);transition:transform .07s ease, box-shadow .07s ease;box-shadow:0 1px 0 var(--line);}
 .match-tile.sel{background:#EAF9FF;box-shadow:0 4px 0 var(--abc-2);}
 .match-tile.matched{background:#E4FBED;box-shadow:0 4px 0 var(--abc-2);opacity:.6;animation:choiceBounce .5s cubic-bezier(.34,1.56,.64,1);}
@@ -401,6 +477,22 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible{
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
 .subnav{display:flex;align-items:center;gap:10px;margin-bottom:6px;padding-top:4px;}
+.portal-gate{
+  position:relative;width:220px;max-width:78vw;padding:16px 14px 14px;border-radius:28px;
+  background:linear-gradient(160deg,#4A3E80,#241A45);
+  border:4px solid rgba(255,255,255,.85);
+  box-shadow:0 9px 0 rgba(0,0,0,.2),0 15px 22px rgba(0,0,0,.3),inset 0 3px 5px rgba(255,255,255,.15);
+  text-align:center;overflow:hidden;
+  animation:worldFloat 4.8s ease-in-out infinite;
+  transition:transform .38s cubic-bezier(.34,1.56,.64,1), box-shadow .25s ease;
+}
+.portal-gate:active{transform:translateY(4px) scale(.97);transition:transform .08s ease;}
+.portal-gate.locked{filter:grayscale(.5) brightness(.78);animation:none;}
+.portal-art{width:100%;height:70px;display:block;}
+.portal-label{font-family:'Baloo 2';font-weight:700;color:#fff;font-size:15px;margin-top:2px;}
+.portal-progress{font-family:'Baloo 2';font-weight:600;color:#FFD166;font-size:12px;margin-top:2px;}
+.portal-gate .lock-badge{position:absolute;bottom:8px;right:8px;background:#fff;border-radius:50%;width:27px;height:27px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.25), 0 0 10px 2px rgba(255,255,255,.65);z-index:2;}
+.portal-gate .trophy-badge{position:absolute;top:8px;right:8px;width:29px;height:29px;z-index:2;filter:drop-shadow(0 2px 3px rgba(0,0,0,.25));}
 .world-hero{
   position:relative;border-radius:26px;padding:16px 16px 18px;margin-bottom:16px;
   background:linear-gradient(160deg, var(--hc1,#3FD8C9), var(--hc2,#1FA994));
@@ -489,7 +581,34 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible{
   </header>
 
   <main>
+    <div id="screenSentenceHub" class="screen hidden">
+      <div class="star-twinkle-layer" id="sbHubStars"></div>
+      <div class="world-hero" style="--hc1:#5A4A9E;--hc2:#241A45;position:relative;z-index:1;">
+        <button class="icon-btn hero-back" onclick="goHome()"></button>
+        <div class="hero-island" style="display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 35% 30%,#FFE9A8,#FF8FA3 70%);"><span style="font-size:32px;">✦</span></div>
+        <h1>The Star Bridge</h1>
+        <p>Connect your words into constellations</p>
+      </div>
+      <div class="sb-level-list" id="sbLevelList"></div>
+    </div>
+
+    <div id="screenSentenceProto" class="screen hidden">
+      <div class="star-twinkle-layer" id="sbProtoStars"></div>
+      <div class="world-hero" style="--hc1:#5A4A9E;--hc2:#241A45;position:relative;z-index:1;">
+        <button class="icon-btn hero-back" onclick="goHome()"></button>
+        <div class="hero-island" style="display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 35% 30%,#7FFFD4,#0E9F8A 70%);"><span style="font-size:34px;">✦</span></div>
+        <h1>The Star Bridge</h1>
+        <p id="sbLevelSub">Level 1</p>
+      </div>
+      <div class="lesson-caption" id="sbPrompt" style="color:#fff;margin:8px 0 18px;position:relative;z-index:1;">Tap the words in order!</div>
+      <div class="sb-slots" id="sbSlots"></div>
+      <div class="sb-pool" id="sbPool"></div>
+      <button class="btn3d gold block hidden" id="sbPlayBtn" style="margin-top:18px;" onclick="playBuiltSentence()">🔊 Play My Sentence</button>
+      <button class="btn3d ghost block hidden" id="sbNextBtn" style="margin-top:10px;" onclick="nextSentenceProto()">Next Sentence →</button>
+    </div>
+
     <div id="screenMap" class="screen">
+      <div id="islandQuickNav"></div>
       <div class="map-hero">
         <div class="map-hero-avatar spark-wrap small" id="mapHeroSpark"></div>
         <h1 id="welcomeMsg" class="display">Hi, Explorer!</h1>
@@ -525,7 +644,12 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible{
     </div>
 
     <div id="screenCategoryDetail" class="screen hidden">
-      <div class="subnav"><button class="icon-btn" onclick="goHome()"></button><h1 id="catDetailTitle">Category</h1></div>
+      <div class="world-hero" id="catHero" style="--hc1:#3FD8C9;--hc2:#1FA994;">
+        <button class="icon-btn hero-back" onclick="goHome()"></button>
+        <div class="hero-island" id="catHeroIsland"></div>
+        <h1 id="catDetailTitle">Category</h1>
+        <p id="catHeroTagline"></p>
+      </div>
       <div class="progress-track"><div class="progress-fill" id="catProgFill" style="width:0%"></div></div>
       <div class="grid words" id="catWordsGrid"></div>
       <div class="section-title"><h2>Activities</h2></div>
@@ -533,6 +657,7 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible{
     </div>
 
     <div id="screenLetterLesson" class="screen hidden">
+      <div class="lesson-letter-watermark" id="lessonWatermark" aria-hidden="true"></div>
       <div class="lesson-top">
         <button class="icon-btn" id="lessonExitBtn" onclick="exitLesson()"></button>
         <div class="lesson-dots" id="lessonDots"></div>
@@ -620,6 +745,11 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible{
       <button class="settings-row" onclick="contactUs()">
         <div class="sr-icon" id="iconContact"></div><div class="sr-body"><div class="sr-title" data-i18n="rowContactTitle">Contact Us</div></div>
       </button>
+
+      <!-- DEV MODE ROW — remove this whole <button> block before public launch -->
+      <button class="settings-row" onclick="setDevMode(!DEV_MODE)" style="margin-top:16px;opacity:.85;">
+        <div class="sr-icon">🛠️</div><div class="sr-body"><div class="sr-title" id="devModeToggleBtn">Developer Mode: OFF</div></div>
+      </button>
     </div>
 
     <!-- PARENT GATE -->
@@ -637,6 +767,31 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible{
     <div id="screenParentZone" class="screen hidden">
       <div class="subnav"><button class="icon-btn" onclick="showScreen('screenSettings')"></button><h1 data-i18n="parentZoneTitle">Parent Dashboard</h1></div>
       <div class="reward-stats" id="parentStats" style="margin-bottom:16px;flex-wrap:wrap;"></div>
+
+      <div class="legal-card" style="margin-bottom:14px;background:linear-gradient(160deg,#E9FBF6,#DFF3FF);">
+        <div class="sr-title" style="font-size:15px;margin-bottom:4px;">📋 Weekly Report</div>
+        <div class="sr-sub" style="margin-bottom:12px;">A ready-made summary you can send yourself, or share with your partner — real numbers, not guesses.</div>
+        <div id="weeklyReportPreview" style="background:#fff;border-radius:14px;padding:14px;font-size:13px;line-height:1.7;color:var(--ink);white-space:pre-wrap;margin-bottom:12px;"></div>
+        <button class="btn3d gold block" onclick="shareWeeklyReport()">💬 Share on WhatsApp</button>
+      </div>
+
+      <div class="legal-card" style="margin-bottom:14px;background:linear-gradient(160deg,#FFF0E8,#FFE3EC);">
+        <div class="sr-title" style="font-size:15px;margin-bottom:4px;">🎯 Needs Review</div>
+        <div class="sr-sub" style="margin-bottom:10px;">Words that were missed recently, or answered correctly less than 6 out of 10 times — not a full picture yet, just what shows up during Recap rides.</div>
+        <div id="weakWordsList"></div>
+      </div>
+
+      <div class="legal-card" style="margin-bottom:14px;">
+        <div class="sr-title" style="font-size:15px;margin-bottom:4px;">🗺️ The Recap Adventure</div>
+        <div class="sr-sub" style="margin-bottom:12px;">Short, playful rides through what your child has already learned — not new content, just an honest check of what's sticking.</div>
+        <div id="checkpointSummaryList"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;">
+          <button class="btn3d gold" style="font-size:13px;padding:12px 8px;" onclick="startCarCheckpoint()">🚗 The Road<br><span style="font-size:10px;font-weight:600;opacity:.8;">Islands</span></button>
+          <button class="btn3d violet" style="font-size:13px;padding:12px 8px;" onclick="startPlaneCheckpoint()">✈️ The Sky<br><span style="font-size:10px;font-weight:600;opacity:.8;">Sentences</span></button>
+          <button class="btn3d rose" style="font-size:13px;padding:12px 8px;" onclick="startSpaceshipCheckpoint()">🚀 The Stars<br><span style="font-size:10px;font-weight:600;opacity:.8;">Planets</span></button>
+          <button class="btn3d ghost" style="font-size:13px;padding:12px 8px;" onclick="startBoatCheckpoint()">⛵ Grand Voyage<br><span style="font-size:10px;font-weight:600;opacity:.8;">Everything</span></button>
+        </div>
+      </div>
       <div class="legal-card" style="margin-bottom:14px;">
         <div class="sr-title" style="margin-bottom:10px;" data-i18n="parentLettersTitle">Completed Letters</div>
         <div id="parentLettersGrid" class="grid letters"></div>
@@ -679,12 +834,7 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible{
       <div class="subnav"><button class="icon-btn" onclick="showScreen('screenSettings')"></button><h1 data-i18n="aboutTitle">About WordSpark Kids</h1></div>
       <div class="legal-card">
         <p id="aboutBodyText" data-i18n="aboutBody" style="white-space:pre-line;"></p>
-        <p style="font-weight:800;color:var(--ink);" onclick="tapVersionLabel()"><span data-i18n="versionPrefix">Version</span> <span id="versionLabel"></span></p>
-      </div>
-      <div id="devModeRow" class="settings-row hidden" style="flex-direction:column;align-items:stretch;margin-top:12px;">
-        <div class="sr-title" style="font-size:14px;">🛠️ Developer Review Mode</div>
-        <div class="sr-sub" style="margin-bottom:8px;">Testing only — unlocks every world and activity. Never affects saved progress. Turn off before release.</div>
-        <button class="btn3d ghost block" id="devModeToggleBtn" onclick="setDevMode(!DEV_MODE)">Developer Mode: OFF</button>
+        <p style="font-weight:800;color:var(--ink);"><span data-i18n="versionPrefix">Version</span> <span id="versionLabel"></span></p>
       </div>
     </div>
     <div id="screenPrivacy" class="screen hidden">
@@ -696,30 +846,6 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible{
       <div class="legal-card"><p id="termsBodyText" data-i18n="termsBody" style="white-space:pre-line;"></p></div>
     </div>
   </main>
-</div>
-
-<div class="overlay" id="letterOverlay">
-  <div class="sheet">
-    <div class="sheet-drag"></div>
-    <button class="icon-btn sheet-close" onclick="closeOverlay('letterOverlay')" id="letterCloseBtn"></button>
-    <div class="detail-hero">
-      <div><span class="big" id="letUp">A</span><span class="big2" id="letLo">a</span></div>
-      <div class="pic-big" id="letPic">🍎</div>
-      <div class="word-en" id="letWord">Apple</div>
-    </div>
-    <div class="audio-row">
-      <button class="btn3d violet" onclick="speakCurrent(1)">Hear Sound</button>
-      <button class="btn3d gold" onclick="speakCurrent(0.6)">Slow</button>
-    </div>
-    <div class="trace-wrap">
-      <canvas id="traceCanvas" width="400" height="180"></canvas>
-      <div class="trace-hint">Trace the letter with your finger!</div>
-    </div>
-    <div style="display:flex;gap:10px;margin-top:10px;">
-      <button class="btn3d ghost block" onclick="clearTrace()">Clear</button>
-      <button class="btn3d block" style="--btn-bg:var(--abc-1);--btn-shadow:var(--abc-2)" onclick="markLetterDone()">Got it!</button>
-    </div>
-  </div>
 </div>
 
 <div class="overlay" id="wordOverlay">
@@ -753,6 +879,7 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible{
       <button class="icon-btn" onclick="repeatQuizAudio()" style="margin:8px auto;" id="quizAudioBtn"></button>
     </div>
     <div class="quiz-choices" id="quizChoices"></div>
+    <div class="juice-glass hidden" id="juiceGlass"><div class="juice-fill" id="juiceFill"></div></div>
   </div>
 </div>
 
@@ -794,6 +921,7 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible{
       <div class="cert-mascot spark-wrap celebrate" id="certSparkWrap"></div>
       <div class="cert-name" id="certName">Explorer</div>
       <div class="cert-line" id="certLine">completed Category Cove: Animals</div>
+      <div class="reward-stats" id="certBonusStats" style="margin-top:10px;"></div>
       <div class="cert-line" style="margin-top:6px;">WordSpark Kids · with Spark</div>
     </div>
     <button class="btn3d gold block" style="margin-top:16px;" onclick="closeOverlay('certOverlay')">Yay!</button>
@@ -819,7 +947,10 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible{
   aspect-ratio:1;border-radius:18px;background:#fff;border:3px dashed var(--line);
   display:flex;align-items:center;justify-content:center;font-size:32px;position:relative;
 }
+.dt-emoji.size-big{font-size:1.7em;}
+.dt-emoji.size-small{font-size:.55em;}
 .drag-target.filled{border-style:solid;border-color:var(--abc-1);background:#E9FBF6;}
+.drag-target.drag-hover{border-style:solid;border-color:var(--gold2,#F2971F);background:#FFF6E5;transform:scale(1.06);transition:transform .12s ease;}
 .drag-pool{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;min-height:50px;}
 .drag-chip{
   background:#fff;border-radius:14px;padding:12px 16px;font-family:'Baloo 2';font-weight:700;font-size:14px;
@@ -828,12 +959,85 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible{
 .drag-chip.dragging{position:fixed;z-index:900;pointer-events:none;box-shadow:0 8px 20px rgba(0,0,0,.3);}
 .drag-chip.placed{opacity:0;pointer-events:none;}
 
-.lesson-top{display:flex;align-items:center;justify-content:space-between;padding:8px 4px 6px;max-width:520px;margin:0 auto;}
+/* ═══ THE STAR BRIDGE — Sentence Builder's dedicated visual world ═══
+   Sits between the bright islands and the deep-space planets, so it
+   gets its own twilight backdrop. Words are stardust; a completed
+   sentence is a constellation the child draws by connecting them. */
+.star-twinkle-layer{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0;}
+#screenSentenceHub, #screenSentenceProto{
+  position:relative;
+  background:radial-gradient(ellipse 120% 60% at 50% 0%, #2A2050, transparent 60%), linear-gradient(180deg,#100A24,#050310);
+  min-height:100dvh; margin:0 -14px; padding:0 14px;
+}
+.star-twinkle{position:absolute;border-radius:50%;background:#fff;animation:twinkle 3.2s ease-in-out infinite;}
+
+.sb-level-list{display:flex;flex-direction:column;gap:14px;max-width:480px;margin:0 auto;position:relative;z-index:1;}
+.sb-level-card{
+  background:linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
+  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+  border:1px solid rgba(255,255,255,.12); border-radius:22px; padding:16px 18px;
+  box-shadow:0 10px 26px rgba(0,0,0,.35);
+  display:flex;align-items:center;gap:14px;text-align:left;width:100%;
+  transition:transform .26s cubic-bezier(.34,1.56,.64,1), box-shadow .2s ease;
+}
+.sb-level-card:active{transform:translateY(4px) scale(.98);transition:transform .08s ease;}
+.sb-level-card.locked{opacity:.5;}
+.sb-level-card.active-now{border-color:rgba(255,184,108,.55);box-shadow:0 0 0 1px rgba(255,184,108,.25), 0 12px 30px rgba(255,184,108,.2);}
+.sb-level-num{
+  width:50px;height:50px;border-radius:50%;flex-shrink:0;position:relative;
+  background:radial-gradient(circle at 35% 30%, #4A3E80, #241A45 65%);
+  border:1.5px solid rgba(255,255,255,.25);
+  display:flex;align-items:center;justify-content:center;font-family:'Baloo 2';font-weight:700;font-size:22px;color:#D8C8FF;
+}
+.sb-level-num svg{width:22px;height:22px;}
+.sb-level-num.season-summer{background:radial-gradient(circle at 35% 30%,#FFF3C2,#FF9A3D 70%);border-color:transparent;}
+.sb-level-num.season-autumn{background:radial-gradient(circle at 35% 30%,#FFCFA0,#B5502B 70%);border-color:transparent;}
+.sb-level-num.season-winter{background:radial-gradient(circle at 35% 30%,#EAF7FF,#5A9BC7 70%);border-color:transparent;}
+.sb-level-num.season-spring{background:radial-gradient(circle at 35% 30%,#EEFFE0,#5FB84A 70%);border-color:transparent;}
+.sb-level-card.done .sb-level-num{background:radial-gradient(circle at 35% 30%, #7FFFD4, #0E9F8A 65%);box-shadow:0 0 16px rgba(45,212,191,.55);color:#06251f;border-color:transparent;}
+.sb-level-card.active-now .sb-level-num{background:radial-gradient(circle at 35% 30%, #FFE9A8, #FF8FA3 65%);box-shadow:0 0 18px rgba(255,184,108,.6);color:#3a1f06;border-color:transparent;animation:breathe 2.6s ease-in-out infinite;}
+@keyframes breathe{0%,100%{transform:scale(1);}50%{transform:scale(1.08);}}
+.sb-level-body{flex:1;min-width:0;}
+.sb-level-title{font-family:'Baloo 2';font-weight:700;font-size:15px;color:#F1F5F9;}
+.sb-level-sub{font-size:12px;color:#A599C2;margin-top:2px;}
+.sb-level-track{height:4px;background:rgba(255,255,255,.1);border-radius:3px;margin-top:7px;overflow:hidden;}
+.sb-level-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,#7FFFD4,#2DD4BF);transition:width .5s ease;}
+
+.sb-slots{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;min-height:76px;padding:16px 10px;position:relative;z-index:1;}
+.sb-slot{
+  width:64px;height:64px;border-radius:50%;flex-shrink:0;position:relative;
+  background:rgba(255,255,255,.05); border:2px dashed rgba(255,255,255,.28);
+  display:flex;align-items:center;justify-content:center;
+  transition:all .3s ease;
+}
+.sb-slot::after{content:"";position:absolute;top:50%;left:100%;width:8px;height:2px;background:rgba(255,255,255,.2);}
+.sb-slot:last-child::after{display:none;}
+.sb-slot.filled{border-style:solid;border-color:rgba(126,255,212,.6);background:radial-gradient(circle at 35% 30%,#FFE9A8,#FF8FA3 70%);box-shadow:0 0 16px rgba(255,184,108,.55);padding:0;}
+.sb-slot.filled::after{background:linear-gradient(90deg, rgba(255,184,108,.7), rgba(255,255,255,.15));}
+.word-tile{
+  background:radial-gradient(circle at 32% 28%, #C79BFF, #6E3FD1 75%);
+  border-radius:16px;padding:14px 18px;box-shadow:0 0 14px rgba(142,90,255,.5), 0 6px 0 rgba(0,0,0,.25);
+  font-family:'Baloo 2';font-weight:700;font-size:17px;color:#fff;
+  transition:transform .24s cubic-bezier(.34,1.56,.64,1), box-shadow .18s ease, opacity .2s;
+  animation:starPulse 2.4s ease-in-out infinite;
+}
+@keyframes starPulse{0%,100%{box-shadow:0 0 14px rgba(142,90,255,.5), 0 6px 0 rgba(0,0,0,.25);}50%{box-shadow:0 0 20px rgba(142,90,255,.75), 0 6px 0 rgba(0,0,0,.25);}}
+.word-tile:active{transform:translateY(3px);transition:transform .07s ease;animation:none;}
+.word-tile.placed{background:radial-gradient(circle at 35% 30%,#7FFFD4,#0E9F8A 70%);color:#06251f;box-shadow:0 0 18px rgba(45,212,191,.6);animation:choiceBounce .4s cubic-bezier(.34,1.56,.64,1);}
+.word-tile.used{opacity:0;pointer-events:none;}
+.sb-pool{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;position:relative;z-index:1;}
+.lesson-letter-watermark{
+  position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+  pointer-events:none;z-index:0;overflow:hidden;
+  font-family:'Baloo 2';font-weight:700;font-size:min(70vw,420px);
+  color:rgba(255,255,255,.05);line-height:1;user-select:none;
+}
+.lesson-top{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;padding:8px 4px 6px;max-width:520px;margin:0 auto;}
 .lesson-dots{display:flex;gap:6px;}
 .lesson-dots .dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.35);transition:all .25s;}
 .lesson-dots .dot.done{background:var(--word-1);}
 .lesson-dots .dot.active{background:#fff;width:20px;border-radius:6px;}
-.lesson-content{min-height:56vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:14px 10px;max-width:520px;margin:0 auto;}
+.lesson-content{position:relative;z-index:1;min-height:56vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:14px 10px;max-width:520px;margin:0 auto;}
 .lesson-step-anim{animation:lessonStepIn .32s cubic-bezier(.25,.9,.35,1.1) both;}
 @keyframes lessonStepIn{from{opacity:0;transform:translateY(10px) scale(.98);}to{opacity:1;transform:translateY(0) scale(1);}}
 .lesson-caption{color:#fff;font-family:'Baloo 2';font-weight:600;font-size:17px;margin-bottom:18px;text-shadow:0 2px 0 rgba(0,0,0,.2);}
@@ -861,7 +1065,7 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible{
 .hunt-tile.shake{animation:shakeTile .4s;}
 @keyframes shakeTile{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
 .lesson-tag{position:absolute;top:-6px;left:-6px;font-size:14px;}
-.lesson-continue-wrap{padding:10px 16px calc(20px + var(--safe-bottom));max-width:520px;margin:0 auto;}
+.lesson-continue-wrap{position:relative;z-index:1;padding:10px 16px calc(20px + var(--safe-bottom));max-width:520px;margin:0 auto;}
 
 .settings-row{
   display:flex;align-items:center;gap:12px;background:#fff;border-radius:18px;
@@ -893,6 +1097,9 @@ button.settings-row:active{transform:translateY(3px);transition:transform .08s e
    ICONS
    ============================================================ */
 const ICONS = {
+  gift:`<svg viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="10" rx="1.5" fill="url(#catGrad)"/><rect x="3" y="7" width="18" height="4" rx="1" fill="url(#wordGrad)"/><rect x="11" y="7" width="2" height="13" fill="#fff" opacity=".6"/><path d="M12 7C10 3 6 4 7 7M12 7c2-4 6-3 5 0" stroke="url(#wordGrad)" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>`,
+  pawSound:`<svg viewBox="0 0 24 24"><circle cx="7" cy="7" r="1.8" fill="url(#catGrad)"/><circle cx="11.5" cy="5.5" r="1.8" fill="url(#catGrad)"/><circle cx="15" cy="7.5" r="1.7" fill="url(#catGrad)"/><path d="M11,11c-2.8,0-5,1.9-5,4.2,0,1.6,1.3,2.4,2.8,1.8.8-.3,1.4-.5,2.2-.5s1.4.2,2.2.5c1.5.6,2.8-.2,2.8-1.8,0-2.3-2.2-4.2-5-4.2z" fill="url(#catGrad)"/><path d="M17,13c1.2.5,2.2,1.5,2.6,2.7M17,16c.8.3,1.5.9,1.9,1.7" stroke="url(#wordGrad)" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>`,
+  juice:`<svg viewBox="0 0 24 24"><path d="M7 4h10l-1.2 15a2 2 0 01-2 1.8H10.2a2 2 0 01-2-1.8L7 4z" fill="url(#wordGrad)"/><rect x="6.5" y="3" width="11" height="2.2" rx="1" fill="url(#catGrad)"/><path d="M9 8h6" stroke="#fff" stroke-width="1" opacity=".5"/><rect x="13.5" y="0.5" width="1.8" height="6" rx=".9" fill="#4FA8E8" transform="rotate(18 13.5 3)"/></svg>`,
   star:`<svg viewBox="0 0 24 24"><path d="M12 2l2.7 6.6L22 9.3l-5.3 4.7L18.2 21 12 17.1 5.8 21l1.5-7-5.3-4.7 7.3-.7L12 2z" fill="url(#wordGrad)"/></svg>`,
   coin:`<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5" fill="url(#wordGrad)" stroke="#F2971F" stroke-width="1"/><circle cx="12" cy="12" r="5.5" fill="none" stroke="#fff" stroke-width="1.4" opacity=".7"/><path d="M12 8v8M9.5 10c0-1.1 1.1-2 2.5-2s2.5.7 2.5 1.7c0 2.3-5 1-5 3.3 0 1 1.1 1.7 2.5 1.7s2.5-.9 2.5-2" stroke="#fff" stroke-width="1.3" fill="none" stroke-linecap="round"/></svg>`,
   flame:`<svg viewBox="0 0 24 24"><path d="M12 2c1 3-3 4-3 8a3 3 0 006 0c0-1.2-.6-1.8-.9-2.6C15.5 8.8 17 11 17 14a5 5 0 01-10 0c0-4 2.5-6 3.5-8.4C11 4.4 11.6 3.2 12 2z" fill="url(#catGrad)"/></svg>`,
@@ -992,14 +1199,14 @@ function playSparkBehavior(el, name, opts){
   }
 }
 
-function speakSpark(text){
-  if(!('speechSynthesis' in window)) return;
+function speakSpark(text, onComplete){
+  if(!('speechSynthesis' in window)){ if(onComplete) onComplete(); return; }
   window.speechSynthesis.cancel();
   const phrases = text.match(/[^.!?,]+[.!?,]*/g) || [text];
   const rate = STATE.settings.voiceSpeed === 'slow' ? 0.6 : 0.78;
   let i = 0;
   function speakNext(){
-    if(i >= phrases.length) return;
+    if(i >= phrases.length){ if(onComplete) onComplete(); return; }
     const segment = phrases[i].trim();
     i++;
     if(!segment){ speakNext(); return; }
@@ -1022,7 +1229,7 @@ function sparkSay(text, mood, opts){
   playSparkBehavior(face, behaviorName, {mood});
   document.getElementById('sparkBannerText').textContent = text;
   banner.classList.add('show');
-  if(opts.speak !== false) speakSpark(text);
+  if(opts.speak !== false) speakSpark(text, opts.onComplete);
   clearTimeout(bannerTimer);
   bannerTimer = setTimeout(()=>banner.classList.remove('show'), opts.duration || 3800);
 }
@@ -1037,6 +1244,15 @@ const ENCOURAGE_LINES = [
 ];
 const WELCOME_BACK_LINES = ["Welcome back, {n}!", "Yay, {n} is here! Let's play!", "Hi {n}! Ready for more adventure?", "So happy to see you, {n}!"];
 function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+/* Waits for the encourage voice line to actually finish before advancing
+   (long lines like the em-dash one can run past any fixed guess), with a
+   5s hard cap so a stalled speech engine can never freeze the game. */
+function encourageThenAdvance(advanceFn){
+  let done = false;
+  const go = ()=>{ if(done) return; done = true; advanceFn(); };
+  sparkSay(pick(ENCOURAGE_LINES), 'encourage', {duration:2200, onComplete:()=>setTimeout(go, 400)});
+  setTimeout(go, 5000);
+}
 function prefersReducedMotion(){
   return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 }
@@ -1168,7 +1384,7 @@ const ALPHABET = [
   ['E','Elephant','🐘'],['F','Fish','🐟'],['G','Grapes','🍇'],['H','Hat','🧢'],
   ['I','Ice Cream','🍦'],['J','Juice','🧃'],['K','Kite','🪁'],['L','Lion','🦁'],
   ['M','Moon','🌙'],['N','Nest','🪹'],['O','Orange','🍊'],['P','Pen','🖊️'],
-  ['Q','Queen','👸'],['R','Rainbow','🌈'],['S','Sun','☀️'],['T','Tiger','🐯'],
+  ['Q','Queen','👸'],['R','Rocket','🚀'],['S','Sun','☀️'],['T','Tiger','🐯'],
   ['U','Umbrella','☂️'],['V','Violin','🎻'],['W','Watermelon','🍉'],
   ['X','Xylophone','🎹'],['Y','Yo-yo','🪀'],['Z','Zebra','🦓']
 ].map(([l,w,e])=>({letter:l, lower:l.toLowerCase(), word:w, emoji:e, id:'let_'+l}));
@@ -1189,15 +1405,27 @@ const WORDS = [
 ];
 
 const CATEGORIES = [
-  {key:'numbers', title:'Numbers', items:[['One','1️⃣'],['Two','2️⃣'],['Three','3️⃣'],['Four','4️⃣'],['Five','5️⃣'],['Six','6️⃣']]},
-  {key:'animals', title:'Animals', items:[['Dog','🐶'],['Cat','🐱'],['Lion','🦁'],['Elephant','🐘'],['Rabbit','🐰'],['Bear','🐻']]},
-  {key:'fruits', title:'Fruits', items:[['Apple','🍎'],['Banana','🍌'],['Orange','🍊'],['Grapes','🍇'],['Strawberry','🍓'],['Watermelon','🍉']]},
-  {key:'colors', title:'Colors', items:[['Red','🔴'],['Blue','🔵'],['Yellow','🟡'],['Green','🟢'],['Purple','🟣'],['Pink','🩷']]},
-  {key:'shapes', title:'Shapes', items:[['Circle','⭕'],['Square','🟦'],['Triangle','🔺'],['Star','⭐'],['Heart','❤️'],['Diamond','🔶']]},
-  {key:'family', title:'Family', items:[['Mom','👩'],['Dad','👨'],['Sister','👧'],['Brother','👦'],['Baby','👶'],['Grandma','👵']]},
-  {key:'body', title:'Body Parts', items:[['Head','😊'],['Eyes','👀'],['Nose','👃'],['Mouth','👄'],['Ears','👂'],['Hands','🤚']]},
-  {key:'feelings', title:'Feelings', items:[['Happy','😀'],['Sad','😢'],['Angry','😠'],['Scared','😨'],['Excited','🤩'],['Tired','😴']]},
-  {key:'school', title:'School Objects', items:[['Book','📖'],['Pencil','✏️'],['Bag','🎒'],['Scissors','✂️'],['Ruler','📏'],['Crayon','🖍️']]},
+  {key:'numbers', title:'Numbers', items:[['One','1️⃣'],['Two','2️⃣'],['Three','3️⃣'],['Four','4️⃣'],['Five','5️⃣'],['Six','6️⃣'],['Seven','7️⃣'],['Eight','8️⃣'],['Nine','9️⃣'],['Ten','🔟']]},
+  {key:'animals', title:'Animals', items:[['Dog','🐶'],['Cat','🐱'],['Lion','🦁'],['Elephant','🐘'],['Rabbit','🐰'],['Bear','🐻'],['Monkey','🐒'],['Horse','🐴'],['Duck','🦆'],['Tiger','🐯']]},
+  {key:'fruits', title:'Fruits', items:[['Apple','🍎'],['Banana','🍌'],['Orange','🍊'],['Grapes','🍇'],['Strawberry','🍓'],['Watermelon','🍉'],['Mango','🥭'],['Pineapple','🍍'],['Peach','🍑'],['Cherry','🍒']]},
+  {key:'colors', title:'Colors', items:[['Red','🔴'],['Blue','🔵'],['Yellow','🟡'],['Green','🟢'],['Purple','🟣'],['Pink','🩷'],['Orange','🟠'],['Black','⚫'],['White','⚪'],['Brown','🟤']]},
+  {key:'shapes', title:'Shapes', items:[['Circle','⭕'],['Square','🟦'],['Triangle','🔺'],['Star','⭐'],['Heart','❤️'],['Diamond','🔶'],['Oval','🥚'],['Cross','➕'],['Crescent','🌙'],['Arrow','➡️']]},
+  {key:'family', title:'Family', items:[['Mom','👩'],['Dad','👨'],['Sister','👧'],['Brother','👦'],['Baby','👶'],['Grandma','👵'],['Grandpa','👴'],['Uncle','🧔'],['Aunt','👩‍🦱'],['Cousin','🧒']]},
+  {key:'body', title:'Body Parts', items:[['Head','😊'],['Eyes','👀'],['Nose','👃'],['Mouth','👄'],['Ears','👂'],['Hands','🤚'],['Teeth','🦷'],['Tongue','👅'],['Feet','🦶'],['Arms','💪']]},
+  {key:'feelings', title:'Feelings', items:[['Happy','😀'],['Sad','😢'],['Angry','😠'],['Scared','😨'],['Excited','🤩'],['Tired','😴'],['Bored','🥱'],['Surprised','😲'],['Calm','😌'],['Shy','😳']]},
+  {key:'school', title:'School Objects', items:[['Book','📖'],['Pencil','✏️'],['Bag','🎒'],['Scissors','✂️'],['Ruler','📏'],['Crayon','🖍️'],['Notebook','📓'],['Chair','🪑'],['Marker','🖊️'],['Clock','🕐']]},
+  {key:'actions', title:'Actions', items:[['Eat','🍽️'],['Run','🏃'],['Jump','🤸'],['Sleep','😴'],['Play','🧸'],['Walk','🚶'],['Drink','🥤'],['Read','📖'],['Sit','🪑'],['Sing','🎤']]},
+  {key:'mercury', title:'Mercury: Home & Rooms', items:[['Door','🚪'],['Window','🪟'],['Sofa','🛋️'],['Bed','🛏️'],['Chair','🪑'],['Kitchen','🍳'],['Bathroom','🛁'],['Living Room','📺'],['Bedroom','🛌'],['Lamp','💡']]},
+  {key:'venus', title:'Venus: Weather', items:[['Sunny','☀️'],['Rainy','🌧️'],['Cloudy','☁️'],['Windy','💨'],['Hot','🔥'],['Cold','❄️'],['Snowy','🌨️'],['Stormy','⛈️'],['Foggy','🌫️'],['Icy','🧊']]},
+  {key:'earth', title:'Earth: Nature', items:[['Tree','🌳'],['Flower','🌸'],['Mountain','⛰️'],['River','🏞️'],['Sky','🌅'],['Ocean','🌊'],['Forest','🌲'],['Sun','☀️'],['Moon','🌙'],['Star','⭐']]},
+  {key:'mars', title:'Mars: Transportation', items:[['Car','🚗'],['Bus','🚌'],['Train','🚆'],['Plane','✈️'],['Bike','🚲'],['Boat','⛵'],['Truck','🚚'],['Helicopter','🚁'],['Rocket','🚀'],['Taxi','🚕']]},
+  {key:'jupiter', title:'Jupiter: Sports', items:[['Football','⚽'],['Basketball','🏀'],['Swimming','🏊'],['Running','🏃'],['Tennis','🎾'],['Cycling','🚴'],['Jump Rope','🪢'],['Volleyball','🏐'],['Skating','⛸️'],['Boxing','🥊']]},
+  {key:'saturn', title:'Saturn: Question Words', items:[['What','❓'],['Who','🙋'],['Where','📍'],['When','⏰'],['Why','🤔'],['How','🧭'],['How Many','🔢'],['How Much','💰']]},
+  {key:'uranus', title:'Uranus: Places', items:[['Park','🎡'],['Store','🏪'],['Hospital','<span style="color:#D9382C;font-weight:900;font-size:1.3em;">☾</span>'],['Library','📚'],['Zoo','🦒'],['Farm','🚜'],['Market','🛒'],['Bank','🏦'],['Bakery','🥖'],['Restaurant','🍽️']]},
+  {key:'neptune', title:'Neptune: Healthy Food', items:[['Carrot','🥕'],['Tomato','🍅'],['Potato','🥔'],['Bread','🍞'],['Rice','🍚'],['Egg','🥚'],['Cheese','🧀'],['Fish','🐟'],['Chicken','🍗'],['Salad','🥗']]},
+  {key:'pluto', title:'Pluto: Space', items:[['Astronaut','👨‍🚀'],['Alien','👽'],['Telescope','🔭'],['Comet','☄️'],['Galaxy','🌌'],['Spaceship','🛸'],['Star','⭐'],['Planet','🪐'],['Satellite','🛰️'],['Meteor','💫']]},
+  {key:'ocean', title:'Ocean Life', items:[['Fish','🐟'],['Shark','🦈'],['Whale','🐳'],['Octopus','🐙'],['Crab','🦀'],['Starfish','⭐'],['Dolphin','🐬'],['Turtle','🐢'],['Jellyfish','🪼'],['Ship','🚢']]},
+  {key:'opposites', title:'Opposites', items:[['Big','🐘'],['Small','🐜'],['Hot','🔥'],['Cold','🧊'],['Fast','🐆'],['Slow','🐢'],['Up','⬆️'],['Down','⬇️'],['Open','🔓'],['Closed','🔒']]},
 ];
 function findCat(key){ return CATEGORIES.find(c=>c.key===key); }
 
@@ -1206,6 +1434,7 @@ const MAP_WORLDS = [
   {key:'alphabet',  kind:'alphabet', title:'Alphabet Island', icon:ICONS.abcbadge, colors:['#3FD8C9','#1FA994'], tip:'Tap a letter to hear its sound, then trace it with your finger!'},
   {key:'words',     kind:'words',    title:'Word Island',     icon:ICONS.book,     colors:['#FFC65C','#F2971F'], tip:'Tap a word to hear it, then play the mini game!'},
   {key:'numbers',   kind:'category', catKey:'numbers', title:'Number Mountain', icon:ICONS.mountain, colors:['#5FC9F3','#2FA9E8']},
+  {key:'opposites', kind:'category', catKey:'opposites', title:'Opposites Hill', icon:ICONS.mountain, colors:['#FFB088','#4FA8E8']},
   {key:'animals',   kind:'category', catKey:'animals', title:'Animal Forest',   icon:ICONS.paw,      colors:['#FFB562','#F2913A']},
   {key:'fruits',    kind:'category', catKey:'fruits',  title:'Fruit Garden',    icon:ICONS.fruit,    colors:['#FF8FA3','#F0628C']},
   {key:'colors',    kind:'category', catKey:'colors',  title:'Color Village',   icon:ICONS.palette,  colors:['#A16AE8','#8347D6']},
@@ -1214,8 +1443,21 @@ const MAP_WORLDS = [
   {key:'body',      kind:'category', catKey:'body',    title:'Body Kingdom',    icon:ICONS.person,   colors:['#FF6F61','#E5493B']},
   {key:'feelings',  kind:'category', catKey:'feelings',title:'Feeling Meadow',  icon:ICONS.heart,    colors:['#FFA6E0','#D9469E']},
   {key:'school',    kind:'category', catKey:'school',  title:'School City',     icon:ICONS.pencil,   colors:['#B8E4FF','#4FA8E8']},
-  {key:'ocean',     kind:'soon', title:'Ocean Adventure',  icon:ICONS.wave},
-  {key:'space',     kind:'soon', title:'Space Explorer',   icon:ICONS.rocket},
+  {key:'actions',   kind:'category', catKey:'actions', title:'Action Valley',   icon:ICONS.dragicon, colors:['#D9FFA0','#8CC63F']},
+  {key:'ocean',     kind:'category', catKey:'ocean', title:'Ocean Adventure',   icon:ICONS.wave, colors:['#7EC8E8','#2F7FC7']},
+  {key:'season_summer', kind:'season', level:1, title:'Summer'},
+  {key:'season_autumn', kind:'season', level:2, title:'Autumn'},
+  {key:'season_winter', kind:'season', level:3, title:'Winter'},
+  {key:'season_spring', kind:'season', level:4, title:'Spring'},
+  {key:'mercury',   kind:'planet', catKey:'mercury', title:'Mercury',   colors:['#9AA3AB','#5E6A75']},
+  {key:'venus',     kind:'planet', catKey:'venus', title:'Venus',   colors:['#F2C879','#E58A1F']},
+  {key:'earth',     kind:'planet', catKey:'earth', title:'Earth',   colors:['#4FA8E8','#22A85E']},
+  {key:'mars',      kind:'planet', catKey:'mars', title:'Mars',   colors:['#E5764A','#B84A2E']},
+  {key:'jupiter',   kind:'planet', catKey:'jupiter', title:'Jupiter',   colors:['#E8C89A','#B8814A']},
+  {key:'saturn',    kind:'planet', catKey:'saturn', title:'Saturn',   colors:['#F0D9A0','#C9A968']},
+  {key:'uranus',    kind:'planet', catKey:'uranus', title:'Uranus',   colors:['#B8E8E0','#5AAFA0']},
+  {key:'neptune',   kind:'planet', catKey:'neptune', title:'Neptune',   colors:['#8FC4F5','#1F4A8C']},
+  {key:'pluto',     kind:'planet', catKey:'pluto', title:'Pluto',   colors:['#E8DDD0','#8C7864']},
 ];
 function catTip(title){ return 'Learn every word in '+title+', then try the Activities to earn your trophy!'; }
 
@@ -1301,7 +1543,7 @@ const LETTER_LESSON_DATA = {
     {en:'Onion',emoji:'🧅',sentence:'The onion makes me cry.'}]},
   P:{letter:'P',lower:'p',phonicsText:'Puh',vocab:[
     {en:'Pen',emoji:'🖊️',sentence:'I write with a pen.'},
-    {en:'Pig',emoji:'🐷',sentence:'The pig says oink.'},
+    {en:'Parrot',emoji:'🦜',sentence:'The parrot can talk.'},
     {en:'Pizza',emoji:'🍕',sentence:'I eat pizza for dinner.'},
     {en:'Panda',emoji:'🐼',sentence:'The panda eats bamboo.'}]},
   Q:{letter:'Q',lower:'q',phonicsText:'Kwuh',vocab:[
@@ -1310,7 +1552,7 @@ const LETTER_LESSON_DATA = {
     {en:'Quilt',emoji:'🧵',sentence:'I sleep under a warm quilt.'},
     {en:'Quiet',emoji:'🤫',sentence:'Please be quiet.'}]},
   R:{letter:'R',lower:'r',phonicsText:'Rrr',vocab:[
-    {en:'Rainbow',emoji:'🌈',sentence:'I see a colorful rainbow.'},
+    {en:'Rocket',emoji:'🚀',sentence:'The rocket flies to space.'},
     {en:'Rabbit',emoji:'🐰',sentence:'The rabbit hops fast.'},
     {en:'Ring',emoji:'💍',sentence:'She wears a pretty ring.'},
     {en:'Robot',emoji:'🤖',sentence:'The robot can talk.'}]},
@@ -1410,7 +1652,17 @@ const APP_VERSION = '1.0.0';
    entire system becomes inert for release.
    ============================================================ */
 let DEV_MODE = localStorage.getItem('wordsparkDevMode_v1') === '1';
+/* Extra deterrent layer, not real security — the PIN lives in this
+   client-side file like everything else, so a technically curious
+   adult could still find it via "view source". This is meant to keep
+   a curious child from stumbling into it, nothing more. */
+const DEV_PIN = '2026';
 function setDevMode(on){
+  if(on){
+    const entered = prompt('Enter developer PIN:');
+    if(entered === null) return;
+    if(entered !== DEV_PIN){ showToast('❌ Incorrect PIN'); return; }
+  }
   DEV_MODE = on;
   localStorage.setItem('wordsparkDevMode_v1', on ? '1' : '0');
   const btn = document.getElementById('devModeToggleBtn');
@@ -1421,20 +1673,6 @@ function setDevMode(on){
   if(typeof activeCat !== 'undefined' && activeCat) renderCatDetail();
   showToast(on ? '🔓 Developer Mode ON — everything unlocked' : 'Developer Mode OFF');
 }
-let _versionTapCount = 0, _versionTapTimer = null;
-function tapVersionLabel(){
-  clearTimeout(_versionTapTimer);
-  _versionTapCount++;
-  _versionTapTimer = setTimeout(()=>{ _versionTapCount = 0; }, 1500);
-  if(_versionTapCount >= 5){
-    _versionTapCount = 0;
-    const row = document.getElementById('devModeRow');
-    if(row){
-      row.classList.remove('hidden');
-      showToast('🛠️ Developer Mode available');
-    }
-  }
-}
 let STATE = loadState();
 function defaultState(){
   return {
@@ -1442,13 +1680,15 @@ function defaultState(){
     name:'', aura:'ember',
     stars:0, coins:0, xp:0, streak:0, lastActive:null,
     lettersDone:[], wordsDone:[],
-    catProgress:{}, catQuizPassed:[],
+    catProgress:{}, catQuizPassed:[], checkpoints:[],
     activities:{}, letterLessonsDone:[],
     badges:[], tipsSeen:[],
     settings:{ soundVolume:1, voiceSpeed:'normal', language:'en', showOpening:true },
     achievementsUnlocked:[], hadPerfectQuiz:false,
     lettersToday:{date:null, count:0},
-    timeSpentSeconds:0
+    timeSpentSeconds:0,
+    sentenceProgress:{},
+    mastery:{} // {word: {correct, wrong, lastSeen, lastResult}} — يُبنى عبر رحلات القياس فقط حالياً (المرحلة الأولى)
   };
 }
 function loadState(){
@@ -1589,7 +1829,6 @@ function init(){
       <span class="lbl">${a.label}</span>
     </button>`).join('');
 
-  document.getElementById('letterCloseBtn').innerHTML = ICONS.close;
   document.getElementById('wordCloseBtn').innerHTML = ICONS.close;
   document.getElementById('quizCloseBtn').innerHTML = ICONS.close;
   document.getElementById('matchCloseBtn').innerHTML = ICONS.close;
@@ -1597,14 +1836,12 @@ function init(){
   document.getElementById('certCloseBtn').innerHTML = ICONS.close;
   document.getElementById('lessonExitBtn').innerHTML = ICONS.close;
   document.getElementById('quizAudioBtn').innerHTML = ICONS.speaker;
-  document.querySelectorAll('#letterCloseBtn,#wordCloseBtn,#quizCloseBtn,#matchCloseBtn,#dragCloseBtn,#certCloseBtn,#lessonExitBtn').forEach(b=>b.setAttribute('aria-label','Close'));
+  document.querySelectorAll('#wordCloseBtn,#quizCloseBtn,#matchCloseBtn,#dragCloseBtn,#certCloseBtn,#lessonExitBtn').forEach(b=>b.setAttribute('aria-label','Close'));
   document.getElementById('quizAudioBtn').setAttribute('aria-label','Repeat audio');
   document.querySelectorAll('.subnav .icon-btn, .world-hero .hero-back').forEach(b=>{ b.innerHTML = ICONS.back; b.setAttribute('aria-label','Back'); });
 
   document.getElementById('versionLabel').textContent = APP_VERSION;
   if(DEV_MODE){
-    const row = document.getElementById('devModeRow');
-    if(row) row.classList.remove('hidden');
     const btn = document.getElementById('devModeToggleBtn');
     if(btn) btn.textContent = 'Developer Mode: ON';
   }
@@ -1965,7 +2202,27 @@ function checkParentGate(){
     openParentGate();
   }
 }
+function renderWeakWords(){
+  const el = document.getElementById('weakWordsList');
+  if(!el) return;
+  const weak = getWeakWords(6);
+  if(weak.length===0){
+    el.innerHTML = '<div class="sr-sub">Nothing flagged yet — take a Recap ride to start building this picture.</div>';
+    return;
+  }
+  el.innerHTML = weak.map(w=>{
+    const total = w.correct+w.wrong;
+    const pct = total>0 ? Math.round(w.correct/total*100) : 0;
+    return `<div style="display:flex;align-items:center;justify-content:space-between;background:#fff;border-radius:12px;padding:9px 12px;margin-bottom:6px;">
+      <span style="font-weight:700;font-size:13px;color:var(--ink);">${w.word}</span>
+      <span style="font-size:11px;font-weight:700;color:${pct<40?'#D9382C':'#E58A1F'};">${w.correct}/${total} correct</span>
+    </div>`;
+  }).join('');
+}
 function renderParentZone(){
+  renderCheckpointSummary();
+  renderWeeklyReportPreview();
+  renderWeakWords();
   document.getElementById('parentStats').innerHTML = [
     [ICONS.abcbadge, STATE.lettersDone.length+'/26', 'Letters'],
     [ICONS.book, STATE.wordsDone.length+'/12', 'Words'],
@@ -1991,6 +2248,42 @@ function renderParentZone(){
       <button class="btn3d gold" style="padding:8px 16px;font-size:13px;min-height:44px;" onclick="openLetterLesson('${letter}')">Replay</button>
     </div>`).join('') : '<div class="sr-sub">No lessons completed yet.</div>';
   applyLanguage(STATE.settings.language||'en');
+}
+/* التقرير الأسبوعي — نص جاهز من بيانات STATE الحقيقية فقط، لا أرقام
+   افتراضية. زر المشاركة يفتح واتساب مباشرة عبر رابط wa.me القياسي —
+   لا خادم خلفي، لا إرسال تلقائي (ذلك يحتاج بنية تحتية منفصلة لاحقاً). */
+function buildWeeklyReportText(){
+  const name = STATE.name || 'Your child';
+  const lettersCount = STATE.lettersDone.length;
+  const wordsCount = STATE.wordsDone.length;
+  const sentencesCount = Object.values(STATE.sentenceProgress||{}).reduce((sum,arr)=>sum+(arr?arr.length:0), 0);
+  const timeStr = formatTimeSpent(STATE.timeSpentSeconds);
+  const lastCheckpoints = ['car','plane','spaceship','boat'].map(type=>{
+    const found = [...STATE.checkpoints].reverse().find(c=>c.type===type);
+    return found ? {type, score:found.score, total:found.total} : null;
+  }).filter(Boolean);
+  const cpLabels = {car:'🚗 Islands', plane:'✈️ Sentences', spaceship:'🚀 Planets', boat:'⛵ Everything'};
+  let cpLines = lastCheckpoints.length
+    ? lastCheckpoints.map(c=>`  ${cpLabels[c.type]}: ${c.score}/${c.total}`).join('\n')
+    : '  No recap rides taken yet — try one from the Parent Dashboard!';
+  return `🌟 WordSpark Kids — Weekly Report\n\n`+
+    `${name}'s progress so far:\n`+
+    `  🔤 Letters learned: ${lettersCount}/26\n`+
+    `  📖 Words learned: ${wordsCount}\n`+
+    `  📝 Sentences built: ${sentencesCount}\n`+
+    `  ⏱️ Time learning: ${timeStr}\n\n`+
+    `Recap Adventure scores:\n${cpLines}\n\n`+
+    `Sent from WordSpark Kids 💚`;
+}
+function renderWeeklyReportPreview(){
+  const el = document.getElementById('weeklyReportPreview');
+  if(el) el.textContent = buildWeeklyReportText();
+}
+function shareWeeklyReport(){
+  const text = buildWeeklyReportText();
+  const url = 'https://wa.me/?text='+encodeURIComponent(text);
+  window.open(url, '_blank');
+  playPop();
 }
 function exportProgress(){
   try{
@@ -2054,13 +2347,51 @@ function renderHeader(){
 function worldProgress(node){
   if(node.kind==='alphabet') return {done:STATE.lettersDone.length, total:26, passed:STATE.badges.some(b=>b.id==='world_alphabet')};
   if(node.kind==='words') return {done:STATE.wordsDone.length, total:12, passed:STATE.badges.some(b=>b.id==='world_words')};
-  if(node.kind==='category'){
+  if(node.kind==='category' || node.kind==='planet'){
     const cat = findCat(node.catKey);
     const total = cat.items.length;
     const done = (STATE.catProgress[node.catKey]||[]).length;
     return {done, total, passed:STATE.catQuizPassed.includes(node.catKey)};
   }
+  if(node.kind==='season'){
+    const lv = node.level;
+    const total = SENTENCE_LEVELS[lv].length;
+    const done = (STATE.sentenceProgress[lv]||[]).length;
+    return {done, total, passed:done>=total};
+  }
+  if(node.kind==='sentence_gate'){
+    const totalLevels = 4;
+    let doneLevels = 0;
+    for(let lv=1; lv<=totalLevels; lv++){
+      if((STATE.sentenceProgress[lv]||[]).length >= SENTENCE_LEVELS[lv].length) doneLevels++;
+    }
+    return {done:doneLevels, total:totalLevels, passed:doneLevels>=totalLevels};
+  }
   return {done:0, total:0, passed:false};
+}
+/* شريط التنقّل السريع — يطفو فوق الطريق المتعرّج الأصلي دون أن يستبدله.
+   المجموعات السبع مبنية على الترتيب الفعلي في MAP_WORLDS، لا افتراضاً. */
+const ISLAND_QUICKNAV_GROUPS = [
+  {label:'Start', firstKey:'alphabet'},
+  {label:'Numbers', firstKey:'numbers'},
+  {label:'Animals', firstKey:'animals'},
+  {label:'Colors', firstKey:'colors'},
+  {label:'Family', firstKey:'family'},
+  {label:'Feelings', firstKey:'feelings'},
+  {label:'Actions', firstKey:'actions'},
+];
+function renderIslandQuickNav(){
+  const el = document.getElementById('islandQuickNav');
+  if(!el || el.dataset.built) return;
+  el.dataset.built = '1';
+  el.innerHTML = ISLAND_QUICKNAV_GROUPS.map((g,i)=>
+    `<button class="qn-btn ${i===0?'current':''}" onclick="scrollToWorldKey('${g.firstKey}', this)">${g.label}</button>`
+  ).join('');
+}
+function scrollToWorldKey(key, btn){
+  document.querySelectorAll('.qn-btn').forEach(b=>b.classList.toggle('current', b===btn));
+  const target = document.getElementById('world-'+key);
+  if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
 }
 function isWorldUnlocked(i){
   if(i===0) return true;
@@ -2070,6 +2401,7 @@ function isWorldUnlocked(i){
   const prev = MAP_WORLDS[i-1];
   if(prev.kind==='soon') return false;
   const p = worldProgress(prev);
+  if(node.kind==='planet' || node.kind==='season') return p.total>0 && p.done>=p.total;
   return p.total>0 && (p.done/p.total) >= 0.5;
 }
 function currentActiveWorldIndex(){
@@ -2104,8 +2436,10 @@ const WORLD_BG = {
   alphabet:['#8FE3D9','#2FB39E'], words:['#FFE3A0','#F2A93C'], numbers:['#BFE3FF','#4FA8E8'],
   animals:['#FFD9A0','#F2913A'], fruits:['#FFD3E0','#F0628C'], colors:['#E4CBFF','#8347D6'],
   shapes:['#BFF2D9','#22A85E'], family:['#FFE9A8','#F2A900'], body:['#FFC3B8','#E5493B'],
-  feelings:['#FFD1EA','#D9469E'], school:['#CDE9FF','#4FA8E8'], ocean:['#B8E4F0','#3FA8C7'],
-  space:['#8A7DD1','#4A3E80'],
+  feelings:['#FFD1EA','#D9469E'], school:['#CDE9FF','#4FA8E8'], ocean:['#B8E4F0','#3FA8C7'], opposites:['#FFB088','#4FA8E8'],
+  space:['#8A7DD1','#4A3E80'], actions:['#D9FFA0','#8CC63F'], mercury:['#B8BEC7','#6B7480'], venus:['#FFDA8A','#E5942E'],
+  earth:['#7EC8E8','#3FA8C7'], mars:['#F0A87A','#D9603A'], jupiter:['#F0D9A8','#C9955A'], saturn:['#F0D9A0','#C9A968'], uranus:['#C9EFE8','#7ECAC0'],
+  neptune:['#A8D4F5','#3F7FD9'], pluto:['#E8DDD0','#B0A08C'],
 };
 /* MASTER TEMPLATE (locked, derived from the approved Alphabet Island — apply to every remaining island):
    - One rounded-lobe tree/hero shape, moderately sized as the dominant element
@@ -2148,6 +2482,123 @@ function islandBadgeIconSVG(iconSvg){
 function islandFlowersSVG(){
   return `<circle cx="23" cy="83" r="2.8" fill="#FFD166"/><circle cx="20" cy="72" r="2.6" fill="#E5493B"/>`;
 }
+/* Shared planet-rendering system for the Solar System stage. Craters
+   must stay ≥ ~20 units from the badge center (50,52) — verified with
+   the same distance-check that caught the island badge-overlap bug.
+   Adding a new planet is one entry here, not new markup in renderMap(). */
+function planetBodySVG(uid, bodyColors, craters, badgeInner, glowColor){
+  const skyId = 'plSky'+uid, bodyId = 'plBody'+uid;
+  return `<defs>
+      <radialGradient id="${skyId}" cx="50%" cy="50%" r="55%"><stop offset="0%" stop-color="#241A45"/><stop offset="100%" stop-color="#0D0A1F"/></radialGradient>
+      <radialGradient id="${bodyId}" cx="34%" cy="30%" r="75%"><stop offset="0%" stop-color="${bodyColors[0]}"/><stop offset="55%" stop-color="${bodyColors[1]}"/><stop offset="100%" stop-color="${bodyColors[2]}"/></radialGradient>
+    </defs>
+    <circle cx="50" cy="50" r="50" fill="url(#${skyId})"/>
+    <circle cx="20" cy="18" r="1.1" fill="#fff" opacity=".8"/><circle cx="82" cy="26" r="1" fill="#fff" opacity=".7"/>
+    <circle cx="14" cy="70" r="1" fill="#fff" opacity=".7"/><circle cx="86" cy="76" r="1.1" fill="#fff" opacity=".8"/>
+    <circle cx="50" cy="52" r="42" fill="${glowColor}" opacity=".25"/>
+    <circle cx="50" cy="52" r="35" fill="url(#${bodyId})"/>
+    ${craters.map(c=>`<ellipse cx="${c[0]}" cy="${c[1]}" rx="${c[2]}" ry="${c[3]}" fill="${c[4]||'#6E7883'}" opacity="${c[5]!=null?c[5]:.55}"/>`).join('')}
+    <ellipse cx="30" cy="30" rx="9" ry="5" fill="#fff" opacity=".12"/>
+    ${islandBadgeIconSVG(badgeInner)}`;
+}
+const PLANET_ICONS = {
+  summer: (uid)=>`<defs>
+      <radialGradient id="seSky${uid}" cx="50%" cy="35%" r="70%"><stop offset="0%" stop-color="#7EC8E8"/><stop offset="100%" stop-color="#3FA8C7"/></radialGradient>
+      <radialGradient id="seSun${uid}" cx="35%" cy="30%" r="80%"><stop offset="0%" stop-color="#FFF3C2"/><stop offset="100%" stop-color="#FF9A3D"/></radialGradient>
+    </defs>
+    <circle cx="50" cy="50" r="50" fill="url(#seSky${uid})"/>
+    <path d="M50,4 L53,12 L47,12 Z M50,96 L47,88 L53,88 Z M4,50 L12,47 L12,53 Z M96,50 L88,53 L88,47 Z
+      M18,18 L25,22 L22,25 Z M82,18 L78,25 L75,22 Z M18,82 L22,75 L25,78 Z M82,82 L75,78 L78,75 Z"
+      fill="#FFE9A8" opacity=".85"/>
+    <circle cx="50" cy="26" r="16" fill="url(#seSun${uid})"/>
+    <circle cx="44" cy="23" r="2" fill="#7A4A0A"/><circle cx="56" cy="23" r="2" fill="#7A4A0A"/>
+    <path d="M43,31 Q50,36 57,31" stroke="#7A4A0A" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+    ${islandBadgeIconSVG('<circle cx="50" cy="58" r="10" fill="#fff"/><path d="M46,58 L49,61 L55,54" stroke="#3FA8C7" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>')}`,
+  autumn: (uid)=>`<defs>
+      <radialGradient id="auSky${uid}" cx="50%" cy="35%" r="70%"><stop offset="0%" stop-color="#F2C879"/><stop offset="100%" stop-color="#D9803C"/></radialGradient>
+      <linearGradient id="auTrunk${uid}" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#9C6B42"/><stop offset="100%" stop-color="#5E3A1E"/></linearGradient>
+      <radialGradient id="auLeaf${uid}" cx="35%" cy="28%" r="80%"><stop offset="0%" stop-color="#FFC97A"/><stop offset="100%" stop-color="#D9382C"/></radialGradient>
+    </defs>
+    <circle cx="50" cy="50" r="50" fill="url(#auSky${uid})"/>
+    <rect x="46" y="40" width="8" height="20" rx="3" fill="url(#auTrunk${uid})"/>
+    <circle cx="50" cy="24" r="17" fill="url(#auLeaf${uid})"/>
+    <circle cx="34" cy="30" r="9" fill="url(#auLeaf${uid})"/><circle cx="66" cy="30" r="9" fill="url(#auLeaf${uid})"/>
+    <path d="M28,66 Q24,72 29,76" stroke="#E58A1F" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M72,70 Q77,75 71,80" stroke="#D9382C" stroke-width="2" fill="none" stroke-linecap="round"/>
+    ${islandBadgeIconSVG('<path d="M50,52 C46,52 44,55 44,58 C44,62 50,67 50,67 C50,67 56,62 56,58 C56,55 54,52 50,52 Z" fill="#fff"/>')}`,
+  winter: (uid)=>`<defs>
+      <radialGradient id="wiSky${uid}" cx="50%" cy="35%" r="70%"><stop offset="0%" stop-color="#EAF7FF"/><stop offset="100%" stop-color="#5A9BC7"/></radialGradient>
+    </defs>
+    <circle cx="50" cy="50" r="50" fill="url(#wiSky${uid})"/>
+    <circle cx="50" cy="36" r="14" fill="#fff"/>
+    <circle cx="45" cy="33" r="1.8" fill="#241A45"/><circle cx="55" cy="33" r="1.8" fill="#241A45"/>
+    <path d="M50,36 L54,38" stroke="#F2971F" stroke-width="1.6" stroke-linecap="round"/>
+    <path d="M42,41 Q50,45 58,41" stroke="#241A45" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+    <ellipse cx="50" cy="26" rx="9" ry="3.4" fill="#5A9BC7" opacity=".85"/>
+    <path d="M28,18 L29.6,22 L28,26 L26.4,22 Z" fill="#fff" opacity=".9"/>
+    <path d="M74,20 L75.4,23.5 L74,27 L72.6,23.5 Z" fill="#fff" opacity=".8"/>
+    ${islandBadgeIconSVG('<path d="M50,50 L50,66 M50,50 L45,54 M50,50 L55,54 M50,58 L45,62 M50,58 L55,62" stroke="#fff" stroke-width="2" stroke-linecap="round"/>')}`,
+  spring: (uid)=>`<defs>
+      <radialGradient id="spSky${uid}" cx="50%" cy="35%" r="70%"><stop offset="0%" stop-color="#E4FFC2"/><stop offset="100%" stop-color="#5FB84A"/></radialGradient>
+      <radialGradient id="spPetal${uid}" cx="35%" cy="28%" r="80%"><stop offset="0%" stop-color="#FFD6EC"/><stop offset="100%" stop-color="#E85CA8"/></radialGradient>
+    </defs>
+    <circle cx="50" cy="50" r="50" fill="url(#spSky${uid})"/>
+    <circle cx="50" cy="14" r="8" fill="url(#spPetal${uid})"/><circle cx="66" cy="25" r="8" fill="url(#spPetal${uid})"/>
+    <circle cx="34" cy="25" r="8" fill="url(#spPetal${uid})"/><circle cx="60" cy="38" r="8" fill="url(#spPetal${uid})"/>
+    <circle cx="40" cy="38" r="8" fill="url(#spPetal${uid})"/>
+    <circle cx="50" cy="26" r="9" fill="#FFE9A8"/>
+    <path d="M18,58 Q22,50 28,56 Q22,60 18,58 Z" fill="#fff" opacity=".9"/>
+    <path d="M82,62 Q78,54 72,60 Q78,64 82,62 Z" fill="#fff" opacity=".85"/>
+    ${islandBadgeIconSVG('<path d="M42,58 Q50,50 58,58 Q54,62 50,58 Q46,62 42,58 Z" fill="#fff"/>')}`,
+  mercury: (uid, glowT)=>planetBodySVG(uid, ['#DCE1E6','#9AA3AB','#565F6A'],
+    [[30,34,6,4.5],[70,38,7,5],[35,72,5,3.5]],
+    '<path d="M42,54 L42,44 L50,37 L58,44 L58,54 Z" fill="#fff"/><rect x="47" y="47" width="6" height="7" fill="#F2971F"/>',
+    glowT),
+  venus: (uid, glowT)=>planetBodySVG(uid, ['#FFE9B0','#F2A93C','#C9700F'],
+    [[30,38,7,3.5,'#FFD98A',.6],[70,38,7,3.5,'#FFD98A',.6],[32,70,7,3.5,'#FFD98A',.55]],
+    '<circle cx="50" cy="58" r="5.5" fill="#fff"/><path d="M50,47 L50,50 M50,66 L50,69 M39,58 L42,58 M58,58 L61,58 M42.5,50.5 L44.5,52.5 M55.5,63.5 L57.5,65.5 M42.5,65.5 L44.5,63.5 M55.5,52.5 L57.5,50.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>',
+    glowT),
+  earth: (uid, glowT)=>planetBodySVG(uid, ['#BFEFFF','#4FA8E8','#1F6FA8'],
+    [[30,38,7,4.5,'#3FCB7E',.85],[70,38,6.5,4,'#3FCB7E',.8],[32,70,6.5,4,'#fff',.55]],
+    '<path d="M50,44 C42,44 38,50 38,56 C38,62 44,66 50,66 C56,66 62,62 62,56 C62,50 58,44 50,44 Z" fill="none" stroke="#fff" stroke-width="1.6" opacity=".55"/><circle cx="50" cy="55" r="3" fill="#fff"/>',
+    glowT),
+  mars: (uid, glowT)=>planetBodySVG(uid, ['#FFC9A0','#E5764A','#9C3E1F'],
+    [[30,38,7,3,'#9C3E1F',.55],[70,38,7,3,'#9C3E1F',.5],[32,70,7,3,'#9C3E1F',.5]],
+    '<path d="M50,48 C53,51 55,57 55,62 L45,62 C45,57 47,51 50,48 Z" fill="#fff"/><circle cx="50" cy="55" r="1.8" fill="#E5764A"/><path d="M45,62 L42,66 L46,65 Z" fill="#fff" opacity=".85"/><path d="M55,62 L58,66 L54,65 Z" fill="#fff" opacity=".85"/><rect x="48" y="62" width="4" height="4" fill="#FFD166"/>',
+    glowT),
+  jupiter: (uid, glowT)=>planetBodySVG(uid, ['#FFEBC2','#E8C89A','#A8703A'],
+    [[50,28,15,4,'#B8814A',.5],[50,76,15,4,'#B8814A',.5],[70,40,6,4.5,'#C0503A',.75]],
+    '<circle cx="50" cy="58" r="9" fill="#fff"/><path d="M50,49 L54,52 L52,57 L48,57 L46,52 Z" fill="#B8814A"/><path d="M44,58 L46,62 M56,58 L54,62 M50,67 L50,63" stroke="#B8814A" stroke-width="1.3" stroke-linecap="round"/>',
+    glowT),
+  saturn: (uid, glowT)=>{
+    const skyId = 'plSky'+uid, bodyId = 'plBody'+uid;
+    return `<defs>
+      <radialGradient id="${skyId}" cx="50%" cy="50%" r="55%"><stop offset="0%" stop-color="#241A45"/><stop offset="100%" stop-color="#0D0A1F"/></radialGradient>
+      <radialGradient id="${bodyId}" cx="34%" cy="30%" r="75%"><stop offset="0%" stop-color="#FFF3D2"/><stop offset="55%" stop-color="#F0D9A0"/><stop offset="100%" stop-color="#C9A968"/></radialGradient>
+    </defs>
+    <circle cx="50" cy="50" r="50" fill="url(#${skyId})"/>
+    <circle cx="20" cy="18" r="1.1" fill="#fff" opacity=".8"/><circle cx="82" cy="26" r="1" fill="#fff" opacity=".7"/>
+    <circle cx="14" cy="70" r="1" fill="#fff" opacity=".7"/><circle cx="86" cy="76" r="1.1" fill="#fff" opacity=".8"/>
+    <circle cx="50" cy="52" r="42" fill="${glowT}" opacity=".25"/>
+    <ellipse cx="50" cy="52" rx="48" ry="11" fill="none" stroke="#E8D2A0" stroke-width="5" opacity=".9" transform="rotate(-16 50 52)"/>
+    <ellipse cx="50" cy="52" rx="48" ry="11" fill="none" stroke="#B89860" stroke-width="1.5" opacity=".5" transform="rotate(-16 50 52)"/>
+    <circle cx="50" cy="52" r="35" fill="url(#${bodyId})"/>
+    <ellipse cx="38" cy="42" rx="9" ry="5" fill="#fff" opacity=".12"/>
+    ${islandBadgeIconSVG('<path d="M42,50 L58,50 M42,55 L58,55 M42,60 L58,60" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>')}`;
+  },
+  uranus: (uid, glowT)=>planetBodySVG(uid, ['#EAFBF8','#B8E8E0','#5AAFA0'],
+    [[50,28,15,3,'#7ECAC0',.45],[50,76,15,3,'#7ECAC0',.45],[30,58,4,16,'#fff',.3]],
+    '<path d="M50,44 C44,44 40,48 40,53 C40,59 50,68 50,68 C50,68 60,59 60,53 C60,48 56,44 50,44 Z" fill="#fff"/><circle cx="50" cy="53" r="4" fill="#5AAFA0"/>',
+    glowT),
+  neptune: (uid, glowT)=>planetBodySVG(uid, ['#BFE0FF','#4F8FE0','#1F4A8C'],
+    [[30,38,7,3,'#1F4A8C',.4],[70,40,6,4.5,'#12315C',.75],[32,70,7,3,'#1F4A8C',.35]],
+    '<path d="M42,52 L42,44 L50,37 L58,44 L58,52 Z" fill="#fff"/><rect x="47" y="47" width="6" height="7" fill="#4F8FE0"/>',
+    glowT),
+  pluto: (uid, glowT)=>planetBodySVG(uid, ['#F5EEE4','#E8DDD0','#8C7864'],
+    [[70,38,6,4.5,'#B0A08C',.5],[32,70,6,3,'#B0A08C',.45]],
+    '<path d="M50,64 C50,64 42,58 42,52 C42,49 44,47 47,47 C48.5,47 50,48 50,50 C50,48 51.5,47 53,47 C56,47 58,49 58,52 C58,58 50,64 50,64 Z" fill="#fff"/>',
+    glowT),
+};
 const WORLD_ICONS = {
   alphabet:()=>`<defs>
       <linearGradient id="aTrunk" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#9C6B42"/><stop offset="55%" stop-color="#7A4B2C"/><stop offset="100%" stop-color="#5E3A1E"/></linearGradient>
@@ -2186,7 +2637,7 @@ const WORLD_ICONS = {
     ${islandBaseSVG()}
     <path d="M12,58 L38,20 L52,38 L64,16 L88,58 Z" fill="url(#nRock)"/>
     <path d="M32,28 L38,20 L44,28 Z" fill="#fff" opacity=".92"/><path d="M58,24 L64,16 L70,24 Z" fill="#fff" opacity=".92"/>
-    <path d="M44,50 L50,42 L56,50 L50,60 Z" fill="url(#nCrystal)" opacity=".95"/>
+    <path d="M44,32 L50,24 L56,32 L50,42 Z" fill="url(#nCrystal)" opacity=".95"/>
     ${islandBadgeSVG('5')}
     <rect x="60" y="82" width="6.5" height="7" rx="1.4" fill="#4FA8E8"/><text x="63.2" y="87.5" font-family="Baloo 2" font-weight="700" font-size="5" fill="#fff" text-anchor="middle">1</text>
     <rect x="68" y="82" width="6.5" height="7" rx="1.4" fill="#E5493B"/><text x="71.2" y="87.5" font-family="Baloo 2" font-weight="700" font-size="5" fill="#fff" text-anchor="middle">2</text>
@@ -2198,16 +2649,15 @@ const WORLD_ICONS = {
     </defs>
     ${islandBaseSVG()}
     <g fill="url(#anMane)">
-      <path d="M50,14 L57,30 L43,30 Z"/><path d="M76,24 L73,40 L61,31 Z"/>
-      <path d="M87,48 L71,51 L76,37 Z"/><path d="M82,74 L66,65 L77,58 Z"/>
-      <path d="M60,87 L52,71 L66,73 Z"/><path d="M38,87 L46,71 L34,74 Z"/>
-      <path d="M16,72 L30,61 L23,76 Z"/><path d="M13,46 L29,49 L20,35 Z"/>
-      <path d="M22,22 L34,33 L18,31 Z"/>
+      <path d="M50,4 L56,16 L44,16 Z"/><path d="M70,10 L68,22 L58,17 Z"/>
+      <path d="M78,28 L66,30 L70,20 Z"/><path d="M74,44 L62,38 L70,34 Z"/>
+      <path d="M50,50 L44,40 L56,40 Z"/><path d="M26,44 L32,34 L38,38 Z"/>
+      <path d="M22,28 L34,30 L30,20 Z"/><path d="M30,10 L32,22 L42,17 Z"/>
     </g>
-    <circle cx="50" cy="51" r="21" fill="url(#anFace)"/>
-    <circle cx="42" cy="47" r="2.6" fill="#241A45"/><circle cx="58" cy="47" r="2.6" fill="#241A45"/>
-    <ellipse cx="50" cy="53" rx="3.4" ry="2.4" fill="#E5493B"/>
-    <path d="M45,58 Q50,62 55,58" stroke="#241A45" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <circle cx="50" cy="28" r="15" fill="url(#anFace)"/>
+    <circle cx="45" cy="25" r="2" fill="#241A45"/><circle cx="55" cy="25" r="2" fill="#241A45"/>
+    <ellipse cx="50" cy="29" rx="2.6" ry="1.8" fill="#E5493B"/>
+    <path d="M46,33 Q50,36 54,33" stroke="#241A45" stroke-width="1.6" fill="none" stroke-linecap="round"/>
     ${islandBadgeIconSVG('<circle cx="44" cy="53" r="2.2" fill="#fff"/><circle cx="50" cy="51" r="2.2" fill="#fff"/><circle cx="56" cy="53" r="2.2" fill="#fff"/><ellipse cx="50" cy="61" rx="5" ry="3.6" fill="#fff"/>')}
     <path d="M62,83 Q68,79 74,83 L74,90 Q68,86 62,90 Z" fill="#fff"/>
     <line x1="68" y1="81.5" x2="68" y2="89.5" stroke="#E8B84B" stroke-width="1.2"/>
@@ -2220,11 +2670,11 @@ const WORLD_ICONS = {
       <radialGradient id="frGrape" cx="32%" cy="26%" r="80%"><stop offset="0%" stop-color="#C79BFF"/><stop offset="100%" stop-color="#6E3FB0"/></radialGradient>
     </defs>
     ${islandBaseSVG()}
-    <rect x="46" y="56" width="8" height="22" rx="3" fill="url(#frTrunk)"/>
-    <circle cx="50" cy="36" r="22" fill="url(#frLeaf)"/>
-    <ellipse cx="40" cy="21" rx="9" ry="5" fill="#fff" opacity=".2"/>
-    <circle cx="35" cy="42" r="8" fill="url(#frApple)"/><circle cx="65" cy="38" r="7" fill="url(#frOrange)"/>
-    <circle cx="51" cy="56" r="7" fill="url(#frGrape)"/>
+    <rect x="46" y="34" width="8" height="44" rx="3" fill="url(#frTrunk)"/>
+    <circle cx="50" cy="18" r="16" fill="url(#frLeaf)"/>
+    <ellipse cx="43" cy="10" rx="6.5" ry="3.6" fill="#fff" opacity=".2"/>
+    <circle cx="37" cy="22" r="6" fill="url(#frApple)"/><circle cx="63" cy="19" r="5.2" fill="url(#frOrange)"/>
+    <circle cx="51" cy="34" r="5.2" fill="url(#frGrape)"/>
     ${islandBadgeIconSVG('<circle cx="50" cy="61" r="6" fill="#fff"/><path d="M50,55 Q52,51 55,52" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round"/>')}
     <rect x="60" y="83" width="7" height="7" rx="1.5" fill="#D9382C"/><rect x="68.5" y="83" width="7" height="7" rx="1.5" fill="#E58A1F"/><rect x="77" y="83" width="7" height="7" rx="1.5" fill="#6E3FB0"/>
     ${islandFlowersSVG()}`,
@@ -2308,10 +2758,42 @@ const WORLD_ICONS = {
     ${islandBadgeIconSVG('<path d="M46,64 L48,55 L54,57 L52,66 Z" fill="#fff"/><path d="M48,55 L50,50 L54,57 Z" fill="#fff"/>')}
     <rect x="60" y="83" width="7" height="7" rx="1.5" fill="#4FA8E8"/><rect x="68.5" y="83" width="7" height="7" rx="1.5" fill="#E5493B"/><rect x="77" y="83" width="7" height="7" rx="1.5" fill="#8347D6"/>
     ${islandFlowersSVG()}`,
-  ocean:()=>`<path d="M14,54 Q14,32 44,32 Q76,32 84,48 Q89,55 80,57 L71,55 Q60,66 38,64 Q16,62 14,54 Z" fill="#4FA8E8"/>
-    <path d="M42,32 Q42,16 48,8 M48,8 Q53,17 52,26" stroke="#7CF0DF" stroke-width="3" fill="none" stroke-linecap="round"/>
-    <circle cx="30" cy="48" r="2.4" fill="#241A45"/>
-    <path d="M22,54 Q28,58 34,54" stroke="#241A45" stroke-width="2" fill="none" stroke-linecap="round"/>`,
+  actions:()=>`<defs>
+      <radialGradient id="acFace" cx="35%" cy="28%" r="78%"><stop offset="0%" stop-color="#FFE8BC"/><stop offset="100%" stop-color="#F2C879"/></radialGradient>
+      <linearGradient id="acShirt" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#6BC3FF"/><stop offset="100%" stop-color="#2F7FC7"/></linearGradient>
+    </defs>
+    ${islandBaseSVG()}
+    <path d="M32,80 L42,42 L50,50 L58,42 L68,80" stroke="url(#acShirt)" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="50" cy="28" r="12" fill="url(#acFace)"/>
+    <circle cx="46" cy="26" r="1.7" fill="#241A45"/><circle cx="54" cy="26" r="1.7" fill="#241A45"/>
+    <path d="M46,32 Q50,35 54,32" stroke="#241A45" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <circle cx="75" cy="76" r="6" fill="#F2971F"/>
+    ${islandBadgeIconSVG('<path d="M46,50 L54,58 L46,66 Z" fill="#fff"/>')}
+    ${islandFlowersSVG()}`,
+  ocean:()=>`<defs>
+      <radialGradient id="ocBody" cx="35%" cy="28%" r="78%"><stop offset="0%" stop-color="#7EC8E8"/><stop offset="100%" stop-color="#2F7FC7"/></radialGradient>
+    </defs>
+    ${islandBaseSVG()}
+    <ellipse cx="48" cy="32" rx="23" ry="15" fill="url(#ocBody)"/>
+    <path d="M68,28 Q77,23 74,36 Q70,32 68,28 Z" fill="url(#ocBody)"/>
+    <circle cx="40" cy="28" r="2.2" fill="#241A45"/>
+    <path d="M35,36 Q40,39 45,36" stroke="#1F6FA8" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+    <path d="M48,16 L48,10 M45,12 L45,8 M51,12 L51,8" stroke="#BFEFFF" stroke-width="2" stroke-linecap="round" opacity=".75"/>
+    ${islandBadgeIconSVG('<path d="M42,58 Q50,50 58,58 Q54,62 50,58 Q46,62 42,58 Z" fill="#fff"/><circle cx="50" cy="56" r="1.3" fill="#3FA8C7"/>')}
+    <ellipse cx="70" cy="83" rx="6" ry="3.5" fill="#F2A93C" opacity=".9"/>
+    ${islandFlowersSVG()}`,
+  opposites:()=>`<defs>
+      <linearGradient id="opBeam" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#F2A93C"/><stop offset="100%" stop-color="#D9382C"/></linearGradient>
+      <radialGradient id="opBig" cx="32%" cy="26%" r="80%"><stop offset="0%" stop-color="#8FE3D9"/><stop offset="100%" stop-color="#2FB39E"/></radialGradient>
+      <radialGradient id="opSmall" cx="32%" cy="26%" r="80%"><stop offset="0%" stop-color="#FFE3A0"/><stop offset="100%" stop-color="#F2A93C"/></radialGradient>
+    </defs>
+    ${islandBaseSVG()}
+    <path d="M50,58 L38,80 L62,80 Z" fill="#8B5E2E"/>
+    <rect x="14" y="29" width="72" height="6" rx="3" fill="url(#opBeam)" transform="rotate(-12 50 32)"/>
+    <circle cx="22" cy="32" r="11" fill="url(#opBig)"/>
+    <circle cx="78" cy="25" r="6" fill="url(#opSmall)"/>
+    ${islandBadgeSVG('↕', 22)}
+    ${islandFlowersSVG()}`,
   space:()=>`<circle cx="68" cy="62" r="15" fill="#8347D6"/>
     <ellipse cx="68" cy="62" rx="23" ry="6" fill="none" stroke="#C79BFF" stroke-width="2.6"/>
     <path d="M28,74 Q28,32 40,18 Q52,32 52,74 Z" fill="#fff"/>
@@ -2363,7 +2845,75 @@ function worldSceneSVG(key, pct, locked){
   </svg>`;
 }
 
+/* لافتات الأقسام (بداية ونهاية) + الزخارف الجانبية المحيطية — كلها
+   عناصر DOM مُدرَجة بعد الرسم مباشرة، منفصلة كلياً عن MAP_WORLDS
+   وفهرستها الرقمية. لا تُغيّر ترتيب العوالم ولا منطق الفتح إطلاقاً. */
+const SECTION_BANNERS = [
+  {beforeKey:'alphabet',      cls:'sb-islands', icon:'🏝️', title:'Islands',         sub:'Learn a new word at every stop'},
+  {beforeKey:'season_summer', cls:'sb-seasons', icon:'🍂', title:'Sentence Seasons', sub:'Turn your words into real sentences'},
+  {beforeKey:'mercury',       cls:'sb-planets', icon:'🚀', title:'Solar System',     sub:'Explore every planet you\'ve earned'},
+];
+const SECTION_END_BANNERS = [
+  {afterKey:'ocean',         cls:'sb-islands', icon:'⛵', title:'End of Islands',         sub:'On to building real sentences'},
+  {afterKey:'season_spring', cls:'sb-seasons', icon:'🌈', title:'End of Seasons',         sub:'On to the Solar System'},
+  {afterKey:'pluto',         cls:'sb-planets', icon:'🌌', title:'End of Solar System',    sub:'More worlds coming soon'},
+];
+function insertSectionBanners(){
+  SECTION_BANNERS.forEach(s=>{
+    const anchor = document.getElementById('world-'+s.beforeKey);
+    const row = anchor && anchor.closest('.map-row');
+    if(!row) return;
+    const banner = document.createElement('div');
+    banner.className = 'section-banner '+s.cls;
+    banner.innerHTML = `<span class="sb-icon">${s.icon}</span><div class="sb-text"><div class="sb-title">${s.title}</div><div class="sb-sub">${s.sub}</div></div>`;
+    row.parentNode.insertBefore(banner, row);
+  });
+  SECTION_END_BANNERS.forEach(s=>{
+    const anchor = document.getElementById('world-'+s.afterKey);
+    const row = anchor && anchor.closest('.map-row');
+    if(!row) return;
+    const banner = document.createElement('div');
+    banner.className = 'section-banner section-banner-end '+s.cls;
+    banner.innerHTML = `<span class="sb-icon">${s.icon}</span><div class="sb-text"><div class="sb-title">${s.title}</div><div class="sb-sub">${s.sub}</div></div>`;
+    row.parentNode.insertBefore(banner, row.nextSibling);
+  });
+}
+/* زخارف جانبية محيطية — بحر حول الجزر، طقس حول الفصول، فضاء حول الكواكب.
+   تُلحَق بجانب كل صف فارغ (عكس جهة الدائرة) فلا تتداخل معها إطلاقاً. */
+const SECTION_AMBIENT_RANGES = [
+  {name:'islands', startKey:'alphabet', endKey:'ocean', emojis:['🌊','🐚','🐬','🦀','🐠']},
+  {name:'seasons', startKey:'season_summer', endKey:'season_spring', emojis:['☀️','🌧️','❄️','🍂']},
+  {name:'planets', startKey:'mercury', endKey:'pluto', emojis:['⭐','☄️','✨','🛰️']},
+];
+function insertAmbientDecorations(){
+  const container = document.getElementById('mapNodes');
+  if(!container) return;
+  const rows = Array.from(container.children).filter(c=>c.classList.contains('map-row'));
+  SECTION_AMBIENT_RANGES.forEach(range=>{
+    const startAnchor = document.getElementById('world-'+range.startKey);
+    const endAnchor = document.getElementById('world-'+range.endKey);
+    const startRow = startAnchor && startAnchor.closest('.map-row');
+    const endRow = endAnchor && endAnchor.closest('.map-row');
+    const startIdx = rows.indexOf(startRow), endIdx = rows.indexOf(endRow);
+    if(startIdx<0 || endIdx<0) return;
+    for(let idx=startIdx; idx<=endIdx; idx++){
+      const row = rows[idx];
+      const emoji = range.emojis[idx % range.emojis.length];
+      let side = 'right';
+      if(row.classList.contains('left')) side = 'right';
+      else if(row.classList.contains('right')) side = 'left';
+      else side = idx % 2 === 0 ? 'left' : 'right';
+      const deco = document.createElement('span');
+      deco.className = 'ambient-deco '+(idx%2===0?'tilt-a':'tilt-b');
+      deco.style.cssText = `${side}:2px;animation-delay:-${(idx*0.6)%3.4}s;`;
+      deco.textContent = emoji;
+      row.style.position = 'relative';
+      row.appendChild(deco);
+    }
+  });
+}
 function renderMap(){
+  renderIslandQuickNav();
   const wrap = document.getElementById('mapNodes');
   const aligns = ['left','right','center','left','right','center','left','right','center','left','right','center','left'];
   const activeIdx = currentActiveWorldIndex();
@@ -2379,9 +2929,59 @@ function renderMap(){
     const style = `style="--glow:${n.colors && n.colors[1] ? n.colors[1] : '#fff'};animation-delay:${floatDelay}s;animation-duration:${floatDur}s;"`;
     const mascot = (unlocked && i===activeIdx && !p.passed) ? `<div class="mascot-marker spark-wrap small sb-pop" onclick="tapMapSpark(event)">${sparkMarkup('happy')}<span class="mascot-sparkle s1"></span><span class="mascot-sparkle s2"></span></div>` : '';
     const check = showCheck ? `<div class="trophy-badge">${ICONS.check}</div>` : '';
+    if(n.kind==='sentence_gate'){
+      return `<div class="map-row center map-row-enter" style="animation-delay:${(i*0.06).toFixed(2)}s">
+        <div class="world-wrap" id="world-${n.key}">
+          ${mascot}
+          <button class="portal-gate ${unlocked?'':'locked'}" data-idx="${i}" onclick="worldTap(${i})">
+            <svg class="portal-art" viewBox="0 0 200 100">
+              <defs><radialGradient id="portalGlow${i}" cx="50%" cy="40%" r="70%"><stop offset="0%" stop-color="#FFE9B0" stop-opacity=".9"/><stop offset="100%" stop-color="#8A7DD1" stop-opacity="0"/></radialGradient></defs>
+              <path d="M20,90 Q20,20 100,20 Q180,20 180,90" fill="none" stroke="#FFD166" stroke-width="6" stroke-linecap="round"/>
+              <circle cx="100" cy="50" r="26" fill="url(#portalGlow${i})"/>
+              <text x="100" y="60" font-family="'Baloo 2'" font-weight="700" font-size="28" fill="#fff" text-anchor="middle">✎</text>
+              <path d="M40,85 L36,80 L40,75 L44,80 Z" fill="#fff" opacity=".8"/>
+              <path d="M165,40 L162,36 L165,32 L168,36 Z" fill="#fff" opacity=".7"/>
+            </svg>
+            <div class="portal-label">Sentence Builder</div>
+            <div class="portal-progress">${p.done}/${p.total} Levels</div>
+            ${unlocked?check:`<div class="lock-badge">${ICONS.lock}</div>`}
+          </button>
+        </div>
+      </div>`;
+    }
+    if(n.kind==='season'){
+      const seasonKey = n.key.replace('season_','');
+      const seasonSvg = (PLANET_ICONS[seasonKey] || PLANET_ICONS.summer)(i);
+      return `<div class="map-row ${aligns[i%aligns.length]} map-row-enter" style="animation-delay:${(i*0.06).toFixed(2)}s">
+        <div class="world-wrap" id="world-${n.key}">
+          ${mascot}
+          <button class="world ${unlocked?'':'locked'}" data-idx="${i}" onclick="worldTap(${i})">
+            <svg class="world-scene" viewBox="0 0 100 100">${seasonSvg}</svg>
+            ${unlocked?check:`<div class="lock-badge">${ICONS.lock}</div>`}
+          </button>
+          <div class="world-label">${n.title}</div>
+        </div>
+      </div>`;
+    }
+    if(n.kind==='planet'){
+      const pct2 = p.total>0 ? p.done/p.total : 0;
+      const glowT = lerpColor('#5E6A75','#FFD166', pct2);
+      const planetSvg = (PLANET_ICONS[n.key] || PLANET_ICONS.mercury)(i, glowT);
+      return `<div class="map-row ${aligns[i%aligns.length]} map-row-enter" style="animation-delay:${(i*0.06).toFixed(2)}s">
+        <div class="world-wrap" id="world-${n.key}">
+          ${mascot}
+          <span class="planet-star s1"></span><span class="planet-star s2"></span><span class="planet-star s3"></span>
+          <button class="world planet-node ${unlocked?'':'locked'}" data-idx="${i}" onclick="worldTap(${i})">
+            <svg class="world-scene" viewBox="0 0 100 100">${planetSvg}</svg>
+            ${unlocked?check:`<div class="lock-badge">${ICONS.lock}</div>`}
+          </button>
+          <div class="world-label">${n.title}</div>
+        </div>
+      </div>`;
+    }
     const sceneHtml = worldSceneSVG(n.key, scenePct, !unlocked);
     return `<div class="map-row ${aligns[i%aligns.length]} map-row-enter" style="animation-delay:${(i*0.06).toFixed(2)}s">
-      <div class="world-wrap">
+      <div class="world-wrap" id="world-${n.key}">
         ${mascot}
         <button class="world ${unlocked?'':'locked'} ${isCelebrating?'celebrating':''}" ${style} data-idx="${i}" onclick="worldTap(${i})">
           ${sceneHtml}
@@ -2391,6 +2991,8 @@ function renderMap(){
       </div>
     </div>`;
   }).join('');
+  insertSectionBanners();
+  insertAmbientDecorations();
   if(pendingIslandCelebration){
     const mapEl = document.getElementById('screenMap');
     const isMapVisible = mapEl && !mapEl.classList.contains('hidden');
@@ -2436,13 +3038,14 @@ function worldTap(i){
   }
   if(node.kind==='alphabet'){ showScreen('screenAlphabet'); maybeShowTip('alphabet', node.tip); }
   else if(node.kind==='words'){ showScreen('screenWords'); maybeShowTip('words', node.tip); }
-  else if(node.kind==='category'){ openCategory(node.catKey); maybeShowTip('cat_'+node.catKey, catTip(node.title)); }
+  else if(node.kind==='category' || node.kind==='planet'){ openCategory(node.catKey); maybeShowTip('cat_'+node.catKey, catTip(node.title)); }
+  else if(node.kind==='season'){ startSentenceProto(node.level); maybeShowTip('season_'+node.level, 'Use the words you already know to build real sentences!'); }
+  else if(node.kind==='sentence_gate'){ openSentenceHub(); maybeShowTip('sentence_gate', 'Use the words you already know to build real sentences!'); }
 }
 
 /* ============================================================
    LEVEL 1 — ALPHABET
    ============================================================ */
-let activeLetter = null;
 function renderAlphabet(){
   const g = document.getElementById('alphabetGrid');
   g.innerHTML = ALPHABET.map(l=>{
@@ -2459,71 +3062,18 @@ function renderAlphabet(){
   const heroEl = document.getElementById('alphaHeroIsland');
   if(heroEl) heroEl.innerHTML = worldSceneSVG('alphabet', STATE.lettersDone.length/26, false);
 }
+/* Every letter A-Z has a full LETTER_LESSON_DATA entry, so this always
+   opens the full lesson. Kept as its own function (rather than inlining
+   openLetterLesson at each call site) in case a future letter is ever
+   added without lesson data yet — the guard makes that safe by default. */
 function openLetter(id){
   playPop();
   const letterCode = id.replace('let_','');
   if(LETTER_LESSON_DATA[letterCode]){ openLetterLesson(letterCode); return; }
-  activeLetter = ALPHABET.find(l=>l.id===id);
-  document.getElementById('letUp').textContent = activeLetter.letter;
-  document.getElementById('letLo').textContent = activeLetter.lower;
-  document.getElementById('letPic').textContent = activeLetter.emoji;
-  document.getElementById('letWord').textContent = activeLetter.word;
-  setSpeakTarget(activeLetter.letter+'. '+activeLetter.word);
-  openOverlay('letterOverlay');
-  setTimeout(()=>{ initTraceCanvas(); speak(activeLetter.letter, 1); }, 150);
+  showToast('This letter\'s lesson is coming soon!');
 }
-function markLetterDone(){
-  if(!activeLetter) return;
-  const already = STATE.lettersDone.includes(activeLetter.id);
-  if(!already){
-    STATE.lettersDone.push(activeLetter.id);
-    grantReward(10, 3, 1);
-    saveState();
-    renderAlphabet(); renderHeader(); renderMap();
-    closeOverlay('letterOverlay');
-    if(STATE.lettersDone.length===26){
-      awardBadge('world_alphabet','Alphabet Island Master');
-      playFanfare();
-      showCertificate('Alphabet Island — All 26 Letters!');
-    } else {
-      playChime();
-      celebrate(pick(LEARN_TITLES),'You learned the letter '+activeLetter.letter,[[ICONS.star,'+1'],[ICONS.coin,'+3']]);
-    }
-  } else {
-    closeOverlay('letterOverlay');
-  }
-}
-
-let traceCtx, drawing=false;
-function initTraceCanvas(){
-  const canvas = document.getElementById('traceCanvas');
-  canvas.width = canvas.clientWidth*2; canvas.height = canvas.clientHeight*2;
-  traceCtx = canvas.getContext('2d');
-  traceCtx.scale(2,2);
-  traceCtx.lineWidth = 6; traceCtx.lineCap='round'; traceCtx.lineJoin='round';
-  traceCtx.strokeStyle = '#FF6FA5';
-  drawGhostLetter();
-  canvas.onpointerdown = e=>{ drawing=true; const p=pos(canvas,e); traceCtx.beginPath(); traceCtx.moveTo(p.x,p.y); };
-  canvas.onpointermove = e=>{ if(!drawing) return; const p=pos(canvas,e); traceCtx.lineTo(p.x,p.y); traceCtx.stroke(); };
-  canvas.onpointerup = ()=> drawing=false;
-  canvas.onpointerleave = ()=> drawing=false;
-}
+/* Shared by the lesson engine's tracing canvas (see initLessonTraceCanvas). */
 function pos(canvas,e){ const r = canvas.getBoundingClientRect(); return {x:(e.clientX-r.left), y:(e.clientY-r.top)}; }
-function drawGhostLetter(){
-  const canvas = document.getElementById('traceCanvas');
-  traceCtx.save();
-  traceCtx.globalAlpha = .18;
-  traceCtx.font = '700 120px "Baloo 2", sans-serif';
-  traceCtx.textAlign = 'center'; traceCtx.textBaseline='middle';
-  traceCtx.fillStyle = '#241A45';
-  traceCtx.fillText(activeLetter.letter, canvas.clientWidth/2, canvas.clientHeight/2);
-  traceCtx.restore();
-}
-function clearTrace(){
-  const canvas = document.getElementById('traceCanvas');
-  traceCtx.clearRect(0,0,canvas.clientWidth,canvas.clientHeight);
-  drawGhostLetter();
-}
 
 /* ============================================================
    GENERIC MEMORY-MATCH ENGINE (used by Alphabet + every world's Memory Game)
@@ -2532,7 +3082,10 @@ let matchState = {tiles:[], sel:null, matched:0};
 function runMemoryMatch(pairsSource, onDone, promptText){
   document.getElementById('matchPrompt').textContent = promptText || 'Find the matching pairs!';
   let tiles = [];
-  pairsSource.forEach(p=>{ tiles.push({id:p.pair+'A', pair:p.pair, label:p.labelA}); tiles.push({id:p.pair+'B', pair:p.pair, label:p.labelB}); });
+  pairsSource.forEach(p=>{
+    tiles.push({id:p.pair+'A', pair:p.pair, label:p.labelA, isText:false});
+    tiles.push({id:p.pair+'B', pair:p.pair, label:p.labelB, isText:true});
+  });
   tiles = shuffle(tiles);
   matchState = {tiles, sel:null, matched:0, total:pairsSource.length, onDone};
   renderMatch();
@@ -2542,7 +3095,7 @@ function renderMatch(){
   const g = document.getElementById('matchGrid');
   g.innerHTML = matchState.tiles.map(t=>{
     const cls = t.done ? 'matched' : (t===matchState.sel ? 'sel' : '');
-    return `<button class="match-tile ${cls}" ${t.done?'disabled':''} onclick="tapMatch('${t.id}')">${t.label}</button>`;
+    return `<button class="match-tile ${t.isText?'text-tile':''} ${cls}" ${t.done?'disabled':''} onclick="tapMatch('${t.id}')">${t.label}</button>`;
   }).join('');
   document.getElementById('matchCount').textContent = matchState.matched+'/'+matchState.total+' pairs';
 }
@@ -2554,6 +3107,8 @@ function tapMatch(id){
   if(matchState.sel.id===tile.id){ matchState.sel=null; renderMatch(); return; }
   if(matchState.sel.pair === tile.pair){
     tile.done = true; matchState.sel.done = true; matchState.matched++;
+    const wordTile = tile.isText ? tile : matchState.sel;
+    recordMastery(wordTile.label, true);
     matchState.sel = null;
     grantReward(5,1,0);
     playChime();
@@ -2566,6 +3121,8 @@ function tapMatch(id){
       },400);
     }
   } else {
+    const wordTile = tile.isText ? tile : (matchState.sel.isText ? matchState.sel : null);
+    if(wordTile) recordMastery(wordTile.label, false);
     playOops();
     renderMatch();
     setTimeout(()=>{ matchState.sel=null; renderMatch(); },500);
@@ -2590,6 +3147,7 @@ function runVocabMemory(items, onDone){
    ============================================================ */
 let quizState = null;
 function runQuizEngine(targetList, pool, onDone, mode){
+  document.getElementById('quizAudioBtn').onclick = repeatQuizAudio;
   const questions = targetList.map(t=>{
     const distractors = shuffle(pool.filter(p=>p.id!==t.id).slice()).slice(0,3);
     const choices = shuffle([t,...distractors]);
@@ -2619,14 +3177,7 @@ function answerQuiz(choiceId, ev){
     if(b.dataset.id===q.answer.id) b.classList.add('correct');
     else if(b.dataset.id===choiceId) b.classList.add('wrong');
   });
-  if(correct){
-    quizState.score++; grantReward(2,1,0); playChime();
-    if(ev){ const r=ev.currentTarget.getBoundingClientRect(); sparkleBurstAt(r.left+r.width/2, r.top+r.height/2, 8); }
-  } else {
-    playOops();
-    sparkSay(pick(ENCOURAGE_LINES), 'encourage', {duration:2200});
-  }
-  setTimeout(()=>{
+  function advance(){
     quizState.idx++;
     if(quizState.idx < quizState.questions.length){ renderQuizQuestion(); }
     else{
@@ -2636,18 +3187,551 @@ function answerQuiz(choiceId, ev){
       checkAchievements();
       if(onDone) onDone(score, questions.length);
     }
-  }, 800);
+  }
+  if(correct){
+    quizState.score++; grantReward(2,1,0); playChime();
+    recordMastery(q.answer.en, true);
+    if(ev){ const r=ev.currentTarget.getBoundingClientRect(); sparkleBurstAt(r.left+r.width/2, r.top+r.height/2, 8); }
+    setTimeout(advance, 800);
+  } else {
+    playOops();
+    recordMastery(q.answer.en, false);
+    encourageThenAdvance(advance);
+  }
 }
+
+/* ============================================================
+   ANIMAL FOREST SIGNATURE ACTIVITY — Animal Sounds. Reuses the same
+   quiz overlay/UI, but the "given" is the animal's sound-word instead
+   of its name: genuine listening-comprehension practice tied to real
+   vocabulary (Roar!, Woof Woof!...), not a decorative reskin.
+   ============================================================ */
+let animalSoundState = null;
+function runAnimalSoundsGame(items, onDone){
+  const pool = items.filter(it => ANIMAL_SOUNDS[it.en]);
+  if(pool.length < 4){ if(onDone) onDone(0,0); return; }
+  const questions = shuffle(pool.slice()).slice(0, Math.min(4, pool.length));
+  animalSoundState = {questions, pool, idx:0, score:0, onDone};
+  document.getElementById('quizAudioBtn').onclick = repeatAnimalSoundAudio;
+  renderAnimalSoundQuestion();
+  openOverlay('quizOverlay');
+}
+function renderAnimalSoundQuestion(){
+  const q = animalSoundState.questions[animalSoundState.idx];
+  document.getElementById('quizCount').textContent = 'Question '+(animalSoundState.idx+1)+'/'+animalSoundState.questions.length;
+  document.getElementById('quizPrompt').textContent = 'Which animal says this?';
+  document.getElementById('quizProgFill').style.width = (animalSoundState.idx/animalSoundState.questions.length*100)+'%';
+  const distractors = shuffle(animalSoundState.pool.filter(p=>p.id!==q.id)).slice(0,3);
+  const choices = shuffle([q, ...distractors]);
+  document.getElementById('quizChoices').innerHTML = choices.map(c=>
+    `<button class="choice" data-id="${c.id}" onclick="answerAnimalSound('${c.id}', event)"><span>${c.emoji}</span></button>`).join('');
+  setTimeout(()=>speakAnimalSound(ANIMAL_SOUNDS[q.en]), 300);
+}
+function repeatAnimalSoundAudio(){ const q = animalSoundState.questions[animalSoundState.idx]; speakAnimalSound(ANIMAL_SOUNDS[q.en]); }
+function answerAnimalSound(choiceId, ev){
+  const q = animalSoundState.questions[animalSoundState.idx];
+  const btns = document.querySelectorAll('#quizChoices .choice');
+  btns.forEach(b=>b.onclick=null);
+  const correct = choiceId===q.id;
+  btns.forEach(b=>{
+    if(b.dataset.id===q.id) b.classList.add('correct');
+    else if(b.dataset.id===choiceId) b.classList.add('wrong');
+  });
+  function advance(){
+    animalSoundState.idx++;
+    if(animalSoundState.idx < animalSoundState.questions.length){ renderAnimalSoundQuestion(); }
+    else{
+      closeOverlay('quizOverlay');
+      document.getElementById('quizAudioBtn').onclick = repeatQuizAudio;
+      const {score, questions, onDone} = animalSoundState;
+      if(onDone) onDone(score, questions.length);
+    }
+  }
+  if(correct){
+    animalSoundState.score++; grantReward(2,1,0); playChime();
+    recordMastery(q.en, true);
+    if(ev){ const r=ev.currentTarget.getBoundingClientRect(); sparkleBurstAt(r.left+r.width/2, r.top+r.height/2, 8); }
+    setTimeout(advance, 800);
+  } else {
+    playOops();
+    recordMastery(q.en, false);
+    encourageThenAdvance(advance);
+  }
+}
+
+/* ============================================================
+   FRUIT GARDEN SIGNATURE ACTIVITY — Make Juice. A real collection
+   mechanic: the glass visibly fills and changes color with each
+   correct fruit, tied to genuine vocabulary recall, not decoration.
+   ============================================================ */
+const FRUIT_JUICE_COLORS = {
+  Apple:['#FF9E92','#D9382C'], Banana:['#FFF2C2','#F2C230'], Orange:['#FFD199','#F2913A'],
+  Grapes:['#D9BFFF','#8347D6'], Strawberry:['#FFB0C4','#E5493B'], Watermelon:['#FF9EB5','#E5493B'],
+  Mango:['#FFE1A0','#F2971F'], Pineapple:['#FFF2C2','#E8B84B'], Peach:['#FFD9C2','#F2913A'], Cherry:['#F0A0A0','#B22E22']
+};
+let juiceGameState = null;
+function runFruitJuiceGame(items, onDone){
+  const pool = items.filter(it => FRUIT_JUICE_COLORS[it.en]);
+  if(pool.length < 4){ if(onDone) onDone(0,0); return; }
+  const questions = shuffle(pool.slice()).slice(0, Math.min(4, pool.length));
+  juiceGameState = {questions, pool, idx:0, score:0, onDone};
+  document.getElementById('quizAudioBtn').onclick = ()=>{ const q=juiceGameState.questions[juiceGameState.idx]; speak(q.en,1); };
+  const glass = document.getElementById('juiceGlass'), fill = document.getElementById('juiceFill');
+  glass.classList.remove('hidden');
+  fill.style.height = '0%'; fill.style.background = '';
+  renderJuiceQuestion();
+  openOverlay('quizOverlay');
+}
+function renderJuiceQuestion(){
+  const q = juiceGameState.questions[juiceGameState.idx];
+  document.getElementById('quizCount').textContent = 'Fruit '+(juiceGameState.idx+1)+'/'+juiceGameState.questions.length;
+  document.getElementById('quizPrompt').textContent = 'Add the '+q.en+' to the juice!';
+  document.getElementById('quizProgFill').style.width = (juiceGameState.idx/juiceGameState.questions.length*100)+'%';
+  const distractors = shuffle(juiceGameState.pool.filter(p=>p.id!==q.id)).slice(0,3);
+  const choices = shuffle([q, ...distractors]);
+  document.getElementById('quizChoices').innerHTML = choices.map(c=>
+    `<button class="choice" data-id="${c.id}" onclick="answerJuice('${c.id}', event)"><span>${c.emoji}</span><span class="clabel">${c.en}</span></button>`).join('');
+  setTimeout(()=>speak(q.en,1), 300);
+}
+function answerJuice(choiceId, ev){
+  const q = juiceGameState.questions[juiceGameState.idx];
+  const btns = document.querySelectorAll('#quizChoices .choice');
+  btns.forEach(b=>b.onclick=null);
+  const correct = choiceId===q.id;
+  btns.forEach(b=>{
+    if(b.dataset.id===q.id) b.classList.add('correct');
+    else if(b.dataset.id===choiceId) b.classList.add('wrong');
+  });
+  function advance(){
+    juiceGameState.idx++;
+    if(juiceGameState.idx < juiceGameState.questions.length){ renderJuiceQuestion(); }
+    else{
+      closeOverlay('quizOverlay');
+      document.getElementById('juiceGlass').classList.add('hidden');
+      document.getElementById('quizAudioBtn').onclick = repeatQuizAudio;
+      const {score, questions, onDone} = juiceGameState;
+      if(score===questions.length){
+        setTimeout(()=>{ playFanfare(); sparkSay('Yummy! Fresh juice, all done!', 'excited', {duration:2400}); }, 300);
+      }
+      if(onDone) onDone(score, questions.length);
+    }
+  }
+  if(correct){
+    juiceGameState.score++;
+    grantReward(2,1,0); playChime();
+    recordMastery(q.en, true);
+    const c = FRUIT_JUICE_COLORS[q.en];
+    const fill = document.getElementById('juiceFill');
+    fill.style.background = 'linear-gradient(180deg,'+c[0]+','+c[1]+')';
+    fill.style.height = Math.round((juiceGameState.score/juiceGameState.questions.length)*100)+'%';
+    if(ev){ const r=ev.currentTarget.getBoundingClientRect(); sparkleBurstAt(r.left+r.width/2, r.top+r.height/2, 8); }
+    setTimeout(advance, 800);
+  } else {
+    playOops();
+    recordMastery(q.en, false);
+    encourageThenAdvance(advance);
+  }
+}
+
+/* ============================================================
+   COLOR VILLAGE SIGNATURE ACTIVITY — Mix Colors. Real color theory
+   (Red+Yellow=Orange, Yellow+Blue=Green...), all using colors the
+   child already learned, so the result is always familiar vocabulary.
+   ============================================================ */
+const COLOR_EMOJI = {Red:'🔴',Blue:'🔵',Yellow:'🟡',Green:'🟢',Purple:'🟣',Pink:'🩷',Orange:'🟠',Black:'⚫',White:'⚪',Brown:'🟤'};
+const COLOR_MIX_RECIPES = [
+  {a:'Red', b:'Yellow', result:'Orange'},
+  {a:'Yellow', b:'Blue', result:'Green'},
+  {a:'Red', b:'Blue', result:'Purple'},
+  {a:'Red', b:'White', result:'Pink'},
+];
+let colorMixState = null;
+function runColorMixGame(onDone){
+  const questions = shuffle(COLOR_MIX_RECIPES.slice());
+  colorMixState = {questions, idx:0, score:0, onDone};
+  document.getElementById('quizAudioBtn').onclick = ()=>{ const q=colorMixState.questions[colorMixState.idx]; speak(q.a+' and '+q.b,0.95); };
+  renderColorMixQuestion();
+  openOverlay('quizOverlay');
+}
+function renderColorMixQuestion(){
+  const q = colorMixState.questions[colorMixState.idx];
+  document.getElementById('quizCount').textContent = 'Mix '+(colorMixState.idx+1)+'/'+colorMixState.questions.length;
+  document.getElementById('quizPrompt').textContent = COLOR_EMOJI[q.a]+' '+q.a+' + '+COLOR_EMOJI[q.b]+' '+q.b+' = ?';
+  document.getElementById('quizProgFill').style.width = (colorMixState.idx/colorMixState.questions.length*100)+'%';
+  const distractors = shuffle(Object.keys(COLOR_EMOJI).filter(c=>c!==q.result)).slice(0,3);
+  const choices = shuffle([q.result, ...distractors]);
+  document.getElementById('quizChoices').innerHTML = choices.map(c=>
+    `<button class="choice" data-id="${c}" onclick="answerColorMix('${c}', event)"><span>${COLOR_EMOJI[c]}</span><span class="clabel">${c}</span></button>`).join('');
+  setTimeout(()=>speak(q.a+' and '+q.b, 0.95), 300);
+}
+function answerColorMix(choice, ev){
+  const q = colorMixState.questions[colorMixState.idx];
+  const btns = document.querySelectorAll('#quizChoices .choice');
+  btns.forEach(b=>b.onclick=null);
+  const correct = choice===q.result;
+  btns.forEach(b=>{
+    if(b.dataset.id===q.result) b.classList.add('correct');
+    else if(b.dataset.id===choice) b.classList.add('wrong');
+  });
+  function advance(){
+    colorMixState.idx++;
+    if(colorMixState.idx < colorMixState.questions.length){ renderColorMixQuestion(); }
+    else{
+      closeOverlay('quizOverlay');
+      document.getElementById('quizAudioBtn').onclick = repeatQuizAudio;
+      const {score, questions, onDone} = colorMixState;
+      if(onDone) onDone(score, questions.length);
+    }
+  }
+  if(correct){
+    colorMixState.score++; grantReward(2,1,0); playChime();
+    recordMastery(q.result, true);
+    if(ev){ const r=ev.currentTarget.getBoundingClientRect(); sparkleBurstAt(r.left+r.width/2, r.top+r.height/2, 8); }
+    setTimeout(advance, 800);
+  } else {
+    playOops();
+    recordMastery(q.result, false);
+    encourageThenAdvance(advance);
+  }
+}
+
+/* ============================================================
+   SHAPE TEMPLE SIGNATURE ACTIVITY — Shape Puzzle. Combines shape
+   recognition with counting: a real cross-curricular skill, using
+   a scattered field of shapes the child must scan and count.
+   ============================================================ */
+const SHAPE_ICONS_INLINE = {Circle:'⭕',Square:'🟦',Triangle:'🔺',Star:'⭐',Heart:'❤️',Diamond:'🔶',Oval:'🥚',Cross:'➕',Crescent:'🌙',Arrow:'➡️'};
+let shapeCountState = null;
+function runShapeCountGame(onDone){
+  const shapeNames = Object.keys(SHAPE_ICONS_INLINE);
+  const questions = [];
+  for(let i=0;i<4;i++){
+    const target = shapeNames[Math.floor(Math.random()*shapeNames.length)];
+    const targetCount = 2 + Math.floor(Math.random()*3);
+    const others = shapeNames.filter(s=>s!==target);
+    let field = [];
+    for(let j=0;j<targetCount;j++) field.push(target);
+    const extraCount = 3 + Math.floor(Math.random()*3);
+    for(let j=0;j<extraCount;j++) field.push(others[Math.floor(Math.random()*others.length)]);
+    questions.push({target, targetCount, field: shuffle(field)});
+  }
+  shapeCountState = {questions, idx:0, score:0, onDone};
+  document.getElementById('quizAudioBtn').onclick = ()=>{ const q=shapeCountState.questions[shapeCountState.idx]; speak('How many '+q.target+'s?',0.95); };
+  renderShapeCountQuestion();
+  openOverlay('quizOverlay');
+}
+function renderShapeCountQuestion(){
+  const q = shapeCountState.questions[shapeCountState.idx];
+  document.getElementById('quizCount').textContent = 'Puzzle '+(shapeCountState.idx+1)+'/'+shapeCountState.questions.length;
+  document.getElementById('quizPrompt').innerHTML = 'How many '+SHAPE_ICONS_INLINE[q.target]+' '+q.target+'s?<br><span style="font-size:26px;letter-spacing:5px;line-height:1.6;">'+q.field.map(s=>SHAPE_ICONS_INLINE[s]).join(' ')+'</span>';
+  document.getElementById('quizProgFill').style.width = (shapeCountState.idx/shapeCountState.questions.length*100)+'%';
+  const options = new Set([q.targetCount]);
+  while(options.size<4){ options.add(1+Math.floor(Math.random()*5)); }
+  const choices = shuffle(Array.from(options));
+  document.getElementById('quizChoices').innerHTML = choices.map(n=>
+    `<button class="choice" data-id="${n}" onclick="answerShapeCount(${n}, event)">${n}</button>`).join('');
+  setTimeout(()=>speak('How many '+q.target+'s do you see?',0.95), 300);
+}
+function answerShapeCount(n, ev){
+  const q = shapeCountState.questions[shapeCountState.idx];
+  const btns = document.querySelectorAll('#quizChoices .choice');
+  btns.forEach(b=>b.onclick=null);
+  const correct = n===q.targetCount;
+  btns.forEach(b=>{
+    if(parseInt(b.dataset.id)===q.targetCount) b.classList.add('correct');
+    else if(parseInt(b.dataset.id)===n) b.classList.add('wrong');
+  });
+  function advance(){
+    shapeCountState.idx++;
+    if(shapeCountState.idx < shapeCountState.questions.length){ renderShapeCountQuestion(); }
+    else{
+      closeOverlay('quizOverlay');
+      document.getElementById('quizAudioBtn').onclick = repeatQuizAudio;
+      const {score, questions, onDone} = shapeCountState;
+      if(onDone) onDone(score, questions.length);
+    }
+  }
+  if(correct){
+    shapeCountState.score++; grantReward(2,1,0); playChime();
+    recordMastery(q.target, true);
+    if(ev){ const r=ev.currentTarget.getBoundingClientRect(); sparkleBurstAt(r.left+r.width/2, r.top+r.height/2, 8); }
+    setTimeout(advance, 800);
+  } else {
+    playOops();
+    recordMastery(q.target, false);
+    encourageThenAdvance(advance);
+  }
+}
+
+/* ============================================================
+   SHARED "REASONING RIDDLE" ENGINE — powers the four remaining
+   worlds' signature activities. Same UI/mechanics; each world
+   supplies its own question data, testing a distinct real skill:
+   Family = relationship reasoning, Body = function knowledge,
+   Feelings = social-emotional scenario reasoning, School = tool use.
+   ============================================================ */
+let riddleGameState = null;
+function runRiddleGame(questions, onDone){
+  riddleGameState = {questions: shuffle(questions.slice()), idx:0, score:0, onDone};
+  document.getElementById('quizAudioBtn').onclick = ()=>{ const q=riddleGameState.questions[riddleGameState.idx]; speak(q.prompt,0.95); };
+  renderRiddleQuestion();
+  openOverlay('quizOverlay');
+}
+function renderRiddleQuestion(){
+  const q = riddleGameState.questions[riddleGameState.idx];
+  document.getElementById('quizCount').textContent = 'Question '+(riddleGameState.idx+1)+'/'+riddleGameState.questions.length;
+  document.getElementById('quizPrompt').textContent = q.prompt;
+  document.getElementById('quizProgFill').style.width = (riddleGameState.idx/riddleGameState.questions.length*100)+'%';
+  const choices = shuffle(q.choices.slice());
+  document.getElementById('quizChoices').innerHTML = choices.map(c=>
+    `<button class="choice" data-id="${c}" onclick="answerRiddle('${c}', event)" style="font-size:16px;padding:20px 10px;">${c}</button>`).join('');
+  setTimeout(()=>speak(q.prompt,0.95), 300);
+}
+function answerRiddle(choice, ev){
+  const q = riddleGameState.questions[riddleGameState.idx];
+  const btns = document.querySelectorAll('#quizChoices .choice');
+  btns.forEach(b=>b.onclick=null);
+  const correct = choice===q.answer;
+  btns.forEach(b=>{
+    if(b.dataset.id===q.answer) b.classList.add('correct');
+    else if(b.dataset.id===choice) b.classList.add('wrong');
+  });
+  function advance(){
+    riddleGameState.idx++;
+    if(riddleGameState.idx < riddleGameState.questions.length){ renderRiddleQuestion(); }
+    else{
+      closeOverlay('quizOverlay');
+      document.getElementById('quizAudioBtn').onclick = repeatQuizAudio;
+      const {score, questions, onDone} = riddleGameState;
+      if(onDone) onDone(score, questions.length);
+    }
+  }
+  if(correct){
+    riddleGameState.score++; grantReward(2,1,0); playChime();
+    recordMastery(q.answer, true);
+    if(ev){ const r=ev.currentTarget.getBoundingClientRect(); sparkleBurstAt(r.left+r.width/2, r.top+r.height/2, 8); }
+    setTimeout(advance, 800);
+  } else {
+    playOops();
+    recordMastery(q.answer, false);
+    encourageThenAdvance(advance);
+  }
+}
+
+const FAMILY_RIDDLES = [
+  {prompt:"Who is your mom's mom?", answer:'Grandma', choices:['Grandma','Grandpa','Aunt','Sister']},
+  {prompt:"Who is your dad's dad?", answer:'Grandpa', choices:['Grandpa','Uncle','Brother','Grandma']},
+  {prompt:"Who is your mom's brother?", answer:'Uncle', choices:['Uncle','Dad','Cousin','Grandpa']},
+  {prompt:"Who is your dad's sister?", answer:'Aunt', choices:['Aunt','Mom','Grandma','Sister']},
+];
+function runFamilyRiddleGame(onDone){ runRiddleGame(FAMILY_RIDDLES, onDone); }
+
+const BODY_FUNCTIONS = [
+  {prompt:'What do your eyes do?', answer:'See', choices:['See','Hear','Smell','Talk']},
+  {prompt:'What do your ears do?', answer:'Hear', choices:['Hear','See','Taste','Walk']},
+  {prompt:'What does your nose do?', answer:'Smell', choices:['Smell','Hear','Clap','Chew']},
+  {prompt:'What do your feet do?', answer:'Walk', choices:['Walk','See','Talk','Smell']},
+];
+function runBodyFunctionGame(onDone){ runRiddleGame(BODY_FUNCTIONS, onDone); }
+
+const FEELING_SCENARIOS = [
+  {prompt:'Your friend shares a toy with you. How do you feel?', answer:'Happy', choices:['Happy','Sad','Angry','Scared']},
+  {prompt:'You hear a big, loud thunderstorm. How do you feel?', answer:'Scared', choices:['Scared','Happy','Calm','Bored']},
+  {prompt:"It's your birthday party! How do you feel?", answer:'Excited', choices:['Excited','Sad','Tired','Shy']},
+  {prompt:'You stayed up very late. How do you feel?', answer:'Tired', choices:['Tired','Excited','Angry','Surprised']},
+];
+function runFeelingScenarioGame(onDone){ runRiddleGame(FEELING_SCENARIOS, onDone); }
+
+const SCHOOL_TOOLS = [
+  {prompt:'You want to write your name. What do you need?', answer:'Pencil', choices:['Pencil','Scissors','Ruler','Chair']},
+  {prompt:'You want to cut paper. What do you need?', answer:'Scissors', choices:['Scissors','Book','Pencil','Clock']},
+  {prompt:'You want to measure a line. What do you need?', answer:'Ruler', choices:['Ruler','Bag','Crayon','Notebook']},
+  {prompt:'You want to read a story. What do you need?', answer:'Book', choices:['Book','Scissors','Marker','Ruler']},
+];
+function runSchoolToolGame(onDone){ runRiddleGame(SCHOOL_TOOLS, onDone); }
+
+/* ============================================================
+   NUMBER MOUNTAIN SIGNATURE ACTIVITY — Count & Tap. Not a multiple-
+   choice riddle: the child hears a number and taps a star that many
+   times, linking the abstract digit to a real counted quantity.
+   ============================================================ */
+const NUMBER_WORDS = {One:1,Two:2,Three:3,Four:4,Five:5,Six:6,Seven:7,Eight:8,Nine:9,Ten:10};
+let countTapState = null;
+function runNumberCountGame(items, onDone){
+  const pool = items.filter(it => NUMBER_WORDS[it.en]);
+  const questions = shuffle(pool.slice()).slice(0, Math.min(4, pool.length));
+  countTapState = {questions, idx:0, score:0, tapped:0, locked:false, onDone};
+  document.getElementById('quizAudioBtn').onclick = ()=>{ const q=countTapState.questions[countTapState.idx]; speak(q.en,0.9); };
+  renderCountTapQuestion();
+  openOverlay('quizOverlay');
+}
+function renderCountTapQuestion(){
+  const q = countTapState.questions[countTapState.idx];
+  countTapState.tapped = 0;
+  countTapState.locked = false;
+  document.getElementById('quizCount').textContent = 'Number '+(countTapState.idx+1)+'/'+countTapState.questions.length;
+  document.getElementById('quizPrompt').textContent = 'Tap the star, then press Done!';
+  document.getElementById('quizProgFill').style.width = (countTapState.idx/countTapState.questions.length*100)+'%';
+  document.getElementById('quizChoices').innerHTML =
+    `<div class="count-tap-wrap">
+      <button class="count-tap-star" onclick="tapCountStar()">⭐</button>
+      <div class="count-tap-display" id="countTapDisplay">0</div>
+      <button class="btn3d gold" id="countTapDoneBtn" onclick="submitCountTap()">Done!</button>
+    </div>`;
+  setTimeout(()=>speak(q.en,0.9), 300);
+}
+function tapCountStar(){
+  if(countTapState.locked) return;
+  countTapState.tapped++;
+  playPop();
+  document.getElementById('countTapDisplay').textContent = countTapState.tapped;
+  const starBtn = document.querySelector('.count-tap-star');
+  starBtn.classList.remove('pulse'); void starBtn.offsetWidth; starBtn.classList.add('pulse');
+}
+function submitCountTap(){
+  if(countTapState.locked) return;
+  countTapState.locked = true;
+  const q = countTapState.questions[countTapState.idx];
+  const target = NUMBER_WORDS[q.en];
+  const correct = countTapState.tapped === target;
+  document.getElementById('countTapDoneBtn').disabled = true;
+  document.querySelector('.count-tap-star').onclick = null;
+  function advance(){
+    countTapState.idx++;
+    if(countTapState.idx < countTapState.questions.length){ renderCountTapQuestion(); }
+    else{
+      closeOverlay('quizOverlay');
+      document.getElementById('quizAudioBtn').onclick = repeatQuizAudio;
+      const {score, questions, onDone} = countTapState;
+      if(onDone) onDone(score, questions.length);
+    }
+  }
+  if(correct){
+    countTapState.score++;
+    playChime();
+    grantReward(2,1,0);
+    recordMastery(q.en, true);
+    document.getElementById('countTapDisplay').textContent = countTapState.tapped+' ✓';
+    setTimeout(advance, 800);
+  } else {
+    recordMastery(q.en, false);
+    playOops();
+    document.getElementById('countTapDisplay').textContent = countTapState.tapped+' (it was '+target+')';
+    encourageThenAdvance(advance);
+  }
+}
+
+const MERCURY_WHERE = [
+  {prompt:'Where do you sleep?', answer:'Bedroom', choices:['Bedroom','Kitchen','Bathroom','Door']},
+  {prompt:'Where do you cook food?', answer:'Kitchen', choices:['Kitchen','Bedroom','Sofa','Window']},
+  {prompt:'Where do you sit and relax?', answer:'Living Room', choices:['Living Room','Bathroom','Kitchen','Lamp']},
+  {prompt:'What do you open to enter a room?', answer:'Door', choices:['Door','Window','Chair','Bed']},
+];
+function runMercuryWhereGame(onDone){ runRiddleGame(MERCURY_WHERE, onDone); }
+
+const VENUS_WEATHER = [
+  {prompt:'You need an umbrella today. What\'s the weather?', answer:'Rainy', choices:['Rainy','Sunny','Windy','Cloudy']},
+  {prompt:'The sun is shining bright. What\'s the weather?', answer:'Sunny', choices:['Sunny','Rainy','Cold','Foggy']},
+  {prompt:'White snow is falling. What\'s the weather?', answer:'Snowy', choices:['Snowy','Hot','Sunny','Windy']},
+  {prompt:'The sky is dark with thunder. What\'s the weather?', answer:'Stormy', choices:['Stormy','Sunny','Hot','Snowy']},
+];
+function runVenusWeatherGame(onDone){ runRiddleGame(VENUS_WEATHER, onDone); }
+
+const EARTH_NATURE = [
+  {prompt:'Where do fish live?', answer:'Ocean', choices:['Ocean','Mountain','Tree','Sky']},
+  {prompt:'What has leaves and branches?', answer:'Tree', choices:['Tree','River','Star','Flower']},
+  {prompt:'What lights up the night sky?', answer:'Moon', choices:['Moon','Sun','Forest','River']},
+  {prompt:'What is tall, rocky, and hard to climb?', answer:'Mountain', choices:['Mountain','Ocean','Flower','Sky']},
+];
+function runEarthNatureGame(onDone){ runRiddleGame(EARTH_NATURE, onDone); }
+
+const MARS_TRAVEL = [
+  {prompt:'You want to cross the ocean quickly. How do you travel?', answer:'Plane', choices:['Plane','Bike','Train','Boat']},
+  {prompt:'You want to fly to the moon. What do you need?', answer:'Rocket', choices:['Rocket','Car','Bus','Truck']},
+  {prompt:'You want to sail on the water. What do you use?', answer:'Boat', choices:['Boat','Bike','Plane','Train']},
+  {prompt:'You want to ride using only your legs. What do you use?', answer:'Bike', choices:['Bike','Car','Train','Helicopter']},
+];
+function runMarsTravelGame(onDone){ runRiddleGame(MARS_TRAVEL, onDone); }
+
+const JUPITER_SPORT = [
+  {prompt:'You use a ball and your feet, no hands allowed. Which sport?', answer:'Football', choices:['Football','Basketball','Swimming','Tennis']},
+  {prompt:'You swim across a pool. Which sport?', answer:'Swimming', choices:['Swimming','Cycling','Boxing','Football']},
+  {prompt:'You use a racket and a ball over a net. Which sport?', answer:'Tennis', choices:['Tennis','Basketball','Running','Skating']},
+  {prompt:'You ride a bike with two wheels. Which sport?', answer:'Cycling', choices:['Cycling','Swimming','Boxing','Volleyball']},
+];
+function runJupiterSportGame(onDone){ runRiddleGame(JUPITER_SPORT, onDone); }
+
+const URANUS_PLACE = [
+  {prompt:'You want to buy fresh bread. Where do you go?', answer:'Bakery', choices:['Bakery','Hospital','Library','Zoo']},
+  {prompt:'You are sick and need a doctor. Where do you go?', answer:'Hospital', choices:['Hospital','Park','Bakery','Bank']},
+  {prompt:'You want to borrow a book to read. Where do you go?', answer:'Library', choices:['Library','Farm','Market','Zoo']},
+  {prompt:'You want to see lions and giraffes. Where do you go?', answer:'Zoo', choices:['Zoo','Bank','Store','Hospital']},
+];
+function runUranusPlaceGame(onDone){ runRiddleGame(URANUS_PLACE, onDone); }
+
+const NEPTUNE_FOOD = [
+  {prompt:"It's orange, crunchy, and good for your eyes. What is it?", answer:'Carrot', choices:['Carrot','Cheese','Bread','Rice']},
+  {prompt:'It comes from a chicken and is round. What is it?', answer:'Egg', choices:['Egg','Potato','Fish','Tomato']},
+  {prompt:'You bake this and eat it for breakfast. What is it?', answer:'Bread', choices:['Bread','Rice','Salad','Egg']},
+  {prompt:'These are small white grains you cook. What is it?', answer:'Rice', choices:['Rice','Cheese','Carrot','Chicken']},
+];
+function runNeptuneFoodGame(onDone){ runRiddleGame(NEPTUNE_FOOD, onDone); }
+
+const PLUTO_SPACE = [
+  {prompt:'You use this to see faraway stars. What is it?', answer:'Telescope', choices:['Telescope','Comet','Alien','Satellite']},
+  {prompt:'A visitor from another planet. What is it?', answer:'Alien', choices:['Alien','Astronaut','Galaxy','Meteor']},
+  {prompt:'You ride this to travel through space. What is it?', answer:'Spaceship', choices:['Spaceship','Telescope','Star','Planet']},
+  {prompt:'This has a bright tail and flies through space. What is it?', answer:'Comet', choices:['Comet','Galaxy','Astronaut','Satellite']},
+];
+function runPlutoSpaceGame(onDone){ runRiddleGame(PLUTO_SPACE, onDone); }
+
+const ACTION_SENTENCE_RIDDLES = [
+  {prompt:'I like to ___ books.', answer:'Read', choices:['Read','Sleep','Drink','Sit']},
+  {prompt:'I ___ every night.', answer:'Sleep', choices:['Sleep','Run','Eat','Sing']},
+  {prompt:'I can ___ very fast.', answer:'Run', choices:['Run','Read','Sit','Sleep']},
+  {prompt:'I love to ___ with my friends.', answer:'Play', choices:['Play','Drink','Read','Sit']},
+];
+function runActionSentenceGame(onDone){ runRiddleGame(ACTION_SENTENCE_RIDDLES, onDone); }
+
+const OCEAN_SEA = [
+  {prompt:'This sea animal has eight legs. Who is it?', answer:'Octopus', choices:['Octopus','Crab','Turtle','Fish']},
+  {prompt:'This is the biggest animal in the ocean. Who is it?', answer:'Whale', choices:['Whale','Shark','Dolphin','Jellyfish']},
+  {prompt:'This animal has a hard shell and walks sideways. Who is it?', answer:'Crab', choices:['Crab','Whale','Octopus','Ship']},
+  {prompt:'You sail on this across the water. What is it?', answer:'Ship', choices:['Ship','Turtle','Starfish','Dolphin']},
+];
+function runOceanSeaGame(onDone){ runRiddleGame(OCEAN_SEA, onDone); }
+
+const SATURN_WH_RIDDLES = [
+  {prompt:'You want to know a person\'s name. Which word do you use?', answer:'Who', choices:['Who','What','Where','When']},
+  {prompt:'You want to know a place. Which word do you use?', answer:'Where', choices:['Where','Why','How','Who']},
+  {prompt:'You want to know the time. Which word do you use?', answer:'When', choices:['When','What','Why','How']},
+  {prompt:'You want to know the reason. Which word do you use?', answer:'Why', choices:['Why','Where','Who','How Much']},
+];
+function runSaturnWhGame(onDone){ runRiddleGame(SATURN_WH_RIDDLES, onDone); }
+
+const OPPOSITES_PAIRS = [
+  {prompt:'What is the opposite of Big?', answer:'Small', choices:['Small','Fast','Up','Open']},
+  {prompt:'What is the opposite of Hot?', answer:'Cold', choices:['Cold','Down','Slow','Closed']},
+  {prompt:'What is the opposite of Up?', answer:'Down', choices:['Down','Big','Hot','Open']},
+  {prompt:'What is the opposite of Open?', answer:'Closed', choices:['Closed','Small','Fast','Cold']},
+];
+function runOppositesGame(onDone){ runRiddleGame(OPPOSITES_PAIRS, onDone); }
 
 /* ============================================================
    DRAG & DROP ENGINE
    ============================================================ */
 let dragState = null;
+/* حجم الرسم نفسه يعبّر عن المعنى لكلمتَي "كبير/صغير" تحديداً — لا نص فقط */
+function emojiSizeClass(en){
+  if(en==='Big') return 'size-big';
+  if(en==='Small') return 'size-small';
+  return '';
+}
 function runDragDrop(items, onDone){
   const chosen = shuffle(items.slice()).slice(0, Math.min(6, items.length));
   dragState = {items:chosen, placed:0, onDone};
   document.getElementById('dragTargets').innerHTML = chosen.map(it=>
-    `<div class="drag-target" data-target="${it.id}"><span class="dt-emoji">${it.emoji}</span></div>`).join('');
+    `<div class="drag-target" data-target="${it.id}"><span class="dt-emoji ${emojiSizeClass(it.en)}">${it.emoji}</span></div>`).join('');
   document.getElementById('dragPool').innerHTML = shuffle(chosen.slice()).map(it=>
     `<div class="drag-chip" data-chip="${it.id}">${it.en}</div>`).join('');
   document.getElementById('dragCount').textContent = '0/'+chosen.length;
@@ -2659,24 +3743,57 @@ function wireDragChips(){
     chip.onpointerdown = e=>{
       e.preventDefault();
       const rect = chip.getBoundingClientRect();
-      try{ chip.setPointerCapture(e.pointerId); }catch(err){}
       chip.classList.add('dragging');
       chip.style.left = rect.left+'px'; chip.style.top = rect.top+'px'; chip.style.width = rect.width+'px';
-      const offX = e.clientX-rect.left, offY = e.clientY-rect.top;
-      function move(ev){ chip.style.left = (ev.clientX-offX)+'px'; chip.style.top = (ev.clientY-offY)+'px'; }
-      function up(ev){
-        chip.removeEventListener('pointermove', move);
-        chip.removeEventListener('pointerup', up);
+      const LIFT_Y = 44; // ترفع الكلمة فوق الإصبع لتبقى مرئية من اللحظة الأولى، لا مخفية تحته
+      const offX = e.clientX-rect.left, offY = (e.clientY-rect.top) + LIFT_Y;
+      let ended = false;
+      let hoverTarget = null;
+      /* أفضل هدف تراكباً مع البلورة الآن — حساب هندسي مباشر لا يعتمد
+         على واجهة المتصفح elementFromPoint إطلاقاً، فيعمل بثبات على
+         كل متصفح بلا استثناء بغضّ النظر عن دعمه لتلك الواجهة. */
+      function bestOverlappingTarget(){
+        const chipRect = chip.getBoundingClientRect();
+        let best = null, bestRatio = 0;
+        document.querySelectorAll('.drag-target:not(.filled)').forEach(t=>{
+          const tRect = t.getBoundingClientRect();
+          const ox = Math.max(0, Math.min(chipRect.right, tRect.right) - Math.max(chipRect.left, tRect.left));
+          const oy = Math.max(0, Math.min(chipRect.bottom, tRect.bottom) - Math.max(chipRect.top, tRect.top));
+          const overlapArea = ox*oy;
+          const chipArea = chipRect.width*chipRect.height;
+          const ratio = chipArea>0 ? overlapArea/chipArea : 0;
+          if(ratio > bestRatio){ bestRatio = ratio; best = t; }
+        });
+        return bestRatio >= 0.3 ? best : null;
+      }
+      function move(ev){
+        chip.style.left = (ev.clientX-offX)+'px'; chip.style.top = (ev.clientY-offY)+'px';
+        const over = bestOverlappingTarget();
+        if(over !== hoverTarget){
+          if(hoverTarget) hoverTarget.classList.remove('drag-hover');
+          hoverTarget = over;
+          if(hoverTarget) hoverTarget.classList.add('drag-hover');
+        }
+      }
+      function cleanup(){
+        document.removeEventListener('pointermove', move);
+        document.removeEventListener('pointerup', up);
+        document.removeEventListener('pointercancel', cancel);
+        if(hoverTarget) hoverTarget.classList.remove('drag-hover');
         chip.classList.remove('dragging');
         chip.style.position=''; chip.style.left=''; chip.style.top=''; chip.style.width='';
-        const dropEl = document.elementFromPoint(ev.clientX, ev.clientY);
-        const target = dropEl ? dropEl.closest('.drag-target') : null;
+      }
+      function up(ev){
+        if(ended) return; ended = true;
+        const target = bestOverlappingTarget();
+        cleanup();
         const chipId = chip.dataset.chip;
-        if(target && target.dataset.target===chipId && !target.classList.contains('filled')){
+        if(target && target.dataset.target===chipId){
           target.classList.add('filled');
           const item = dragState.items.find(i=>i.id===chipId);
-          target.innerHTML = `<span class="dt-emoji">${item.emoji}</span>`;
+          target.innerHTML = `<span class="dt-emoji ${emojiSizeClass(item.en)}">${item.emoji}</span>`;
           chip.classList.add('placed');
+          recordMastery(item.en, true);
           dragState.placed++;
           document.getElementById('dragCount').textContent = dragState.placed+'/'+dragState.items.length;
           playChime(); grantReward(3,1,0);
@@ -2690,8 +3807,10 @@ function wireDragChips(){
           playOops();
         }
       }
-      chip.addEventListener('pointermove', move);
-      chip.addEventListener('pointerup', up);
+      function cancel(){ if(ended) return; ended = true; cleanup(); }
+      document.addEventListener('pointermove', move);
+      document.addEventListener('pointerup', up);
+      document.addEventListener('pointercancel', cancel);
     };
   });
 }
@@ -2716,11 +3835,38 @@ function worldTitleFor(worldKey){
   const w = MAP_WORLDS.find(w=>w.key===worldKey || w.catKey===worldKey);
   return w ? w.title : worldKey;
 }
+/* World-specific BONUS activities — optional extras layered on top of the
+   standard four (never required for world mastery), giving a world its
+   own personality. A future island's signature activity is one more
+   entry here, following the same {key,label,icon} shape. */
+const WORLD_BONUS_ACTIVITIES = {
+  numbers: {key:'counttap', label:'Count & Tap', icon:ICONS.star},
+  animals: {key:'sounds', label:'Animal Sounds', icon:ICONS.pawSound},
+  fruits: {key:'juice', label:'Make Juice', icon:ICONS.juice},
+  colors: {key:'mix', label:'Mix Colors', icon:ICONS.palette},
+  shapes: {key:'count', label:'Shape Puzzle', icon:ICONS.gem},
+  family: {key:'tree', label:'Family Riddles', icon:ICONS.family},
+  body: {key:'senses', label:'What Do They Do?', icon:ICONS.person},
+  feelings: {key:'scenario', label:'How Would You Feel?', icon:ICONS.heart},
+  school: {key:'tools', label:'What Do You Need?', icon:ICONS.pencil},
+  actions: {key:'sentence', label:'Complete the Sentence', icon:ICONS.target},
+  ocean: {key:'sea', label:'Who Lives in the Sea?', icon:ICONS.target},
+  opposites: {key:'findopp', label:'Find the Opposite', icon:ICONS.target},
+  mercury: {key:'where', label:'Where Is It?', icon:ICONS.target},
+  venus: {key:'weather', label:"What's the Weather?", icon:ICONS.target},
+  earth: {key:'nature', label:'Find in Nature', icon:ICONS.target},
+  mars: {key:'travel', label:'How Do You Travel?', icon:ICONS.target},
+  jupiter: {key:'sport', label:'Which Sport?', icon:ICONS.target},
+  saturn: {key:'wh', label:'Ask It Right', icon:ICONS.target},
+  uranus: {key:'place', label:'Where Do You Go?', icon:ICONS.target},
+  neptune: {key:'food', label:'Healthy Choices', icon:ICONS.target},
+  pluto: {key:'space', label:'Space Riddles', icon:ICONS.target},
+};
 function renderActivityButtons(worldKey, items, containerId){
   const learningDone = DEV_MODE || (items.length>0 && getLearnedCount(worldKey) >= items.length);
   const act = ensureActivityState(worldKey);
   const el = document.getElementById(containerId);
-  el.innerHTML = ACTIVITY_DEFS.map(a=>{
+  let html = ACTIVITY_DEFS.map(a=>{
     const done = act[a.key];
     const locked = !learningDone;
     return `<button class="activity-btn ${locked?'locked':''}" ${locked?'disabled':''} onclick="launchActivity('${worldKey}','${a.key}')">
@@ -2728,11 +3874,23 @@ function renderActivityButtons(worldKey, items, containerId){
       <div class="act-label">${a.label}</div>
     </button>`;
   }).join('');
+  const bonus = WORLD_BONUS_ACTIVITIES[worldKey];
+  if(bonus){
+    const done = act[bonus.key];
+    const locked = !learningDone;
+    html += `<button class="activity-btn ${locked?'locked':''}" ${locked?'disabled':''} onclick="launchActivity('${worldKey}','${bonus.key}')">
+      <div class="act-icon">${done?ICONS.check:bonus.icon}</div>
+      <div class="act-label">${bonus.label}</div>
+    </button>`;
+  }
+  el.innerHTML = html;
 }
 function launchActivity(worldKey, actKey){
   playPop();
   const items = getWorldItems(worldKey);
-  if(actKey==='match'){
+  if(actKey==='counttap' && worldKey==='numbers'){
+    runNumberCountGame(items, (score,total)=>finishActivity(worldKey,'counttap',score,total));
+  } else if(actKey==='match'){
     runQuizEngine(shuffle(items.slice()), items, (score,total)=>finishActivity(worldKey,'match',score,total), 'read');
   } else if(actKey==='listen'){
     runQuizEngine(shuffle(items.slice()), items, (score,total)=>finishActivity(worldKey,'listen',score,total), 'listen');
@@ -2740,6 +3898,46 @@ function launchActivity(worldKey, actKey){
     runVocabMemory(items, (score,total)=>finishActivity(worldKey,'memory',score,total));
   } else if(actKey==='drag'){
     runDragDrop(items, (score,total)=>finishActivity(worldKey,'drag',score,total));
+  } else if(actKey==='sounds' && worldKey==='animals'){
+    runAnimalSoundsGame(items, (score,total)=>finishActivity(worldKey,'sounds',score,total));
+  } else if(actKey==='juice' && worldKey==='fruits'){
+    runFruitJuiceGame(items, (score,total)=>finishActivity(worldKey,'juice',score,total));
+  } else if(actKey==='mix' && worldKey==='colors'){
+    runColorMixGame((score,total)=>finishActivity(worldKey,'mix',score,total));
+  } else if(actKey==='count' && worldKey==='shapes'){
+    runShapeCountGame((score,total)=>finishActivity(worldKey,'count',score,total));
+  } else if(actKey==='tree' && worldKey==='family'){
+    runFamilyRiddleGame((score,total)=>finishActivity(worldKey,'tree',score,total));
+  } else if(actKey==='senses' && worldKey==='body'){
+    runBodyFunctionGame((score,total)=>finishActivity(worldKey,'senses',score,total));
+  } else if(actKey==='scenario' && worldKey==='feelings'){
+    runFeelingScenarioGame((score,total)=>finishActivity(worldKey,'scenario',score,total));
+  } else if(actKey==='tools' && worldKey==='school'){
+    runSchoolToolGame((score,total)=>finishActivity(worldKey,'tools',score,total));
+  } else if(actKey==='sentence' && worldKey==='actions'){
+    runActionSentenceGame((score,total)=>finishActivity(worldKey,'sentence',score,total));
+  } else if(actKey==='sea' && worldKey==='ocean'){
+    runOceanSeaGame((score,total)=>finishActivity(worldKey,'sea',score,total));
+  } else if(actKey==='findopp' && worldKey==='opposites'){
+    runOppositesGame((score,total)=>finishActivity(worldKey,'findopp',score,total));
+  } else if(actKey==='where' && worldKey==='mercury'){
+    runMercuryWhereGame((score,total)=>finishActivity(worldKey,'where',score,total));
+  } else if(actKey==='weather' && worldKey==='venus'){
+    runVenusWeatherGame((score,total)=>finishActivity(worldKey,'weather',score,total));
+  } else if(actKey==='nature' && worldKey==='earth'){
+    runEarthNatureGame((score,total)=>finishActivity(worldKey,'nature',score,total));
+  } else if(actKey==='travel' && worldKey==='mars'){
+    runMarsTravelGame((score,total)=>finishActivity(worldKey,'travel',score,total));
+  } else if(actKey==='sport' && worldKey==='jupiter'){
+    runJupiterSportGame((score,total)=>finishActivity(worldKey,'sport',score,total));
+  } else if(actKey==='wh' && worldKey==='saturn'){
+    runSaturnWhGame((score,total)=>finishActivity(worldKey,'wh',score,total));
+  } else if(actKey==='place' && worldKey==='uranus'){
+    runUranusPlaceGame((score,total)=>finishActivity(worldKey,'place',score,total));
+  } else if(actKey==='food' && worldKey==='neptune'){
+    runNeptuneFoodGame((score,total)=>finishActivity(worldKey,'food',score,total));
+  } else if(actKey==='space' && worldKey==='pluto'){
+    runPlutoSpaceGame((score,total)=>finishActivity(worldKey,'space',score,total));
   }
 }
 function finishActivity(worldKey, actKey, score, total){
@@ -2752,7 +3950,7 @@ function finishActivity(worldKey, actKey, score, total){
     playFanfare();
     celebrate('Activity Complete!','Great work exploring '+worldTitleFor(worldKey)+'!',[[ICONS.star,'+1'],[ICONS.coin,'+3']]);
   } else {
-    sparkSay(pick(ENCOURAGE_LINES), 'encourage');
+    sparkSay(pick(ENCOURAGE_LINES), 'encourage', {duration:2200});
   }
 }
 function refreshWorldScreen(worldKey){
@@ -2770,11 +3968,12 @@ function checkWorldComplete(worldKey){
     if(!STATE.badges.find(b=>b.id===badgeId)){
       awardBadge(badgeId, worldTitleFor(worldKey)+' Master');
       if(worldKey!=='words' && !STATE.catQuizPassed.includes(worldKey)) STATE.catQuizPassed.push(worldKey);
+      grantReward(0, 20, 5);
       saveState();
       pendingIslandCelebration = worldKey;
       renderMap();
       playFanfare();
-      showCertificate(worldTitleFor(worldKey)+' — World Complete!');
+      showCertificate(worldTitleFor(worldKey)+' — World Complete!', [[ICONS.star,'+5'],[ICONS.coin,'+20']]);
     }
   }
 }
@@ -2820,6 +4019,8 @@ function openLetterLesson(letter){
   const data = LETTER_LESSON_DATA[letter];
   if(!data) return;
   lessonState = {letter, step:0, caseHeard:{up:false, low:false}, vocabPracticed:new Set()};
+  const wm = document.getElementById('lessonWatermark');
+  if(wm) wm.textContent = data.letter + data.lower;
   showScreen('screenLetterLesson');
   renderLessonStep();
 }
@@ -2853,13 +4054,21 @@ function showLessonContinue(label, enabled){
 }
 function hideLessonContinue(){ document.getElementById('lessonContinueBtn').classList.add('hidden'); }
 
+const LETTER_INTRO_LINES = [
+  "Today we're learning the letter {L}!",
+  "Get ready — the letter {L} is waiting for us!",
+  "Let's discover the letter {L} together!",
+  "Ooh, {L} is one of my favorites — let's go!",
+  "Adventure time! We're exploring the letter {L}!"
+];
+const PRACTICE_PRAISE = ["Nice saying!","Great voice!","Love it!","Well said!","You've got this!"];
 function renderIntroStep(){
   const d = LETTER_LESSON_DATA[lessonState.letter];
   document.getElementById('lessonStepContent').innerHTML =
     `<div class="lesson-big-letters">${d.letter}<span class="lc">${d.lower}</span></div>
      <div class="lesson-caption" style="margin-top:14px;">Get ready for a magical letter adventure!</div>`;
   showLessonContinue("Let's Go!", true);
-  sparkSay("Today we're learning the letter "+d.letter+"!", 'excited', {duration:4000});
+  sparkSay(pick(LETTER_INTRO_LINES).replace('{L}', d.letter), 'excited', {duration:4000});
 }
 function renderCaseStep(){
   document.getElementById('lessonStepContent').innerHTML =
@@ -3040,6 +4249,7 @@ function openLessonVocab(i){
     closeOverlay('wordOverlay');
     renderVocabGrid();
     showLessonContinue('Continue', lessonState.vocabPracticed.size >= d.vocab.length);
+    sparkSay(pick(PRACTICE_PRAISE), 'happy', {speak:false, duration:1300});
   };
   btns[1].style.display = 'none';
 }
@@ -3054,6 +4264,13 @@ function startLessonQuiz(){
   const items = d.vocab.map((v,i)=>({id:'lv_'+i, en:v.en, emoji:v.emoji}));
   runQuizEngine(shuffle(items.slice()), items, ()=>{ lessonComplete(); }, 'read');
 }
+const LETTER_COMPLETE_LINES = [
+  ["Lesson Complete!","You mastered the letter {L}!"],
+  ["Amazing work!","The letter {L} is yours now!"],
+  ["You did it!","{L} is officially mastered!"],
+  ["Fantastic!","You know the letter {L} so well now!"],
+  ["Way to go!","{L} doesn't stand a chance against you!"]
+];
 function lessonComplete(){
   const letter = lessonState.letter;
   const isNewLetter = !STATE.lettersDone.includes('let_'+letter);
@@ -3062,15 +4279,23 @@ function lessonComplete(){
   if(!STATE.letterLessonsDone.includes(letter)) STATE.letterLessonsDone.push(letter);
   if(isNewLetter) bumpLettersToday();
   grantReward(40, 10, 3);
+  let justMasteredAlphabet = false;
   if(STATE.lettersDone.length>=26 && !STATE.badges.find(b=>b.id==='world_alphabet')){
     awardBadge('world_alphabet','Alphabet Island Master');
+    grantReward(0, 20, 5);
     pendingIslandCelebration = 'alphabet';
+    justMasteredAlphabet = true;
   }
   saveState();
   showScreen('screenAlphabet');
   renderAlphabet(); renderHeader(); renderMap();
   playFanfare();
-  celebrate('Lesson Complete!','You mastered the letter '+letter+'!',[[ICONS.star,'+3'],[ICONS.coin,'+10']]);
+  if(justMasteredAlphabet){
+    showCertificate('Alphabet Island — World Complete!', [[ICONS.star,'+5'],[ICONS.coin,'+20']]);
+  } else {
+    const cLine = pick(LETTER_COMPLETE_LINES);
+    celebrate(cLine[0], cLine[1].replace('{L}', letter), [[ICONS.star,'+3'],[ICONS.coin,'+10']]);
+  }
   checkAchievements();
 }
 function bumpLettersToday(){
@@ -3142,9 +4367,258 @@ function startSingleWordQuiz(){
    ============================================================ */
 let activeCat = null;
 function catItems(cat){ return cat.items.map((it,i)=>({id:cat.key+'_'+i, en:it[0], emoji:it[1]})); }
+
+/* ============================================================
+   CHECKPOINT: THE ROAD — first stage of the assessment adventure.
+   Not a lesson: it samples only from what the child has ALREADY
+   completed across the islands, to answer "does it stick?" rather
+   than "did they finish?". No visible timer (avoids pressure); time
+   per word is logged silently for a future parent-facing trend view.
+   ============================================================ */
+const ISLAND_CHECKPOINT_KEYS = ['numbers','animals','fruits','colors','shapes','family','body','feelings','school','actions','ocean'];
+const PLANET_CHECKPOINT_KEYS = ['mercury','venus','earth','mars','jupiter','saturn','uranus','neptune','pluto'];
+function getPoolByKeys(keys){
+  const items = [];
+  keys.forEach(key=>{
+    const cat = findCat(key);
+    if(!cat) return;
+    const done = STATE.catProgress[key]||[];
+    catItems(cat).forEach(it=>{ if(done.includes(it.id)) items.push(it); });
+  });
+  return items;
+}
+let wordCheckState = null;
+function startWordCheckpoint(type, keys, emoji, minPool, count){
+  const pool = getPoolByKeys(keys);
+  if(pool.length < minPool){ showToast('Explore a bit more first! '+emoji); return; }
+  const questions = shuffle(pool.slice()).slice(0, Math.min(count, pool.length));
+  wordCheckState = {type, emoji, questions, pool, idx:0, score:0, wrong:[], startTime:Date.now(), qStart:Date.now()};
+  document.getElementById('quizAudioBtn').onclick = repeatWordCheckAudio;
+  renderWordCheckQuestion();
+  openOverlay('quizOverlay');
+}
+function renderWordCheckQuestion(){
+  const q = wordCheckState.questions[wordCheckState.idx];
+  wordCheckState.qStart = Date.now();
+  document.getElementById('quizCount').textContent = 'Word '+(wordCheckState.idx+1)+'/'+wordCheckState.questions.length;
+  document.getElementById('quizPrompt').textContent = wordCheckState.emoji+' Catch this word!';
+  document.getElementById('quizProgFill').style.width = (wordCheckState.idx/wordCheckState.questions.length*100)+'%';
+  const distractors = shuffle(wordCheckState.pool.filter(p=>p.id!==q.id && p.en!==q.en)).slice(0,3);
+  const choices = shuffle([q, ...distractors]);
+  document.getElementById('quizChoices').innerHTML = choices.map(c=>
+    `<button class="choice" data-id="${c.id}" onclick="answerWordCheck('${c.id}', event)"><span>${c.emoji}</span><span class="clabel">${c.en}</span></button>`).join('');
+  setTimeout(()=>speak(q.en, 0.95), 300);
+}
+function repeatWordCheckAudio(){ const q = wordCheckState.questions[wordCheckState.idx]; speak(q.en, 0.95); }
+function answerWordCheck(choiceId, ev){
+  const q = wordCheckState.questions[wordCheckState.idx];
+  const btns = document.querySelectorAll('#quizChoices .choice');
+  btns.forEach(b=>b.onclick=null);
+  const correct = choiceId===q.id;
+  const elapsedMs = Date.now() - wordCheckState.qStart;
+  btns.forEach(b=>{
+    if(b.dataset.id===q.id) b.classList.add('correct');
+    else if(b.dataset.id===choiceId) b.classList.add('wrong');
+  });
+  function advance(){
+    wordCheckState.idx++;
+    if(wordCheckState.idx < wordCheckState.questions.length){ renderWordCheckQuestion(); }
+    else{
+      closeOverlay('quizOverlay');
+      document.getElementById('quizAudioBtn').onclick = repeatQuizAudio;
+      finishWordCheckpoint();
+    }
+  }
+  if(correct){
+    wordCheckState.score++;
+    recordMastery(q.en, true);
+    playChime();
+    if(ev){ const r=ev.currentTarget.getBoundingClientRect(); sparkleBurstAt(r.left+r.width/2, r.top+r.height/2, 8); }
+    setTimeout(advance, 700);
+  } else {
+    playOops();
+    recordMastery(q.en, false);
+    wordCheckState.wrong.push({en:q.en, ms:elapsedMs});
+    encourageThenAdvance(advance);
+  }
+}
+/* طبقة الإتقان — تُسجَّل هنا كل إجابة أثناء رحلات القياس تحديداً (لا كل
+   نشاط في التطبيق بعد، هذه المرحلة الأولى فقط). الهدف: معرفة هل الطفل
+   "ما زال يتذكّر" كلمة تعلّمها سابقاً، لا فقط "هل عرفها مرة واحدة". */
+function recordMastery(word, wasCorrect){
+  STATE.mastery = STATE.mastery || {};
+  const m = STATE.mastery[word] || {correct:0, wrong:0, lastSeen:null, lastResult:null};
+  if(wasCorrect) m.correct++; else m.wrong++;
+  m.lastSeen = new Date().toISOString();
+  m.lastResult = wasCorrect ? 'correct' : 'wrong';
+  STATE.mastery[word] = m;
+}
+/* الكلمات التي تحتاج مراجعة — إما آخر نتيجة كانت خطأ، أو نسبة الصواب
+   منخفضة عبر كل المحاولات — الأحدث أولاً، لتُظهر للأهل ما يحتاج تركيزاً الآن. */
+function getWeakWords(limit){
+  const entries = Object.entries(STATE.mastery||{});
+  const weak = entries.filter(([word,m])=>{
+    const total = m.correct+m.wrong;
+    return m.lastResult==='wrong' || (total>=2 && m.correct/total < 0.6);
+  });
+  weak.sort((a,b)=> new Date(b[1].lastSeen) - new Date(a[1].lastSeen));
+  return weak.slice(0, limit||6).map(([word,m])=>({word, ...m}));
+}
+const CHECKPOINT_TITLES = {car:'the Road', spaceship:'the Stars', boat:'the Grand Voyage'};
+function finishWordCheckpoint(){
+  const {type, score, questions, wrong, startTime} = wordCheckState;
+  STATE.checkpoints = STATE.checkpoints || [];
+  STATE.checkpoints.push({date:new Date().toISOString(), type, score, total:questions.length, wrong, totalMs:Date.now()-startTime});
+  saveState();
+  grantReward(score*2, score, 0);
+  celebrate('Checkpoint Complete!', 'You caught '+score+' out of '+questions.length+' words on '+(CHECKPOINT_TITLES[type]||'the way')+'!', [[ICONS.star,'+'+score],[ICONS.coin,'+'+(score*2)]]);
+  renderParentZone();
+}
+function startCarCheckpoint(){ startWordCheckpoint('car', ISLAND_CHECKPOINT_KEYS, '🚗', 8, 12); }
+function startSpaceshipCheckpoint(){ startWordCheckpoint('spaceship', PLANET_CHECKPOINT_KEYS, '🚀', 8, 12); }
+function startBoatCheckpoint(){ startWordCheckpoint('boat', ISLAND_CHECKPOINT_KEYS.concat(PLANET_CHECKPOINT_KEYS), '⛵', 15, 16); }
+
+/* ============================================================
+   PLANE CHECKPOINT — recaps The Star Bridge. Different shape of
+   data (full sentences, not word+emoji), so it gets its own small
+   engine rather than being forced into the word-catch one.
+   ============================================================ */
+function joinSentenceWords(words){
+  let s = '';
+  words.forEach((w,i)=>{
+    if(w==='.'||w==='?'){ s += w; }
+    else { s += (i>0 ? ' ' : '') + w; }
+  });
+  return s;
+}
+function getSentenceLearnedPool(){
+  const items = [];
+  [1,2,3,4].forEach(lv=>{
+    const done = STATE.sentenceProgress[lv]||[];
+    done.forEach(idx=>{
+      const data = SENTENCE_LEVELS[lv] && SENTENCE_LEVELS[lv][idx];
+      if(data) items.push({id:'sb_'+lv+'_'+idx, text: joinSentenceWords(data.words)});
+    });
+  });
+  return items;
+}
+let planeCheckState = null;
+function startPlaneCheckpoint(){
+  const pool = getSentenceLearnedPool();
+  if(pool.length < 6){ showToast('Complete a few more sentences first! ✈️'); return; }
+  const questions = shuffle(pool.slice()).slice(0, Math.min(10, pool.length));
+  planeCheckState = {questions, pool, idx:0, score:0, wrong:[], startTime:Date.now(), qStart:Date.now()};
+  document.getElementById('quizAudioBtn').onclick = repeatPlaneCheckAudio;
+  renderPlaneCheckQuestion();
+  openOverlay('quizOverlay');
+}
+function renderPlaneCheckQuestion(){
+  const q = planeCheckState.questions[planeCheckState.idx];
+  planeCheckState.qStart = Date.now();
+  document.getElementById('quizCount').textContent = 'Sentence '+(planeCheckState.idx+1)+'/'+planeCheckState.questions.length;
+  document.getElementById('quizPrompt').textContent = '✈️ Which sentence do you hear?';
+  document.getElementById('quizProgFill').style.width = (planeCheckState.idx/planeCheckState.questions.length*100)+'%';
+  const distractors = shuffle(planeCheckState.pool.filter(p=>p.id!==q.id && p.text!==q.text)).slice(0,3);
+  const choices = shuffle([q, ...distractors]);
+  document.getElementById('quizChoices').innerHTML =
+    `<div style="grid-column:1/-1;display:flex;flex-direction:column;gap:10px;">` +
+    choices.map(c=>`<button class="choice" style="font-size:16px;padding:14px 12px;text-align:center;" data-id="${c.id}" onclick="answerPlaneCheck('${c.id}', event)">${c.text}</button>`).join('') +
+    `</div>`;
+  setTimeout(()=>speak(q.text, 0.9), 300);
+}
+function repeatPlaneCheckAudio(){ const q = planeCheckState.questions[planeCheckState.idx]; speak(q.text, 0.9); }
+function answerPlaneCheck(choiceId, ev){
+  const q = planeCheckState.questions[planeCheckState.idx];
+  const btns = document.querySelectorAll('#quizChoices .choice');
+  btns.forEach(b=>b.onclick=null);
+  const correct = choiceId===q.id;
+  const elapsedMs = Date.now() - planeCheckState.qStart;
+  btns.forEach(b=>{
+    if(b.dataset.id===q.id) b.classList.add('correct');
+    else if(b.dataset.id===choiceId) b.classList.add('wrong');
+  });
+  function advance(){
+    planeCheckState.idx++;
+    if(planeCheckState.idx < planeCheckState.questions.length){ renderPlaneCheckQuestion(); }
+    else{
+      closeOverlay('quizOverlay');
+      document.getElementById('quizAudioBtn').onclick = repeatQuizAudio;
+      finishPlaneCheckpoint();
+    }
+  }
+  if(correct){
+    planeCheckState.score++;
+    recordMastery(q.text, true);
+    playChime();
+    if(ev){ const r=ev.currentTarget.getBoundingClientRect(); sparkleBurstAt(r.left+r.width/2, r.top+r.height/2, 8); }
+    setTimeout(advance, 700);
+  } else {
+    playOops();
+    recordMastery(q.text, false);
+    planeCheckState.wrong.push({en:q.text, ms:elapsedMs});
+    encourageThenAdvance(advance);
+  }
+}
+function finishPlaneCheckpoint(){
+  const {score, questions, wrong, startTime} = planeCheckState;
+  STATE.checkpoints = STATE.checkpoints || [];
+  STATE.checkpoints.push({date:new Date().toISOString(), type:'plane', score, total:questions.length, wrong, totalMs:Date.now()-startTime});
+  saveState();
+  grantReward(score*2, score, 0);
+  celebrate('Checkpoint Complete!', 'You matched '+score+' out of '+questions.length+' sentences in the sky!', [[ICONS.star,'+'+score],[ICONS.coin,'+'+(score*2)]]);
+  renderParentZone();
+}
+function renderCheckpointSummary(){
+  const el = document.getElementById('checkpointSummaryList');
+  if(!el) return;
+  const list = STATE.checkpoints || [];
+  const labels = {car:['🚗','The Road'], plane:['✈️','The Sky'], spaceship:['🚀','The Stars'], boat:['⛵','Grand Voyage']};
+  const rows = Object.keys(labels).map(type=>{
+    const runs = list.filter(c=>c.type===type);
+    const last = runs.length ? runs[runs.length-1] : null;
+    const [emoji, name] = labels[type];
+    if(!last){
+      return `<div class="sr-sub" style="padding:4px 0;">${emoji} ${name}: not tried yet</div>`;
+    }
+    const pct = Math.round(last.score/last.total*100);
+    return `<div class="sr-sub" style="padding:4px 0;">${emoji} ${name}: <b>${last.score}/${last.total}</b> (${pct}%) — ${new Date(last.date).toLocaleDateString()}</div>`;
+  });
+  el.innerHTML = rows.join('');
+}
+const CATEGORY_TAGLINES = {
+  numbers:'Where every number has a story',
+  animals:'Meet your wild new friends',
+  fruits:'Sweet treasures growing everywhere',
+  colors:'A world painted with imagination',
+  shapes:'Wonders built from every shape',
+  family:'Warm hearts, warm home',
+  body:'Discover your amazing self',
+  feelings:'Every feeling has a name',
+  school:'Where every day is an adventure',
+  actions:'Every hero needs a mission',
+  ocean:'A whole world living beneath the waves',
+  opposites:'Every side has another side',
+  mercury:'Every home has a story to tell',
+  venus:'The hottest planet knows every kind of sky',
+  earth:'Our home, alive with mountains, rivers, and light',
+  mars:'The explorer\'s planet — always on the move',
+  jupiter:'The biggest planet, for the biggest energy',
+  saturn:'The ringed planet — always asking great questions',
+  uranus:'The tilted planet — always exploring new places',
+  neptune:'Deep blue and full of good things to grow',
+  pluto:'Small, far, and full of space wonders',
+};
 function openCategory(key){
   activeCat = findCat(key);
-  document.getElementById('catDetailTitle').textContent = (MAP_WORLDS.find(w=>w.catKey===key)||{}).title || activeCat.title;
+  const worldInfo = MAP_WORLDS.find(w=>w.catKey===key) || {};
+  document.getElementById('catDetailTitle').textContent = worldInfo.title || activeCat.title;
+  document.getElementById('catHeroTagline').textContent = CATEGORY_TAGLINES[key] || '';
+  const hero = document.getElementById('catHero');
+  const sky = WORLD_BG[key] || ['#3FD8C9','#1FA994'];
+  hero.style.setProperty('--hc1', sky[0]);
+  hero.style.setProperty('--hc2', sky[1]);
+  const pct = (STATE.catProgress[key]||[]).length / activeCat.items.length;
+  document.getElementById('catHeroIsland').innerHTML = worldSceneSVG(key, pct, false);
   renderCatDetail();
   showScreen('screenCategoryDetail');
 }
@@ -3161,9 +4635,30 @@ function renderCatDetail(){
   }).join('');
   const pct = Math.round(doneIds.length/items.length*100);
   document.getElementById('catProgFill').style.width = pct+'%';
+  const heroEl = document.getElementById('catHeroIsland');
+  if(heroEl) heroEl.innerHTML = worldSceneSVG(activeCat.key, doneIds.length/items.length, false);
   renderActivityButtons(activeCat.key, items, 'catActivities');
 }
 let activeCatWord = null;
+/* Animal Forest's signature: each animal has a real English sound-word
+   (Roar!, Woof Woof!, Meow!...) — genuine vocabulary, not decoration,
+   played in a playful voice right after the animal's name. */
+const ANIMAL_SOUNDS = {
+  Dog:'Woof! Woof!', Cat:'Meow!', Lion:'Roar!', Elephant:'Toot! Toot!',
+  Rabbit:'Hop! Hop!', Bear:'Grr!', Monkey:'Ooh ooh, ah ah!', Horse:'Neigh!',
+  Duck:'Quack! Quack!', Tiger:'Growl!'
+};
+function speakAnimalSound(text){
+  if(!('speechSynthesis' in window)) return;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'en-US'; u.rate = 0.85; u.pitch = 1.4; u.volume = STATE.settings.soundVolume;
+  window.speechSynthesis.speak(u);
+}
+const ACTION_SENTENCES = {
+  Eat:'I like to eat.', Run:'I can run fast.', Jump:'I can jump high.', Sleep:'I sleep at night.',
+  Play:'I love to play.', Walk:'I can walk.', Drink:'I drink water.', Read:'I like to read.',
+  Sit:'I will sit down.', Sing:'I love to sing.'
+};
 function openCatWord(id){
   playPop();
   resetWordOverlayDefaults();
@@ -3171,10 +4666,16 @@ function openCatWord(id){
   activeCatWord = items.find(i=>i.id===id);
   document.getElementById('wdPic').textContent = activeCatWord.emoji;
   document.getElementById('wdWord').textContent = activeCatWord.en;
-  document.getElementById('wdSentence').textContent = '"This is a '+activeCatWord.en.toLowerCase()+'."';
+  const sentence = (activeCat.key==='actions' && ACTION_SENTENCES[activeCatWord.en])
+    ? ACTION_SENTENCES[activeCatWord.en]
+    : 'This is a '+activeCatWord.en.toLowerCase()+'.';
+  document.getElementById('wdSentence').textContent = '"'+sentence+'"';
   setSpeakTarget(activeCatWord.en);
   openOverlay('wordOverlay');
   setTimeout(()=>speak(activeCatWord.en,1), 150);
+  if(activeCat.key==='animals' && ANIMAL_SOUNDS[activeCatWord.en]){
+    setTimeout(()=>speakAnimalSound(ANIMAL_SOUNDS[activeCatWord.en]), 1300);
+  }
   document.querySelectorAll('#wordOverlay .btn3d')[0].onclick = markCatWordDone;
   document.querySelectorAll('#wordOverlay .btn3d')[1].onclick = ()=>{
     closeOverlay('wordOverlay');
@@ -3228,13 +4729,228 @@ function awardBadge(id, title){
   STATE.badges.push({id,title});
   saveState();
 }
-function showCertificate(line){
+function showCertificate(line, bonusStats){
   document.getElementById('certSparkWrap').innerHTML = sparkMarkup('excited');
   document.getElementById('certName').textContent = STATE.name;
   document.getElementById('certLine').textContent = line;
+  const bonusEl = document.getElementById('certBonusStats');
+  bonusEl.innerHTML = bonusStats ? bonusStats.map(([icon,val])=>
+    `<div class="reward-stat">${icon}<b>${val}</b></div>`).join('') : '';
   openOverlay('certOverlay');
   burstConfetti();
   renderHeader(); renderMap();
+}
+
+/* ============================================================
+   SENTENCE BUILDER — WORKING PROTOTYPE. Tap-to-place, not
+   drag-and-drop: more reliable for young children's motor skills
+   and touchscreens. Reuses existing sound/reward/encouragement
+   systems. SENTENCE_LEVELS holds one array per level so the same
+   engine below serves all of them — adding Level 3 later is just
+   another entry here, no engine changes needed.
+   ============================================================ */
+const SENTENCE_LEVELS = {
+  1: [
+    {words:['I','eat','.'], distractors:['run']},
+    {words:['I','run','.'], distractors:['eat']},
+    {words:['I','play','.'], distractors:['sleep']},
+    {words:['I','sleep','.'], distractors:['play']},
+    {words:['I','sing','.'], distractors:['walk']},
+    {words:['I','walk','.'], distractors:['sing']},
+    {words:['I','jump','.'], distractors:['sit']},
+    {words:['I','drink','.'], distractors:['read']},
+    {words:['I','read','.'], distractors:['drink']},
+    {words:['I','sit','.'], distractors:['jump']},
+  ],
+  2: [
+    {words:['I','eat','an','apple','.'], distractors:['a']},
+    {words:['I','drink','water','.'], distractors:['eat']},
+    {words:['I','read','a','book','.'], distractors:['an']},
+    {words:['I','see','a','dog','.'], distractors:['an']},
+    {words:['I','eat','a','banana','.'], distractors:['an']},
+    {words:['I','see','a','cat','.'], distractors:['drink']},
+    {words:['I','drink','milk','.'], distractors:['water']},
+    {words:['I','see','a','car','.'], distractors:['an']},
+    {words:['I','see','the','sun','.'], distractors:['a']},
+    {words:['I','see','the','moon','.'], distractors:['an']},
+  ],
+  3: [
+    {words:['The','cat','is','happy','.'], distractors:['sad']},
+    {words:['The','dog','is','sad','.'], distractors:['happy']},
+    {words:['I','have','a','red','ball','.'], distractors:['blue']},
+    {words:['I','have','a','blue','car','.'], distractors:['red']},
+    {words:['The','baby','is','tired','.'], distractors:['happy']},
+    {words:['I','have','a','green','apple','.'], distractors:['red']},
+    {words:['Mom','is','excited','.'], distractors:['sad']},
+    {words:['I','have','a','yellow','banana','.'], distractors:['green']},
+    {words:['I','have','a','purple','pen','.'], distractors:['yellow']},
+    {words:['Dad','is','calm','.'], distractors:['excited']},
+  ],
+  4: [
+    {words:['Can','I','play','?'], distractors:['run']},
+    {words:['Thank','you','.'], distractors:['I']},
+    {words:['Good','morning','.'], distractors:['night']},
+    {words:['I','am','happy','.'], distractors:['sad']},
+    {words:['This','is','my','book','.'], distractors:['a']},
+    {words:['Can','I','have','water','?'], distractors:['eat']},
+    {words:['Good','night','.'], distractors:['morning']},
+    {words:['I','like','apples','.'], distractors:['bananas']},
+    {words:['This','is','my','ball','.'], distractors:['a']},
+    {words:['Can','I','go','?'], distractors:['run']},
+  ],
+};
+const SENTENCE_LEVEL_META = {
+  1: {title:'Level 1 — Simple Sentences', sub:'Subject + verb (I eat.)'},
+  2: {title:'Level 2 — Sentences with Objects', sub:'I eat an apple.'},
+  3: {title:'Level 3 — Describing Words', sub:'The cat is happy.'},
+  4: {title:'Level 4 — Questions & Phrases', sub:'Can I play?'},
+};
+/* الهوية الموسمية — غلاف بصري فقط فوق نفس المستويات الأربعة والجمل الأربعين
+   ومنطق الفتح التدريجي، دون أي تغيير في المحتوى أو القواعد كما اتُّفق عليه. */
+const SEASON_META = {
+  1: {name:'Summer', emoji:'☀️', cls:'season-summer'},
+  2: {name:'Autumn', emoji:'🍂', cls:'season-autumn'},
+  3: {name:'Winter', emoji:'❄️', cls:'season-winter'},
+  4: {name:'Spring', emoji:'🌸', cls:'season-spring'},
+};
+function isSentenceLevelUnlocked(lv){
+  if(lv===1) return true;
+  if(DEV_MODE) return true;
+  return (STATE.sentenceProgress[lv-1]||[]).length >= SENTENCE_LEVELS[lv-1].length;
+}
+function scatterStars(elId, count){
+  const el = document.getElementById(elId);
+  if(!el || el.dataset.filled) return;
+  el.dataset.filled = '1';
+  let html = '';
+  for(let i=0;i<count;i++){
+    const s = 1+Math.random()*2;
+    html += `<span class="star-twinkle" style="width:${s}px;height:${s}px;left:${Math.random()*100}%;top:${Math.random()*100}%;opacity:${.4+Math.random()*.5};animation-delay:${Math.random()*3}s;"></span>`;
+  }
+  el.innerHTML = html;
+}
+function openSentenceHub(){
+  showScreen('screenSentenceHub');
+  scatterStars('sbHubStars', 40);
+  renderSentenceHub();
+}
+function renderSentenceHub(){
+  let activeAssigned = false;
+  document.getElementById('sbLevelList').innerHTML = [1,2,3,4].map(lv=>{
+    const meta = SENTENCE_LEVEL_META[lv];
+    const season = SEASON_META[lv];
+    const total = SENTENCE_LEVELS[lv].length;
+    const done = (STATE.sentenceProgress[lv]||[]).length;
+    const unlocked = isSentenceLevelUnlocked(lv);
+    const complete = done >= total;
+    const isActiveNow = unlocked && !complete && !activeAssigned;
+    if(isActiveNow) activeAssigned = true;
+    const pct = total>0 ? Math.round(done/total*100) : 0;
+    return `<button class="sb-level-card ${unlocked?'':'locked'} ${complete?'done':''} ${isActiveNow?'active-now':''}" ${unlocked?`onclick="startSentenceProto(${lv})"`:'disabled'}>
+      <div class="sb-level-num ${unlocked?season.cls:''}">${complete?ICONS.check:season.emoji}</div>
+      <div class="sb-level-body">
+        <div class="sb-level-title">${unlocked ? season.name : 'Level '+lv}</div>
+        <div class="sb-level-sub">${unlocked ? meta.sub+' · '+done+'/'+total : 'Complete '+SEASON_META[lv-1].name+' to unlock'}</div>
+        ${unlocked?`<div class="sb-level-track"><div class="sb-level-fill" style="width:${pct}%"></div></div>`:''}
+      </div>
+    </button>`;
+  }).join('');
+}
+let sbState = null;
+function startSentenceProto(level){
+  if(!isSentenceLevelUnlocked(level)) return;
+  sbState = {level: level||1, idx:0};
+  document.getElementById('sbLevelSub').textContent = SEASON_META[level].emoji+' '+SEASON_META[level].name+' · '+SENTENCE_LEVEL_META[level].sub;
+  showScreen('screenSentenceProto');
+  scatterStars('sbProtoStars', 30);
+  renderSentenceProto();
+}
+function renderSentenceProto(){
+  const levelData = SENTENCE_LEVELS[sbState.level];
+  const data = levelData[sbState.idx];
+  sbState.placed = new Array(data.words.length).fill(null);
+  sbState.pool = shuffle([...data.words, ...data.distractors]).map((w,i)=>({id:'t'+i, text:w, used:false}));
+  document.getElementById('sbPrompt').textContent = 'Sentence '+(sbState.idx+1)+' of '+levelData.length+' — tap the words in order!';
+  document.getElementById('sbPlayBtn').classList.add('hidden');
+  document.getElementById('sbNextBtn').classList.add('hidden');
+  renderSlots(); renderPool();
+}
+function renderSlots(){
+  const data = SENTENCE_LEVELS[sbState.level][sbState.idx];
+  document.getElementById('sbSlots').innerHTML = data.words.map((_,i)=>{
+    const t = sbState.placed[i];
+    return `<div class="sb-slot ${t?'filled':''}">${t ? `<button class="word-tile placed" onclick="unplaceWord(${i})">${t.text}</button>` : ''}</div>`;
+  }).join('');
+}
+function renderPool(){
+  document.getElementById('sbPool').innerHTML = sbState.pool.map(t=>
+    `<button class="word-tile ${t.used?'used':''}" onclick="tapPoolWord('${t.id}')">${t.text}</button>`).join('');
+}
+function tapPoolWord(id){
+  const tile = sbState.pool.find(t=>t.id===id);
+  if(!tile || tile.used) return;
+  const nextSlot = sbState.placed.findIndex(p=>p===null);
+  if(nextSlot===-1) return;
+  playPop();
+  tile.used = true;
+  sbState.placed[nextSlot] = tile;
+  renderSlots(); renderPool();
+  if(sbState.placed.every(p=>p!==null)) checkSentenceProto();
+}
+function unplaceWord(slotIdx){
+  const tile = sbState.placed[slotIdx];
+  if(!tile) return;
+  playPop();
+  tile.used = false;
+  sbState.placed[slotIdx] = null;
+  document.getElementById('sbPlayBtn').classList.add('hidden');
+  renderSlots(); renderPool();
+}
+function checkSentenceProto(){
+  const data = SENTENCE_LEVELS[sbState.level][sbState.idx];
+  const correct = sbState.placed.every((t,i)=>t.text===data.words[i]);
+  if(correct){
+    playChime();
+    grantReward(2,1,0);
+    sparkSay(pick(LEARN_TITLES), 'excited', {duration:2000});
+    STATE.sentenceProgress[sbState.level] = STATE.sentenceProgress[sbState.level] || [];
+    if(!STATE.sentenceProgress[sbState.level].includes(sbState.idx)){
+      STATE.sentenceProgress[sbState.level].push(sbState.idx);
+      saveState();
+    }
+    document.getElementById('sbPlayBtn').classList.remove('hidden');
+    document.getElementById('sbNextBtn').classList.remove('hidden');
+  } else {
+    playOops();
+    sparkSay(pick(ENCOURAGE_LINES), 'encourage', {duration:2000});
+    const slotsEl = document.getElementById('sbSlots');
+    slotsEl.style.animation = 'choiceShake .4s ease';
+    setTimeout(()=>{
+      slotsEl.style.animation = '';
+      sbState.pool.forEach(t=>t.used=false);
+      sbState.placed = new Array(data.words.length).fill(null);
+      renderSlots(); renderPool();
+    }, 900);
+  }
+}
+function playBuiltSentence(){
+  const data = SENTENCE_LEVELS[sbState.level][sbState.idx];
+  speak(data.words.join(' ').replace(' .','.').replace(' ?','?'), 0.9);
+}
+function nextSentenceProto(){
+  sbState.idx++;
+  if(sbState.idx < SENTENCE_LEVELS[sbState.level].length){ renderSentenceProto(); }
+  else{
+    playFanfare();
+    if(sbState.level >= 4){
+      awardBadge('sentence_master','Sentence Builder Master');
+      celebrate('Incredible!','You completed all of Sentence Builder!',[[ICONS.star,'+10'],[ICONS.coin,'+30']]);
+    } else {
+      celebrate('Level Complete!','On to Level '+(sbState.level+1)+'!',[[ICONS.star,'+5'],[ICONS.coin,'+15']]);
+    }
+    renderMap();
+    goHome();
+  }
 }
 
 init();
