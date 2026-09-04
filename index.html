@@ -5,6 +5,37 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#1B1440">
 <link rel="manifest" href="manifest.json">
+<script>
+/* ══════════════ ملتقط الأخطاء ══════════════
+   شاشة فارغة لا تخبرنا شيئاً. هذا يعرض الخطأ نصّاً على الشاشة
+   بدل أن يبتلعه المتصفح، فيمكن تصويره وإرساله.
+   يُوضع أول شيء في الصفحة ليلتقط كل ما بعده. */
+(function(){
+  function panel(title, msg){
+    var d = document.getElementById('wsErrBox');
+    if(!d){
+      d = document.createElement('div');
+      d.id = 'wsErrBox';
+      d.style.cssText = 'position:fixed;inset:10px;z-index:99999;background:#7A1508;color:#fff;'
+        + 'padding:16px;border-radius:16px;font:13px/1.6 ui-monospace,monospace;'
+        + 'overflow:auto;direction:ltr;text-align:left;white-space:pre-wrap;'
+        + 'box-shadow:0 10px 40px rgba(0,0,0,.6);';
+      (document.body || document.documentElement).appendChild(d);
+    }
+    d.textContent += title + '\n' + msg + '\n\n';
+  }
+  window.addEventListener('error', function(e){
+    panel('⚠ ' + (e.message || 'Error'),
+          (e.filename ? e.filename.split('/').pop() : '') + ' line ' + (e.lineno||'?')
+          + (e.error && e.error.stack ? '\n' + e.error.stack.split('\n').slice(0,4).join('\n') : ''));
+  });
+  window.addEventListener('unhandledrejection', function(e){
+    var r = e.reason;
+    panel('⚠ Promise rejected', (r && (r.stack || r.message)) || String(r));
+  });
+})();
+</script>
+
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -886,7 +917,6 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible{
         <div class="sr-title" style="margin-bottom:10px;" data-i18n="parentReplayTitle">Lesson Replay</div>
         <div id="parentReplayList"></div>
       </div>
-      <button class="btn3d ghost block" style="margin-bottom:10px;" onclick="exportProgress()" data-i18n="exportBtn">📤 Export Progress (JSON)</button>
       <button class="btn3d rose block" onclick="confirmResetProgress()" data-i18n="resetBtn">Reset All Progress</button>
       <div id="parentResetConfirm" class="hidden legal-card" style="margin-top:10px;text-align:center;">
         <div class="sr-title" style="margin-bottom:12px;" data-i18n="resetConfirmText">This deletes all progress permanently. Are you sure?</div>
@@ -909,7 +939,7 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible{
       <div class="subnav"><button class="icon-btn" onclick="showScreen('screenSettings')"></button><h1 data-i18n="backupTitle">Backup & Sync</h1></div>
       <div class="legal-card" style="margin-bottom:14px;">
         <p data-i18n="backupBody1">Keep your progress safe across devices.</p>
-        <p data-i18n="backupBody2">Cloud sync across devices is planned for a future update. Your save data is already structured as a single portable file, so this won't require rebuilding progress when it arrives.</p>
+        <p data-i18n="backupBody2">Your progress is saved as one portable file. Export it any time to keep a copy.</p>
       </div>
       <button class="btn3d gold block" onclick="exportProgress()" data-i18n="exportBtn">📤 Export Progress (JSON)</button>
       <div id="backupExportedMsg" class="hidden legal-card" style="margin-top:10px;text-align:center;"><div class="sr-sub" data-i18n="exportedMsg">Saved! Check your downloads.</div></div>
@@ -1027,7 +1057,6 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible{
 <div class="overlay" id="certOverlay">
   <div class="sheet">
     <div class="sheet-drag"></div>
-    <button class="icon-btn sheet-close" onclick="closeOverlay('certOverlay')" id="certCloseBtn"></button>
     <div class="cert">
       <h2>Certificate of Achievement</h2>
       <div class="cert-mascot spark-wrap celebrate" id="certSparkWrap"></div>
@@ -1591,7 +1620,7 @@ const LETTER_LESSON_DATA = {
   C:{letter:'C',lower:'c',phonicsText:'Kuh',vocab:[
     {en:'Cat',emoji:'🐱',sentence:'The cat says meow.'},
     {en:'Car',emoji:'🚗',sentence:'The car is fast.'},
-    {en:'Cake',emoji:'🎂',sentence:'I eat a sweet cake.'},
+    {en:'Cloud',emoji:'☁️',sentence:'The cloud is white and soft.'},
     {en:'Cow',emoji:'🐮',sentence:'The cow says moo.'}]},
   D:{letter:'D',lower:'d',phonicsText:'Duh',vocab:[
     {en:'Dog',emoji:'🐶',sentence:'My dog can run.'},
@@ -2078,6 +2107,7 @@ function verifyCodeOnline(code, silent){
 function proceedPastActivation(){
   document.getElementById('activationScreen').classList.add('hidden');
   initAfterActivation();
+  setTimeout(maybeShowInstall, 3000);   // الدعوة بعد الدخول، لا قبله
 }
 
 function init(){
@@ -2100,10 +2130,9 @@ function initAfterActivation(){
   document.getElementById('quizCloseBtn').innerHTML = ICONS.close;
   document.getElementById('matchCloseBtn').innerHTML = ICONS.close;
   document.getElementById('dragCloseBtn').innerHTML = ICONS.close;
-  document.getElementById('certCloseBtn').innerHTML = ICONS.close;
   document.getElementById('lessonExitBtn').innerHTML = ICONS.close;
   document.getElementById('quizAudioBtn').innerHTML = ICONS.speaker;
-  document.querySelectorAll('#wordCloseBtn,#quizCloseBtn,#matchCloseBtn,#dragCloseBtn,#certCloseBtn,#lessonExitBtn').forEach(b=>b.setAttribute('aria-label','Close'));
+  document.querySelectorAll('#wordCloseBtn,#quizCloseBtn,#matchCloseBtn,#dragCloseBtn,#lessonExitBtn').forEach(b=>b.setAttribute('aria-label','Close'));
   document.getElementById('quizAudioBtn').setAttribute('aria-label','Repeat audio');
   document.querySelectorAll('.subnav .icon-btn, .world-hero .hero-back').forEach(b=>{ b.innerHTML = ICONS.back; b.setAttribute('aria-label','Back'); });
 
@@ -2255,7 +2284,7 @@ const EN_STRINGS = {
   resetCancel:'Cancel', resetConfirm:'Yes, Reset', replayBtn:'Replay',
   achievementsTitle:'Achievements', backupTitle:'Backup & Sync',
   backupBody1:'Keep your progress safe across devices.',
-  backupBody2:"Cloud sync across devices is planned for a future update. Your save data is already structured as a single portable file, so this won't require rebuilding progress when it arrives.",
+  backupBody2:"Your progress is saved as one portable file. Export it any time to keep a copy.",
   exportedMsg:'Saved! Check your downloads.',
   aboutTitle:'About WordSpark Kids',
   aboutBody:"Teaching language\u2026 Building character.\n\nWordSpark Kids is a playful English-learning adventure for children ages 4\u201312, guided by Spark. Learn the alphabet, first words, and vocabulary categories through games, stories, and rewards \u2014 while gently nurturing kindness, patience, and confidence along the way.\n\n\u00A9 WordSpark Kids. All Rights Reserved.",
@@ -3900,7 +3929,7 @@ function runBodyFunctionGame(onDone){ runRiddleGame(BODY_FUNCTIONS, onDone); }
 const FEELING_SCENARIOS = [
   {prompt:'Your friend shares a toy with you. How do you feel?', answer:'Happy', choices:['Happy','Sad','Angry','Scared']},
   {prompt:'You hear a big, loud thunderstorm. How do you feel?', answer:'Scared', choices:['Scared','Happy','Calm','Bored']},
-  {prompt:"It's your birthday party! How do you feel?", answer:'Excited', choices:['Excited','Sad','Tired','Shy']},
+  {prompt:'You are going on a fun trip tomorrow! How do you feel?', answer:'Excited', choices:['Excited','Sad','Tired','Shy']},
   {prompt:'You stayed up very late. How do you feel?', answer:'Tired', choices:['Tired','Excited','Angry','Surprised']},
 ];
 function runFeelingScenarioGame(onDone){ runRiddleGame(FEELING_SCENARIOS, onDone); }
@@ -5352,6 +5381,9 @@ function doInstall(){
 }
 function maybeShowInstall(){
   if(isStandalone()) return;                       // مثبَّت أصلاً
+  /* شاشة التفعيل مفتوحة؟ لا نغطّي زرّ الدخول — ننتظر حتى يدخل الأب. */
+  const gate = document.getElementById('activationScreen');
+  if(gate && !gate.classList.contains('hidden')) return;
   const last = +localStorage.getItem('wsInstallDismissed') || 0;
   if(Date.now() - last < 7*86400000) return;       // أُجّل قبل أقل من أسبوع
   const card  = document.getElementById('installCard');
