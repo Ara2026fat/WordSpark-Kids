@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#1B1440">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon-192.png">
@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-title" content="WordSpark">
 <title>WordSpark Kids ✨ | Adventures with Spark</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Quicksand:wght@500;600;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Quicksand:wght@500;600;700;800&family=Amiri:wght@400;700&family=Atkinson+Hyperlegible:wght@700&display=swap" rel="stylesheet">
 <style>
 :root{
   --void:#1B1440; --void-2:#3A2470; --void-3:#7A3D8C; --horizon:#F0A26A;
@@ -164,6 +164,10 @@ main{position:relative;z-index:1;padding-bottom:calc(40px + var(--safe-bottom));
   min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;
   padding:32px 24px;text-align:center;position:relative;z-index:2;
 }
+#activationScreen{
+  min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  position:relative;z-index:2;background:radial-gradient(ellipse 80% 55% at 50% 35%,rgba(63,224,196,.16) 0%,transparent 62%), linear-gradient(180deg,var(--void,#1B1440),var(--void-2,#3A2470));
+}
 .splash-mascot{width:150px;height:150px;margin:0 auto;}
 .splash-title{font-size:32px;color:#fff;text-shadow:0 3px 0 rgba(0,0,0,.25);margin:14px 0 4px;opacity:0;transition:opacity .5s;}
 .splash-title.show{opacity:1;}
@@ -211,6 +215,34 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible{
    disabled or reduced to a simple fade for users who need less motion.
    Nothing here affects layout, colors, or one-shot feedback animations
    like button presses or confetti bursts triggered by an action. */
+
+/* ══════════════ أجهزة لوحية (Samsung Tab / Honor Pad) ══════════════
+   الشاشة كانت مصمّمة للجوال: عمود ضيّق ٧٦٠px وخطوط بحجم الجوال.
+   على لوح ١٠ بوصة يصير المحتوى جزيرة صغيرة وسط فراغ، والأزرار أصغر
+   من إصبع الطفل نسبةً إلى الشاشة. هذه الطبقة تصلح ذلك. */
+@media (min-width:768px){
+  html{font-size:118%;}
+  .screen{max-width:940px;padding:10px 28px 28px;}
+  .sheet{max-width:720px;}
+  /* أهداف لمس أكبر — إصبع الطفل على لوح أبعد عن الشاشة */
+  .icon-btn,.subnav .icon-btn{min-width:52px;min-height:52px;}
+  button,.btn,.aura-opt{min-height:52px;}
+}
+@media (min-width:1024px){
+  html{font-size:126%;}
+  .screen{max-width:1060px;}
+}
+/* اللوح يُستعمل غالباً بالعرض — نمنع اقتصاص المحتوى */
+@media (orientation:landscape) and (min-width:768px){
+  .screen{max-width:1100px;}
+  .sheet{max-height:92dvh;overflow-y:auto;}
+}
+/* شاشات قصيرة بالعرض (جوال مقلوب) — نقلّص الفراغات بدل قصّ المحتوى */
+@media (orientation:landscape) and (max-height:500px){
+  .screen{padding-top:2px;padding-bottom:10px;}
+  .sheet{max-height:94dvh;overflow-y:auto;}
+}
+
 @media (prefers-reduced-motion: reduce){
   *, *::before, *::after{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important; }
   .spark-wrap, .world, .star, .motefloat, .node .ring{ animation:none !important; }
@@ -363,6 +395,26 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible{
 .letter-tile .up{font-family:'Baloo 2';font-weight:700;font-size:26px;color:var(--abc-2);}
 .letter-tile .lo{font-family:'Baloo 2';font-weight:600;font-size:15px;color:var(--cat-2);}
 .letter-tile.done{background:linear-gradient(160deg,#E9FBF6,#fff);}
+
+/* ══════════════ خط الحروف المفردة ══════════════
+   في Baloo 2 — كما في أغلب الخطوط بلا زوائد — الحرف الكبير I
+   والحرف الصغير l رسمهما واحد: خطّ عمودي. هذا مقبول في نصّ عادي،
+   وكارثة في تطبيق يعلّم الحروف.
+   Atkinson Hyperlegible صمّمه معهد بريل تحديداً لفصل الأشكال المتشابهة:
+   الـ I الكبير له عارضتان أفقيتان، والـ l الصغير له ذيل منحنٍ.
+   يُستعمل للحروف المفردة فقط — لا للنصّ، ليبقى طابع التطبيق. */
+:root{ --glyph-font:'Atkinson Hyperlegible','Baloo 2',sans-serif; }
+.letter-tile .up,.letter-tile .lo,
+.match-tile:not(.text-tile),
+.hunt-tile,
+.lesson-letter-watermark{ font-family:var(--glyph-font) !important; }
+
+.letter-tile.locked{background:linear-gradient(160deg,#EFEBF6,#E4DEEF);box-shadow:0 4px 0 #D9D1E8,0 6px 10px rgba(0,0,0,.07);}
+.letter-tile.locked .up{color:#5A5175;}
+.letter-tile.locked .lo{color:#6A6086;}
+.letter-tile.locked .lock-mark{position:absolute;top:5px;right:6px;font-size:12px;opacity:.75;}
+.letter-tile.locked:active{transform:translateY(1px);}
+
 .letter-tile .check{position:absolute;top:6px;right:6px;width:14px;height:14px;}
 
 .word-card{
@@ -508,6 +560,27 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible{
 .world-hero h1{position:relative;z-index:1;font-size:21px;color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.18);margin-bottom:3px;}
 .world-hero p{position:relative;z-index:1;color:rgba(255,255,255,.92);font-weight:700;font-size:12.5px;}
 .subnav h1{font-size:19px;color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.2);}
+
+/* ══════════════ دعوة التثبيت ══════════════ */
+#installCard{
+  position:fixed;left:12px;right:12px;bottom:14px;z-index:9000;
+  background:#fff;border-radius:22px;padding:15px 16px;
+  box-shadow:0 10px 0 rgba(0,0,0,.10),0 14px 30px rgba(0,0,0,.28);
+  display:none;animation:instRise .4s cubic-bezier(.34,1.56,.64,1);
+  max-width:520px;margin:0 auto;
+}
+#installCard.show{display:block;}
+@keyframes instRise{from{opacity:0;transform:translateY(26px);}to{opacity:1;transform:none;}}
+#installCard .ic-title{font-family:'Baloo 2';font-weight:800;font-size:16.5px;color:#241A45;margin-bottom:4px;}
+#installCard .ic-body{font-size:13.5px;color:#4A4070;line-height:1.55;}
+#installCard .ic-steps{margin:8px 0 0;padding-inline-start:18px;font-size:13.5px;color:#4A4070;line-height:1.6;}
+#installCard .ic-row{display:flex;gap:9px;margin-top:12px;}
+#installCard button{
+  flex:1;border:0;border-radius:14px;padding:11px 8px;
+  font-family:'Baloo 2';font-weight:800;font-size:14.5px;cursor:pointer;
+}
+#installCard .ic-yes{background:#0E7A63;color:#fff;box-shadow:0 4px 0 #0A5A4A;}
+#installCard .ic-no{background:#EFEBF6;color:#5A5175;box-shadow:0 4px 0 #DCD4EA;}
 </style>
 </head>
 <body>
@@ -549,7 +622,20 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible{
   </div>
 </div>
 
-<div id="splashScreen">
+<div id="activationScreen">
+  <div class="bismillah-stars" id="activationStars"></div>
+  <div style="position:relative;z-index:2;max-width:360px;margin:0 auto;padding:40px 22px;text-align:center;">
+    <div class="splash-mascot spark-wrap" id="activationSpark" style="width:110px;margin:0 auto 18px;" onclick="tapActivationSpark()"></div>
+    <h1 class="splash-title show" style="font-size:26px;">Welcome to WordSpark Kids</h1>
+    <p class="splash-sub show" id="activationMsg" style="margin-bottom:22px;">Enter your activation code to begin the adventure.</p>
+    <input id="activationInput" class="name-input" maxlength="24" placeholder="Activation code" style="text-align:center;letter-spacing:2px;text-transform:uppercase;">
+    <button class="btn3d gold block" style="margin-top:14px;" onclick="submitActivationCode()">Unlock WordSpark Kids</button>
+    <p id="activationError" style="color:#E5493B;font-weight:700;font-size:13px;margin-top:12px;min-height:18px;"></p>
+    <p style="color:var(--ink-soft, #8A7FBF);font-size:12px;margin-top:18px;line-height:1.6;">Don't have a code yet? Contact us to start your free trial or subscription.</p>
+  </div>
+</div>
+
+<div id="splashScreen" class="hidden">
   <div id="introFlyWrap"><div class="splash-mascot spark-wrap" id="splashSparkWrap"></div></div>
   <div class="splash-line" id="splashLine"></div>
   <h1 class="splash-title" id="splashTitle">WordSpark Kids</h1>
@@ -832,9 +918,35 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible{
     <!-- ABOUT / PRIVACY / TERMS -->
     <div id="screenAbout" class="screen hidden">
       <div class="subnav"><button class="icon-btn" onclick="showScreen('screenSettings')"></button><h1 data-i18n="aboutTitle">About WordSpark Kids</h1></div>
+
+      <div class="legal-card" style="margin-bottom:12px;">
+        <div class="sr-title" style="margin-bottom:10px;" data-i18n="guideStartTitle">🚀 Getting Started</div>
+        <p style="margin-bottom:8px;">🌟 <span data-i18n="guideStart1">Type your child's name and pick Spark's color.</span></p>
+        <p style="margin-bottom:8px;">🏝️ <span data-i18n="guideStart2">Tap any island on the map to start learning words and letters.</span></p>
+        <p style="margin-bottom:8px;">🍂 <span data-i18n="guideStart3">Once islands feel comfortable, the Seasons open — turning words into real sentences.</span></p>
+        <p style="margin-bottom:0;">🚀 <span data-i18n="guideStart4">Then the Solar System unlocks — one deeper topic per planet.</span></p>
+      </div>
+
+      <div class="legal-card" style="margin-bottom:12px;">
+        <div class="sr-title" style="margin-bottom:10px;" data-i18n="guideInsideTitle">🎮 Inside Every World</div>
+        <p style="margin-bottom:8px;">🎧 <span data-i18n="guideInside1">Every word comes with sound — tap it anytime to hear it again.</span></p>
+        <p style="margin-bottom:0;">🧩 <span data-i18n="guideInside2">Each world ends with its own game — matching, sounds, drag & drop, or riddles.</span></p>
+      </div>
+
+      <div class="legal-card" style="margin-bottom:12px;">
+        <div class="sr-title" style="margin-bottom:10px;" data-i18n="guideParentTitle">👨‍👩‍👧 For You, the Parent</div>
+        <p style="margin-bottom:8px;">📊 <span data-i18n="guideParent1">Open Parent Dashboard anytime for real progress — not guesses.</span></p>
+        <p style="margin-bottom:8px;">🚗 <span data-i18n="guideParent2">The Recap Adventure re-tests old words to show what's truly remembered.</span></p>
+        <p style="margin-bottom:0;">💬 <span data-i18n="guideParent3">Share a weekly report on WhatsApp with one tap.</span></p>
+      </div>
+
       <div class="legal-card">
-        <p id="aboutBodyText" data-i18n="aboutBody" style="white-space:pre-line;"></p>
-        <p style="font-weight:800;color:var(--ink);"><span data-i18n="versionPrefix">Version</span> <span id="versionLabel"></span></p>
+        <div class="sr-title" style="margin-bottom:10px;" data-i18n="guideValuesTitle">🕌 Our Values Commitment</div>
+        <p style="margin-bottom:0;" data-i18n="guideValuesBody">Every symbol, word, and story is checked so nothing shown to your child conflicts with Islamic values — no exceptions, reviewed continually as the app grows.</p>
+      </div>
+
+      <div class="legal-card" style="margin-top:12px;">
+        <p style="font-weight:800;color:var(--ink);margin:0;"><span data-i18n="versionPrefix">Version</span> <span id="versionLabel"></span></p>
       </div>
     </div>
     <div id="screenPrivacy" class="screen hidden">
@@ -1385,8 +1497,8 @@ const ALPHABET = [
   ['I','Ice Cream','🍦'],['J','Juice','🧃'],['K','Kite','🪁'],['L','Lion','🦁'],
   ['M','Moon','🌙'],['N','Nest','🪹'],['O','Orange','🍊'],['P','Pen','🖊️'],
   ['Q','Queen','👸'],['R','Rocket','🚀'],['S','Sun','☀️'],['T','Tiger','🐯'],
-  ['U','Umbrella','☂️'],['V','Violin','🎻'],['W','Watermelon','🍉'],
-  ['X','Xylophone','🎹'],['Y','Yo-yo','🪀'],['Z','Zebra','🦓']
+  ['U','Umbrella','☂️'],['V','Volcano','🌋'],['W','Watermelon','🍉'],
+  ['X','X-ray','🩻'],['Y','Yo-yo','🪀'],['Z','Zebra','🦓']
 ].map(([l,w,e])=>({letter:l, lower:l.toLowerCase(), word:w, emoji:e, id:'let_'+l}));
 
 const WORDS = [
@@ -1414,7 +1526,7 @@ const CATEGORIES = [
   {key:'body', title:'Body Parts', items:[['Head','😊'],['Eyes','👀'],['Nose','👃'],['Mouth','👄'],['Ears','👂'],['Hands','🤚'],['Teeth','🦷'],['Tongue','👅'],['Feet','🦶'],['Arms','💪']]},
   {key:'feelings', title:'Feelings', items:[['Happy','😀'],['Sad','😢'],['Angry','😠'],['Scared','😨'],['Excited','🤩'],['Tired','😴'],['Bored','🥱'],['Surprised','😲'],['Calm','😌'],['Shy','😳']]},
   {key:'school', title:'School Objects', items:[['Book','📖'],['Pencil','✏️'],['Bag','🎒'],['Scissors','✂️'],['Ruler','📏'],['Crayon','🖍️'],['Notebook','📓'],['Chair','🪑'],['Marker','🖊️'],['Clock','🕐']]},
-  {key:'actions', title:'Actions', items:[['Eat','🍽️'],['Run','🏃'],['Jump','🤸'],['Sleep','😴'],['Play','🧸'],['Walk','🚶'],['Drink','🥤'],['Read','📖'],['Sit','🪑'],['Sing','🎤']]},
+  {key:'actions', title:'Actions', items:[['Eat','🍽️'],['Run','🏃'],['Jump','🤸'],['Sleep','😴'],['Play','🧸'],['Walk','🚶'],['Drink','🥤'],['Read','📖'],['Sit','🪑'],['Draw','✏️']]},
   {key:'mercury', title:'Mercury: Home & Rooms', items:[['Door','🚪'],['Window','🪟'],['Sofa','🛋️'],['Bed','🛏️'],['Chair','🪑'],['Kitchen','🍳'],['Bathroom','🛁'],['Living Room','📺'],['Bedroom','🛌'],['Lamp','💡']]},
   {key:'venus', title:'Venus: Weather', items:[['Sunny','☀️'],['Rainy','🌧️'],['Cloudy','☁️'],['Windy','💨'],['Hot','🔥'],['Cold','❄️'],['Snowy','🌨️'],['Stormy','⛈️'],['Foggy','🌫️'],['Icy','🧊']]},
   {key:'earth', title:'Earth: Nature', items:[['Tree','🌳'],['Flower','🌸'],['Mountain','⛰️'],['River','🏞️'],['Sky','🌅'],['Ocean','🌊'],['Forest','🌲'],['Sun','☀️'],['Moon','🌙'],['Star','⭐']]},
@@ -1485,7 +1597,7 @@ const LETTER_LESSON_DATA = {
     {en:'Dog',emoji:'🐶',sentence:'My dog can run.'},
     {en:'Duck',emoji:'🦆',sentence:'The duck swims in the pond.'},
     {en:'Door',emoji:'🚪',sentence:'Please close the door.'},
-    {en:'Drum',emoji:'🥁',sentence:'I play the drum.'}]},
+    {en:'Dolphin',emoji:'🐬',sentence:'The dolphin swims fast.'}]},
   E:{letter:'E',lower:'e',phonicsText:'Eh',vocab:[
     {en:'Egg',emoji:'🥚',sentence:'The egg is white.'},
     {en:'Elephant',emoji:'🐘',sentence:'The elephant is very big.'},
@@ -1500,7 +1612,7 @@ const LETTER_LESSON_DATA = {
     {en:'Goat',emoji:'🐐',sentence:'The goat eats grass.'},
     {en:'Grapes',emoji:'🍇',sentence:'I like purple grapes.'},
     {en:'Gift',emoji:'🎁',sentence:'I got a gift.'},
-    {en:'Guitar',emoji:'🎸',sentence:'I play the guitar.'}]},
+    {en:'Garden',emoji:'🌷',sentence:'The garden has flowers.'}]},
   H:{letter:'H',lower:'h',phonicsText:'Huh',vocab:[
     {en:'Hat',emoji:'🧢',sentence:'I wear a hat.'},
     {en:'House',emoji:'🏠',sentence:'I live in a house.'},
@@ -1572,7 +1684,7 @@ const LETTER_LESSON_DATA = {
     {en:'UFO',emoji:'🛸',sentence:'The UFO flies in the sky.'},
     {en:'Up Arrow',emoji:'⬆️',sentence:'The arrow points up.'}]},
   V:{letter:'V',lower:'v',phonicsText:'Vvv',vocab:[
-    {en:'Violin',emoji:'🎻',sentence:'I play the violin.'},
+    {en:'Volcano',emoji:'🌋',sentence:'The volcano is very hot.'},
     {en:'Van',emoji:'🚐',sentence:'We ride in a van.'},
     {en:'Vegetables',emoji:'🥦',sentence:'I eat my vegetables.'},
     {en:'Vase',emoji:'🏺',sentence:'The flowers are in a vase.'}]},
@@ -1583,7 +1695,7 @@ const LETTER_LESSON_DATA = {
     {en:'Worm',emoji:'🪱',sentence:'The worm digs in the dirt.'}]},
   X:{letter:'X',lower:'x',phonicsText:'Ks',vocab:[
     {en:'X-ray',emoji:'🩻',sentence:'The doctor takes an x-ray.'},
-    {en:'Xylophone',emoji:'🎹',sentence:'I play the xylophone.'},
+    {en:'Box',emoji:'📦',sentence:'The toy is in the box.'},
     {en:'Fox',emoji:'🦊',sentence:'The fox runs fast.'},
     {en:'Box',emoji:'📦',sentence:'I put my toys in a box.'}]},
   Y:{letter:'Y',lower:'y',phonicsText:'Yuh',vocab:[
@@ -1688,7 +1800,8 @@ function defaultState(){
     lettersToday:{date:null, count:0},
     timeSpentSeconds:0,
     sentenceProgress:{},
-    mastery:{} // {word: {correct, wrong, lastSeen, lastResult}} — يُبنى عبر رحلات القياس فقط حالياً (المرحلة الأولى)
+    mastery:{}, // {word: {correct, wrong, lastSeen, lastResult}} — يُبنى عبر رحلات القياس فقط حالياً (المرحلة الأولى)
+    activation:{code:null, expiresAt:null, lastChecked:null}
   };
 }
 function loadState(){
@@ -1816,7 +1929,161 @@ function revealSetup(){
 /* ============================================================
    INIT / NAVIGATION
    ============================================================ */
+/* ============================================================
+   نظام مفاتيح التفعيل — يتحقق من كود عبر قاعدة بيانات Firebase
+   بسيطة (REST مباشر، بلا حاجة لتحميل مكتبة Firebase الكاملة).
+   إعداد مطلوب منك قبل الإطلاق الفعلي: أنشئ مشروع Firebase مجاني،
+   فعّل Realtime Database، وضع رابط قاعدتك هنا بدل القيمة الفارغة.
+   شكل البيانات المتوقّع تحت المسار codes/{الكود}: {"expiresAt":"2026-12-25"} */
+const FIREBASE_DB_URL = 'https://wordspark-kids-default-rtdb.asia-southeast1.firebasedatabase.app'; // تحقّق من صحته في تبويب Data بقاعدة بياناتك
+const ACTIVATION_RECHECK_DAYS = 3;  // كل كم يوم يُحاول التطبيق التحقق أونلاين
+const OFFLINE_GRACE_DAYS      = 7;  // كم يوماً يُسمح بالعمل إن فشل الاتصال — مفهوم مختلف عن أعلاه
+
+/* ── معرّف الجهاز ──
+   يُولَّد مرّة واحدة ويُخزَّن محلياً. هو ما يربط الجهاز بخانة في قاعدة البيانات. */
+function getDeviceId(){
+  let id = localStorage.getItem('wordsparkDeviceId_v1');
+  if(!id){
+    const b = new Uint8Array(9);
+    (crypto && crypto.getRandomValues) ? crypto.getRandomValues(b)
+      : b.forEach((_,i)=>{ b[i] = Math.floor(Math.random()*256); });
+    id = Array.from(b).map(x=>x.toString(16).padStart(2,'0')).join('');
+    localStorage.setItem('wordsparkDeviceId_v1', id);
+  }
+  return id;
+}
+
+function daysBetween(a, b){ return Math.abs(new Date(a) - new Date(b)) / 86400000; }
+
+let activationTapCount = 0, activationTapTimer = null;
+function tapActivationSpark(){
+  activationTapCount++;
+  clearTimeout(activationTapTimer);
+  activationTapTimer = setTimeout(()=>{ activationTapCount = 0; }, 1200);
+  if(activationTapCount >= 5){
+    activationTapCount = 0;
+    const entered = prompt('Developer PIN:');
+    if(entered === DEV_PIN){
+      DEV_MODE = true;
+      localStorage.setItem('wordsparkDevMode_v1', '1');
+      proceedPastActivation();
+    }
+  }
+}
+function checkActivation(){
+  if(DEV_MODE){ proceedPastActivation(); return; } // تجاوز كامل أثناء التطوير — لا يمنعك اختبار التطبيق قبل تفعيل Firebase فعلياً
+  const act = STATE.activation || {};
+  if(!act.code || !act.expiresAt){
+    showActivationGate('Enter your activation code to begin the adventure.');
+    return;
+  }
+  const expired = new Date(act.expiresAt) < new Date();
+  if(expired){
+    showActivationGate('Your subscription has ended. Enter a new code to continue, or contact us to renew.');
+    return;
+  }
+  /* مهلة عدم الاتصال: إن مضت أكثر من OFFLINE_GRACE_DAYS بلا تحقق ناجح، نطلب اتصالاً.
+     هذا يمنع فتح كود واحد على أجهزة لا نهائية بمجرد إبقائها بلا إنترنت. */
+  const daysSinceCheck = act.lastChecked ? daysBetween(act.lastChecked, new Date()) : 999;
+  if(daysSinceCheck >= OFFLINE_GRACE_DAYS && !navigator.onLine){
+    showActivationGate('Please connect to the internet once to continue.');
+    return;
+  }
+  if(daysSinceCheck >= ACTIVATION_RECHECK_DAYS && navigator.onLine && FIREBASE_DB_URL){
+    verifyCodeOnline(act.code, true); // فحص صامت في الخلفية، لا يمنع الدخول الفوري
+  }
+  proceedPastActivation();
+}
+function showActivationGate(msg){
+  document.getElementById('activationMsg').textContent = msg;
+  document.getElementById('activationScreen').classList.remove('hidden');
+  document.getElementById('activationSpark').innerHTML = sparkMarkup('happy');
+  buildActivationStars();
+}
+function buildActivationStars(){
+  const wrap = document.getElementById('activationStars');
+  if(wrap.dataset.built) return;
+  wrap.dataset.built = '1';
+  let html = '';
+  for(let i=0;i<22;i++){
+    const s = 1+Math.random()*2.2;
+    html += `<div class="star" style="width:${s}px;height:${s}px;left:${Math.random()*100}%;top:${Math.random()*100}%;animation-delay:${Math.random()*3}s;"></div>`;
+  }
+  wrap.innerHTML = html;
+}
+function submitActivationCode(){
+  const code = document.getElementById('activationInput').value.trim().toUpperCase();
+  const errEl = document.getElementById('activationError');
+  errEl.textContent = '';
+  if(!code){ errEl.textContent = 'Please enter a code.'; return; }
+  if(!FIREBASE_DB_URL){ errEl.textContent = 'Activation is not configured yet — contact support.'; return; }
+  if(!navigator.onLine){ errEl.textContent = 'Please connect to the internet once to activate.'; return; }
+  verifyCodeOnline(code, false);
+}
+function verifyCodeOnline(code, silent){
+  const err  = document.getElementById('activationError');
+  const base = FIREBASE_DB_URL + '/';
+  const enc  = encodeURIComponent(code);
+  const fail = (msg)=>{ if(!silent) err.textContent = msg; };
+
+  fetch(base + 'codes/' + enc + '.json').then(r=>r.json()).then(info=>{
+    if(!info || !info.expiresAt){ fail('That code is not valid.'); return null; }
+    if(info.active === false){ fail('This code is no longer active. Please contact us.'); return null; }
+    if(new Date(info.expiresAt) < new Date()){
+      if(!silent) err.textContent = 'This code has expired.';
+      else showActivationGate('Your subscription has ended. Enter a new code to continue, or contact us to renew.');
+      return null;
+    }
+    /* الأكواد القديمة بلا خانات تُقبل كما هي — لا نكسر مشتركاً قائماً */
+    if(!info.slots) return {info, slot:null};
+
+    return fetch(base + 'devices/' + enc + '.json').then(r=>r.json()).then(taken=>{
+      taken = taken || {};
+      const me   = getDeviceId();
+      const keys = Object.keys(info.slots);
+      /* خانتي إن كنت مسجّلاً من قبل */
+      let slot = keys.find(k => taken[k] && taken[k].deviceId === me);
+      /* وإلا أول خانة فارغة */
+      if(!slot) slot = keys.find(k => !taken[k]);
+      if(!slot){
+        fail('You have reached the number of devices for this code. Please contact us.');
+        return null;
+      }
+      return {info, slot};
+    });
+  }).then(res=>{
+    if(!res) return;
+    const now = new Date().toISOString();
+    if(res.slot){
+      const me  = getDeviceId();
+      const url = base + 'devices/' + enc + '/' + res.slot + '.json';
+      fetch(url, {
+        method:'PUT',
+        body: JSON.stringify({deviceId:me, firstSeen:now, lastSeen:now})
+      }).catch(()=>{}); // فشل تسجيل الخانة لا يمنع الدخول — يُعاد في الفحص التالي
+    }
+    STATE.activation = {
+      code,
+      expiresAt: res.info.expiresAt,
+      profiles: res.info.profiles || 1,
+      slot: res.slot,
+      lastChecked: now
+    };
+    saveState();
+    if(!silent) proceedPastActivation();
+  }).catch(()=>{
+    fail('Could not connect — please try again.');
+  });
+}
+function proceedPastActivation(){
+  document.getElementById('activationScreen').classList.add('hidden');
+  initAfterActivation();
+}
+
 function init(){
+  checkActivation();
+}
+function initAfterActivation(){
   buildStarfield();
   applyAura(STATE.aura || 'ember');
   document.getElementById('splashSparkWrap').innerHTML = sparkMarkup('happy');
@@ -1992,6 +2259,20 @@ const EN_STRINGS = {
   exportedMsg:'Saved! Check your downloads.',
   aboutTitle:'About WordSpark Kids',
   aboutBody:"Teaching language\u2026 Building character.\n\nWordSpark Kids is a playful English-learning adventure for children ages 4\u201312, guided by Spark. Learn the alphabet, first words, and vocabulary categories through games, stories, and rewards \u2014 while gently nurturing kindness, patience, and confidence along the way.\n\n\u00A9 WordSpark Kids. All Rights Reserved.",
+  guideStartTitle:'🚀 Getting Started',
+  guideStart1:'Type your child\'s name and pick Spark\'s color.',
+  guideStart2:'Tap any island on the map to start learning words and letters.',
+  guideStart3:'Once islands feel comfortable, the Seasons open — turning words into real sentences.',
+  guideStart4:'Then the Solar System unlocks — one deeper topic per planet.',
+  guideInsideTitle:'🎮 Inside Every World',
+  guideInside1:'Every word comes with sound — tap it anytime to hear it again.',
+  guideInside2:'Each world ends with its own game — matching, sounds, drag & drop, or riddles.',
+  guideParentTitle:'👨‍👩‍👧 For You, the Parent',
+  guideParent1:'Open Parent Dashboard anytime for real progress — not guesses.',
+  guideParent2:'The Recap Adventure re-tests old words to show what\'s truly remembered.',
+  guideParent3:'Share a weekly report on WhatsApp with one tap.',
+  guideValuesTitle:'🕌 Our Values Commitment',
+  guideValuesBody:'Every symbol, word, and story is checked so nothing shown to your child conflicts with Islamic values — no exceptions, reviewed continually as the app grows.',
   privacyTitle:'Privacy Policy',
   privacyBody:"WordSpark Kids is designed with children's privacy as a priority.\n\n\u2022 All learning progress (letters, words, stars, coins, achievements) is stored locally on this device only.\n\u2022 We do not collect names, contact details, or personal information beyond the nickname you choose to enter, which never leaves this device.\n\u2022 No advertising or third-party tracking is used in this app.\n\u2022 Microphone and camera are never accessed.\n\u2022 If cloud sync is introduced in a future update, it will be opt-in and clearly explained before any data leaves the device.\n\nThis is a draft policy for an in-development product and should be reviewed by a qualified professional before public release.",
   termsTitle:'Terms of Use',
@@ -2025,6 +2306,20 @@ const AR_STRINGS = {
   exportedMsg:'تم الحفظ! تحقق من مجلد التنزيلات.',
   aboutTitle:'حول WordSpark Kids',
   aboutBody:'تعليم اللغة... وبناء الشخصية.\n\nوورد سبارك كيدز هو مغامرة ممتعة لتعلم اللغة الإنجليزية للأطفال من سن 4 إلى 12 عامًا، برفقة سبارك. تعلم الحروف الأبجدية والكلمات الأولى وفئات المفردات من خلال الألعاب والقصص والمكافآت — مع غرس اللطف والصبر والثقة بلطف في الطريق.\n\n© جميع الحقوق محفوظة لـ WordSpark Kids.',
+  guideStartTitle:'🚀 البداية',
+  guideStart1:'اكتب اسم طفلك واختر لون سبارك.',
+  guideStart2:'اضغط أي جزيرة على الخريطة لتبدأ تعلّم الكلمات والحروف.',
+  guideStart3:'حين تصبح الجزر مريحة له، تُفتح الفصول — تحوّل الكلمات إلى جمل حقيقية.',
+  guideStart4:'ثم تُفتح المجموعة الشمسية — موضوع أعمق مع كل كوكب.',
+  guideInsideTitle:'🎮 داخل كل عالم',
+  guideInside1:'كل كلمة لها صوت — اضغطها في أي وقت لسماعها مجدداً.',
+  guideInside2:'كل عالم ينتهي بنشاطه الخاص — مطابقة، أصوات، سحب وإفلات، أو ألغاز.',
+  guideParentTitle:'👨‍👩‍👧 لأجلك أنت، الوالد',
+  guideParent1:'افتح لوحة الوالدين في أي وقت لترى تقدّماً حقيقياً — لا تخميناً.',
+  guideParent2:'رحلة المراجعة تُعيد اختبار الكلمات القديمة لتُظهر ما يتذكّره طفلك فعلاً.',
+  guideParent3:'شارك تقريراً أسبوعياً عبر واتساب بضغطة واحدة.',
+  guideValuesTitle:'🕌 التزامنا القيمي',
+  guideValuesBody:'كل رمز وكلمة وقصة تُفحَص بعناية حتى لا يُعرَض لطفلك أي شيء يتعارض مع القيم الإسلامية — بلا استثناء، ومراجعة مستمرة مع نمو التطبيق.',
   privacyTitle:'سياسة الخصوصية',
   privacyBody:'تم تصميم WordSpark Kids مع إعطاء الأولوية لخصوصية الأطفال.\n\n• يتم تخزين كل تقدم التعلم (الحروف، الكلمات، النجوم، العملات، الإنجازات) محليًا على هذا الجهاز فقط.\n• لا نجمع الأسماء أو بيانات الاتصال أو أي معلومات شخصية بخلاف الاسم المستعار الذي تختاره، والذي لا يغادر هذا الجهاز أبدًا.\n• لا يُستخدم أي إعلانات أو تتبع من جهات خارجية في هذا التطبيق.\n• لا يتم الوصول إلى الميكروفون أو الكاميرا أبدًا.\n• إذا تم تقديم المزامنة السحابية في تحديث مستقبلي، فستكون اختيارية وسيتم شرحها بوضوح قبل مغادرة أي بيانات للجهاز.\n\nهذه مسودة سياسة لمنتج قيد التطوير ويجب مراجعتها من قبل مختص مؤهل قبل الإصدار العلني.',
   termsTitle:'شروط الاستخدام',
@@ -3046,14 +3341,55 @@ function worldTap(i){
 /* ============================================================
    LEVEL 1 — ALPHABET
    ============================================================ */
+/* ══════════════ التدرّج في جزيرة الحروف ══════════════
+   الطفل لا ينتقل إلى حرف قبل إتمام ما قبله.
+   ALPHABET_LOOKAHEAD = كم حرفاً مفتوحاً أمام آخر حرف أُنجز.
+     1 = الحرف التالي فقط (تدرّج صارم)
+     2 = الحرف التالي والذي يليه (يمنع التعثّر التام على حرف صعب)
+   غيّر هذا الرقم وحده لضبط الصرامة — لا شيء آخر. */
+const ALPHABET_LOOKAHEAD = 1;   // حرف واحد أمام آخر إنجاز — تدرّج صارم
+const ALPHABET_PATIENCE   = 4;   // عدد المحاولات قبل فتح الحرف التالي رحمةً بالطفل
+
+/* عدّاد المحاولات لكل حرف — يُقاس، لا يُخمَّن */
+function letterAttempts(id){
+  if(!STATE.letterAttempts) STATE.letterAttempts = {};
+  return STATE.letterAttempts[id] || 0;
+}
+function noteLetterAttempt(id){
+  if(!STATE.letterAttempts) STATE.letterAttempts = {};
+  if(STATE.lettersDone.includes(id)) return;
+  STATE.letterAttempts[id] = letterAttempts(id) + 1;
+  saveState();
+}
+
+function alphabetUnlockedCount(){
+  /* أعلى حرف أُنجز (بالترتيب) + حرف واحد. الحروف المنجزة تبقى مفتوحة دائماً. */
+  let highest = -1;
+  ALPHABET.forEach((l,i)=>{ if(STATE.lettersDone.includes(l.id)) highest = i; });
+  let count = highest + 1 + ALPHABET_LOOKAHEAD;
+  /* الرحمة المقيسة: إن حاول الطفل الحرف المفتوح ٤ مرّات ولم يُتمّه،
+     نفتح الذي بعده. ليس تخطّياً — الحرف يبقى مفتوحاً ليعود إليه.
+     يفتح حرفاً واحداً إضافياً فقط، فلا يتحوّل إلى قفزة. */
+  const edge = ALPHABET[count - 1];
+  if(edge && letterAttempts(edge.id) >= ALPHABET_PATIENCE) count += 1;
+  return Math.min(ALPHABET.length, count);
+}
+function isLetterLocked(index){
+  if(STATE.lettersDone.includes(ALPHABET[index].id)) return false;
+  return index >= alphabetUnlockedCount();
+}
+
 function renderAlphabet(){
   const g = document.getElementById('alphabetGrid');
-  g.innerHTML = ALPHABET.map(l=>{
-    const done = STATE.lettersDone.includes(l.id);
+  g.innerHTML = ALPHABET.map((l,i)=>{
+    const done   = STATE.lettersDone.includes(l.id);
+    const locked = isLetterLocked(i);
     const hasLesson = !!LETTER_LESSON_DATA[l.letter];
-    return `<button class="letter-tile ${done?'done':''}" onclick="openLetter('${l.id}')">
+    return `<button class="letter-tile ${done?'done':''} ${locked?'locked':''}"
+      ${locked?'aria-disabled="true"':''} onclick="openLetter('${l.id}')">
       ${done?`<span class="check">${ICONS.check}</span>`:''}
-      ${hasLesson?'<span class="lesson-tag">✨</span>':''}
+      ${locked?'<span class="lock-mark">🔒</span>':''}
+      ${(hasLesson&&!locked)?'<span class="lesson-tag">✨</span>':''}
       <span class="up">${l.letter}</span><span class="lo">${l.lower}</span>
     </button>`;
   }).join('');
@@ -3067,7 +3403,17 @@ function renderAlphabet(){
    openLetterLesson at each call site) in case a future letter is ever
    added without lesson data yet — the guard makes that safe by default. */
 function openLetter(id){
+  const idx = ALPHABET.findIndex(l=>l.id===id);
+  if(idx > -1 && isLetterLocked(idx)){
+    const next = ALPHABET[alphabetUnlockedCount()-1-ALPHABET_LOOKAHEAD+1];
+    playPop();
+    showToast(next
+      ? `Finish ${next.letter} first — then this one opens!`
+      : 'Finish the letter before this one first!');
+    return;
+  }
   playPop();
+  noteLetterAttempt(id);
   const letterCode = id.replace('let_','');
   if(LETTER_LESSON_DATA[letterCode]){ openLetterLesson(letterCode); return; }
   showToast('This letter\'s lesson is coming soon!');
@@ -3130,9 +3476,26 @@ function tapMatch(id){
 }
 function shuffle(arr){ for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } return arr; }
 
+/* أزواج لا تُعرض معاً في لعبة المطابقة أو البحث:
+   الطفل لا يستطيع التمييز بينها قبل أن يتقنها منفردة. */
+const CONFUSABLE = {I:'L', L:'I', O:'Q', Q:'O'};
+function notConfusableWith(letter){
+  const bad = CONFUSABLE[letter];
+  return l => l.letter !== letter && l.letter !== bad;
+}
+
 function openMatchGame(){
   playPop();
-  const pool = shuffle(ALPHABET.slice()).slice(0,6);
+  let pool = shuffle(ALPHABET.slice()).slice(0,6);
+  /* إن وقع I و L في الجولة نفسها، نستبدل الثاني بحرف آخر */
+  const ls = pool.map(l=>l.letter);
+  Object.keys(CONFUSABLE).forEach(k=>{
+    if(ls.includes(k) && ls.includes(CONFUSABLE[k])){
+      const drop = pool.findIndex(l=>l.letter===CONFUSABLE[k]);
+      const spare = shuffle(ALPHABET.filter(l=>!ls.includes(l.letter)))[0];
+      if(drop>-1 && spare){ pool[drop] = spare; ls[drop] = spare.letter; }
+    }
+  });
   const pairs = pool.map(l=>({pair:l.letter, labelA:l.letter, labelB:l.lower}));
   runMemoryMatch(pairs, null, 'Match the uppercase and lowercase letters!');
 }
@@ -3687,7 +4050,7 @@ function runPlutoSpaceGame(onDone){ runRiddleGame(PLUTO_SPACE, onDone); }
 
 const ACTION_SENTENCE_RIDDLES = [
   {prompt:'I like to ___ books.', answer:'Read', choices:['Read','Sleep','Drink','Sit']},
-  {prompt:'I ___ every night.', answer:'Sleep', choices:['Sleep','Run','Eat','Sing']},
+  {prompt:'I ___ every night.', answer:'Sleep', choices:['Sleep','Run','Eat','Draw']},
   {prompt:'I can ___ very fast.', answer:'Run', choices:['Run','Read','Sit','Sleep']},
   {prompt:'I love to ___ with my friends.', answer:'Play', choices:['Play','Drink','Read','Sit']},
 ];
@@ -4175,7 +4538,7 @@ function finishTraceStep(){ playChime(); lessonNext(); }
 
 function renderHuntStep(){
   const letter = lessonState.letter, lower = LETTER_LESSON_DATA[letter].lower;
-  const distractors = shuffle(ALPHABET.filter(l=>l.letter!==letter)).slice(0,14);
+  const distractors = shuffle(ALPHABET.filter(notConfusableWith(letter))).slice(0,14);
   let tiles = [];
   for(let i=0;i<3;i++){ tiles.push({t:letter, target:true, found:false}); tiles.push({t:lower, target:true, found:false}); }
   distractors.forEach(l=> tiles.push({t: Math.random()<0.5?l.letter:l.lower, target:false, found:false}));
@@ -4211,7 +4574,7 @@ function renderMatchStep(){
 }
 function startLessonMatch(){
   const letter = lessonState.letter, lower = LETTER_LESSON_DATA[letter].lower;
-  const decoys = shuffle(ALPHABET.filter(l=>l.letter!==letter)).slice(0,2);
+  const decoys = shuffle(ALPHABET.filter(notConfusableWith(letter))).slice(0,2);
   const pairs = [{pair:letter, labelA:letter, labelB:lower}, ...decoys.map(l=>({pair:l.letter, labelA:l.letter, labelB:l.lower}))];
   runMemoryMatch(pairs, ()=>{ lessonNext(); }, 'Match the uppercase and lowercase letters!');
 }
@@ -4657,7 +5020,7 @@ function speakAnimalSound(text){
 const ACTION_SENTENCES = {
   Eat:'I like to eat.', Run:'I can run fast.', Jump:'I can jump high.', Sleep:'I sleep at night.',
   Play:'I love to play.', Walk:'I can walk.', Drink:'I drink water.', Read:'I like to read.',
-  Sit:'I will sit down.', Sing:'I love to sing.'
+  Sit:'I will sit down.', Draw:'I love to draw.'
 };
 function openCatWord(id){
   playPop();
@@ -4954,6 +5317,73 @@ function nextSentenceProto(){
 }
 
 init();
+
+/* ══════════════ التثبيت على الشاشة الرئيسية ══════════════
+   لم يكن في التطبيق أي دعوة للتثبيت إطلاقاً — يفتحه الطفل في المتصفح
+   بأشرطته وأزراره، فيبدو صفحة لا تطبيقاً.
+   أندرويد يعطينا beforeinstallprompt فنستدعيه بزرّ.
+   iOS لا يدعمه أبداً، فنعرض الخطوات اليدوية بدلاً منه. */
+let deferredInstall = null;
+
+function isStandalone(){
+  return window.matchMedia('(display-mode: standalone)').matches
+      || window.navigator.standalone === true;
+}
+function isIOS(){
+  return /iphone|ipad|ipod/i.test(navigator.userAgent)
+      || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+}
+window.addEventListener('beforeinstallprompt', e=>{
+  e.preventDefault();
+  deferredInstall = e;
+  maybeShowInstall();
+});
+function dismissInstall(){
+  document.getElementById('installCard').classList.remove('show');
+  localStorage.setItem('wsInstallDismissed', Date.now());
+}
+function doInstall(){
+  if(deferredInstall){
+    deferredInstall.prompt();
+    deferredInstall.userChoice.finally(()=>{ deferredInstall = null; dismissInstall(); });
+  } else {
+    dismissInstall();
+  }
+}
+function maybeShowInstall(){
+  if(isStandalone()) return;                       // مثبَّت أصلاً
+  const last = +localStorage.getItem('wsInstallDismissed') || 0;
+  if(Date.now() - last < 7*86400000) return;       // أُجّل قبل أقل من أسبوع
+  const card  = document.getElementById('installCard');
+  const steps = document.getElementById('icSteps');
+  const yes   = document.getElementById('icYes');
+  if(!card) return;
+
+  if(isIOS()){
+    document.getElementById('icBody').textContent =
+      'Open it full screen, like a real app:';
+    steps.innerHTML = '<li>Tap the Share button at the bottom</li>'
+                    + '<li>Choose "Add to Home Screen"</li>'
+                    + '<li>Tap Add</li>';
+    steps.style.display = '';
+    yes.textContent = 'Got it';
+  } else if(!deferredInstall){
+    return;   // أندرويد لم يُتِح الدعوة بعد — ننتظر الحدث
+  }
+  card.classList.add('show');
+}
+/* نؤجّلها قليلاً: لا نعترض الطفل لحظة الدخول */
+window.addEventListener('load', ()=> setTimeout(maybeShowInstall, 4000));
 </script>
+
+<div id="installCard" role="dialog" aria-live="polite">
+  <div class="ic-title">📲 <span id="icTitle">Add WordSpark to your home screen</span></div>
+  <div class="ic-body" id="icBody">It opens full screen, like a real app — no browser bars.</div>
+  <ol class="ic-steps" id="icSteps" style="display:none;"></ol>
+  <div class="ic-row">
+    <button class="ic-yes" id="icYes" onclick="doInstall()">Install</button>
+    <button class="ic-no" onclick="dismissInstall()">Later</button>
+  </div>
+</div>
 </body>
 </html>
