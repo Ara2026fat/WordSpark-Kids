@@ -2160,6 +2160,10 @@ function startAppFlow(){
       sparkSay(pick(WELCOME_BACK_LINES).replace('{n}', STATE.name), 'happy');
     }, 500);
   } else {
+    /* شاشة الترحيب تبدأ مخفيّة في HTML (لتُغطّيها شاشة التفعيل).
+       كان لا أحد يزيل الإخفاء بعد التفعيل، فيعمل مشهد الترحيب
+       داخل عنصر display:none — خلفية نجوم وحدها بلا خطأ. */
+    document.getElementById('splashScreen').classList.remove('hidden');
     document.getElementById('splashScreen').addEventListener('click', ()=>{ if(!introDone) revealSetup(); }, {once:false});
     runIntro();
   }
